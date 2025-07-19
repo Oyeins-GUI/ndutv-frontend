@@ -5,7 +5,7 @@ interface NewsSectionProps {
    category: string;
 }
 
-const NewsSection = ({ title, category }: NewsSectionProps) => {
+const NewsSection = ({ title }: NewsSectionProps) => {
    const sampleNews = [
       {
          id: "2",

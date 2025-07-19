@@ -3,6 +3,14 @@ import { Link } from "react-router-dom";
 import { Menu, X, Search, Play } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
+const links = [
+   { to: "/sug", label: "SUG" },
+   { to: "/faculty", label: "Faculty" },
+   { to: "/department", label: "Department" },
+   { to: "/state", label: "State" },
+   { to: "/national", label: "National" },
+];
+
 const Header = () => {
    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -34,48 +42,16 @@ const Header = () => {
 
                <div className="hidden lg:flex items-center space-x-6 flex-1 justify-end">
                   <nav className="flex space-x-4 xl:space-x-6">
-                     <Link
-                        to="/"
-                        className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 font-medium text-sm uppercase tracking-wide relative group"
-                     >
-                        Home
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-                     </Link>
-                     <Link
-                        to="/sug"
-                        className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 font-medium text-sm uppercase tracking-wide relative group"
-                     >
-                        SUG
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-                     </Link>
-                     <Link
-                        to="/faculty"
-                        className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 font-medium text-sm uppercase tracking-wide relative group"
-                     >
-                        Faculty
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-                     </Link>
-                     <Link
-                        to="/department"
-                        className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 font-medium text-sm uppercase tracking-wide relative group"
-                     >
-                        Department
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-                     </Link>
-                     <Link
-                        to="/state"
-                        className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 font-medium text-sm uppercase tracking-wide relative group"
-                     >
-                        State
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-                     </Link>
-                     <Link
-                        to="/national"
-                        className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 font-medium text-sm uppercase tracking-wide relative group"
-                     >
-                        National
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-                     </Link>
+                     {links.map((link) => (
+                        <Link
+                           key={link.to}
+                           to={link.to}
+                           className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 font-medium text-sm uppercase tracking-wide relative group"
+                        >
+                           {link.label}
+                           <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+                        </Link>
+                     ))}
                   </nav>
 
                   <div className="flex items-center space-x-3 shrink-0">
@@ -115,14 +91,7 @@ const Header = () => {
             >
                <div className="border-t dark:border-gray-700 pt-4">
                   <nav className="flex flex-col space-y-3">
-                     {[
-                        { to: "/", label: "Home" },
-                        { to: "/sug", label: "SUG" },
-                        { to: "/faculty", label: "Faculty" },
-                        { to: "/department", label: "Department" },
-                        { to: "/state", label: "State" },
-                        { to: "/national", label: "National" },
-                     ].map((link, index) => (
+                     {links.map((link, index) => (
                         <Link
                            key={link.to}
                            to={link.to}

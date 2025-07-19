@@ -20,8 +20,8 @@ const NewsCard = ({
    category,
    author,
    date,
-   featured = false,
-}: NewsCardProps) => {
+}: // featured = false,
+NewsCardProps) => {
    return (
       <article className="group bg-white dark:bg-gray-800 hover:shadow-xl dark:hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] animate-fade-in">
          <Link to={`/news/${id}`} className="block">

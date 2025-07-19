@@ -1,4 +1,4 @@
-import NewsCard from "./NewsCard";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
    const featuredNews = {
@@ -38,6 +38,7 @@ const HeroSection = () => {
          <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                {/* Main featured story */}
+               {/* Link to view news here */}
                <div className="lg:col-span-2">
                   <div className="group cursor-pointer">
                      <div className="relative overflow-hidden mb-4">
@@ -74,22 +75,27 @@ const HeroSection = () => {
                      Latest Updates
                   </h2>
                   {sideStories.map((story) => (
-                     <article key={story.id} className="group cursor-pointer">
-                        <div className="flex items-start space-x-3">
-                           <div className="w-2 h-2 bg-red-600 rounded-full mt-2 shrink-0"></div>
-                           <div>
-                              <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
-                                 {story.category}
-                              </span>
-                              <h3 className="text-sm font-medium text-gray-900 leading-tight mb-1 group-hover:text-red-600 transition-colors">
-                                 {story.title}
-                              </h3>
-                              <span className="text-xs text-gray-500">
-                                 {story.date}
-                              </span>
+                     <Link to={`${story.id}`} key={story.id}>
+                        <article
+                           key={story.id}
+                           className="group cursor-pointer"
+                        >
+                           <div className="flex items-start space-x-3">
+                              <div className="w-2 h-2 bg-red-600 rounded-full mt-2 shrink-0"></div>
+                              <div>
+                                 <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+                                    {story.category}
+                                 </span>
+                                 <h3 className="text-sm font-medium text-gray-900 leading-tight mb-1 group-hover:text-red-600 transition-colors">
+                                    {story.title}
+                                 </h3>
+                                 <span className="text-xs text-gray-500">
+                                    {story.date}
+                                 </span>
+                              </div>
                            </div>
-                        </div>
-                     </article>
+                        </article>
+                     </Link>
                   ))}
                </div>
             </div>
