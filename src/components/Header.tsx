@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { Menu, X, Search, Play } from "lucide-react";
-import ThemeToggle from "./ThemeToggle";
+// import ThemeToggle from "./ThemeToggle";
 
 const links = [
    { to: "/sug", label: "SUG" },
@@ -34,7 +34,7 @@ const Header = () => {
                      <span className="text-xl font-bold text-gray-900 dark:text-white tracking-tight transition-colors duration-300">
                         NDUtv
                      </span>
-                     <span className="text-xs text-gray-600 dark:text-gray-400 -mt-0.5 transition-colors duration-300 hidden sm:block">
+                     <span className="text-xs text-gray-400 -mt-0.5 transition-colors duration-300 hidden sm:block">
                         University News
                      </span>
                   </div>
@@ -54,9 +54,14 @@ const Header = () => {
                      ))}
                   </nav>
 
-                  <div className="flex items-center space-x-3 shrink-0">
-                     <Search className="w-5 h-5 text-gray-600 dark:text-gray-400 cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 hover:scale-110" />
-                     <ThemeToggle />
+                  <div className="relative flex items-center space-x-3 shrink-0">
+                     <input
+                        type="search"
+                        className="border-white border-2 w-xs bg-white p-1 rounded outline-none"
+                        placeholder="Search..."
+                     />
+                     <Search className="absolute top-1/2 left-[90%] -translate-x-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 cursor-point transition-all" />
+                     {/* <ThemeToggle /> */}
                   </div>
                </div>
 
@@ -102,9 +107,9 @@ const Header = () => {
                            {link.label}
                         </Link>
                      ))}
-                     <div className="pt-4 border-t dark:border-gray-700 flex items-center justify-center">
+                     {/* <div className="pt-4 border-t dark:border-gray-700 flex items-center justify-center">
                         <ThemeToggle />
-                     </div>
+                     </div> */}
                   </nav>
                </div>
             </div>

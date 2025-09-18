@@ -1,133 +1,89 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-   Play,
-   LogOut,
-   Upload,
-   Save,
-   Eye,
-   Calendar,
-   User,
-   Tag,
-} from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import ThemeToggle from "@/components/ThemeToggle";
+import { Upload, Save, User as UserIcon, Tag, MailIcon } from "lucide-react";
+import NewsGuidelines from "@/components/NewsGuidelines";
+import AdminDashboardHeader from "@/components/AdminDashboardHeader";
+import PublishingInfo from "@/components/PublishingInfo";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import FroalaEditor from "react-froala-wysiwyg";
+import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
+import "froala-editor/css/froala_style.min.css";
+import "froala-editor/css/froala_editor.pkgd.min.css";
+import "froala-editor/js/plugins.pkgd.min.js";
+import { useAuth } from "@/hooks/use-auth";
+
+const categories = [
+   "general",
+   "sug",
+   "faculty",
+   "department",
+   "state",
+   "national",
+   "sports",
+   "academics",
+   "events",
+];
+
+type NewsData = {
+   title: string;
+   content: string;
+   category: string;
+   author: string;
+   coverImage: FileList;
+   summary: string;
+};
 
 const AdminDashboard = () => {
-   const [newsData, setNewsData] = useState({
-      title: "",
-      content: "",
-      category: "general",
-      author: "",
-      imageUrl: "",
-      summary: "",
+   const { user, logout } = useAuth();
+   const [isLoading] = useState(false);
+   const [previewMode] = useState(false);
+
+   const { register, control, handleSubmit, watch } = useForm<NewsData>({
+      defaultValues: {
+         title: "",
+         category: "general",
+         author: user?.name || "",
+         summary: "",
+         content: "",
+         coverImage: undefined,
+      },
    });
-   const [isLoading, setIsLoading] = useState(false);
-   const [previewMode, setPreviewMode] = useState(false);
-   const { toast } = useToast();
-   const navigate = useNavigate();
+   const values = watch();
 
-   const categories = [
-      "general",
-      "sug",
-      "faculty",
-      "department",
-      "state",
-      "national",
-      "sports",
-      "academics",
-      "events",
-   ];
-
-   const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-      setIsLoading(true);
-
-      // Simulate API call
-      setTimeout(() => {
-         toast({
-            title: "News Published Successfully!",
-            description: "Your news article has been published to NDUtv",
-         });
-         setIsLoading(false);
-         // Reset form
-         setNewsData({
-            title: "",
-            content: "",
-            category: "general",
-            author: "",
-            imageUrl: "",
-            summary: "",
-         });
-      }, 1500);
-   };
-
-   const handleLogout = () => {
-      toast({
-         title: "Logged Out",
-         description: "You have been successfully logged out",
-      });
-      navigate("/admin/login");
-   };
-
-   const handleInputChange = (field: string, value: string) => {
-      setNewsData((prev) => ({ ...prev, [field]: value }));
+   const onSubmit: SubmitHandler<NewsData> = async (data) => {
+      console.log(data);
    };
 
    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-         {/* Header */}
-         <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
-            <div className="container mx-auto px-4 py-4">
-               <div className="flex items-center justify-between">
-                  <Link to="/" className="flex items-center space-x-3 group">
-                     <div className="bg-red-600 p-2 rounded group-hover:bg-red-700 transition-all duration-300">
-                        <Play className="w-6 h-6 text-white" />
-                     </div>
-                     <div className="flex flex-col">
-                        <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                           NDUtv
-                        </span>
-                        <span className="text-xs text-gray-600 dark:text-gray-400 -mt-1">
-                           Admin Dashboard
-                        </span>
-                     </div>
-                  </Link>
-
-                  <div className="flex items-center space-x-4">
-                     <ThemeToggle />
-                     <Button
-                        onClick={handleLogout}
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center space-x-2"
-                     >
-                        <LogOut className="w-4 h-4" />
-                        <span>Logout</span>
-                     </Button>
-                  </div>
-               </div>
-            </div>
-         </header>
+      <div className="min-h-screen bg-gray-900 transition-colors duration-300">
+         <AdminDashboardHeader handleLogout={logout} role={"user.role"} />
 
          <div className="container mx-auto px-4 py-8">
             <div className="max-w-4xl mx-auto">
-               <div className="mb-8">
-                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                     Create News Article
-                  </h1>
-                  <p className="text-gray-600 dark:text-gray-400">
-                     Publish news and updates for the NDUtv platform
-                  </p>
+               <div className="mb-8 flex items-center justify-between">
+                  <div>
+                     <h1 className="text-3xl font-bold text-white mb-2">
+                        Create News Article
+                     </h1>
+                     <p className="text-gray-400">
+                        Publish news and updates for the NDUtv platform
+                     </p>
+                  </div>
+                  <Button
+                     variant="outline"
+                     size="sm"
+                     className="flex items-center justify-center space-x-2 text-gray-300"
+                  >
+                     <MailIcon className="w-4 h-4" />
+                     <span className="">Invite Admin</span>
+                  </Button>
                </div>
 
-               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-gray-400">
                   {/* Main Form */}
                   <div className="lg:col-span-2">
                      <Card className="shadow-lg">
@@ -138,19 +94,16 @@ const AdminDashboard = () => {
                            </CardTitle>
                         </CardHeader>
                         <CardContent>
-                           <form onSubmit={handleSubmit} className="space-y-6">
+                           <form
+                              onSubmit={handleSubmit(onSubmit)}
+                              className="space-y-6"
+                           >
                               <div className="space-y-2">
                                  <Label htmlFor="title">Article Title *</Label>
                                  <Input
                                     id="title"
-                                    value={newsData.title}
-                                    onChange={(e) =>
-                                       handleInputChange(
-                                          "title",
-                                          e.target.value
-                                       )
-                                    }
-                                    placeholder="Enter compelling news title..."
+                                    {...register("title", { required: true })}
+                                    placeholder="Enter news title"
                                     required
                                     className="text-lg font-medium"
                                  />
@@ -160,18 +113,11 @@ const AdminDashboard = () => {
                                  <div className="space-y-2">
                                     <Label htmlFor="author">Author *</Label>
                                     <div className="relative">
-                                       <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                       <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                                        <Input
                                           id="author"
-                                          value={newsData.author}
-                                          onChange={(e) =>
-                                             handleInputChange(
-                                                "author",
-                                                e.target.value
-                                             )
-                                          }
-                                          placeholder="Author name"
-                                          required
+                                          {...register("author")}
+                                          disabled
                                           className="pl-10"
                                        />
                                     </div>
@@ -181,25 +127,30 @@ const AdminDashboard = () => {
                                     <Label htmlFor="category">Category *</Label>
                                     <div className="relative">
                                        <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                       <select
-                                          id="category"
-                                          value={newsData.category}
-                                          onChange={(e) =>
-                                             handleInputChange(
-                                                "category",
-                                                e.target.value
-                                             )
-                                          }
-                                          className="w-full h-10 pl-10 pr-3 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                                          required
-                                       >
-                                          {categories.map((cat) => (
-                                             <option key={cat} value={cat}>
-                                                {cat.charAt(0).toUpperCase() +
-                                                   cat.slice(1)}
-                                             </option>
-                                          ))}
-                                       </select>
+                                       <Controller
+                                          name="category"
+                                          control={control}
+                                          render={({
+                                             field: { value, onChange },
+                                          }) => (
+                                             <select
+                                                id="category"
+                                                className="w-full h-10 pl-10 pr-3 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                                                required
+                                                value={value}
+                                                onChange={onChange}
+                                             >
+                                                {categories.map((category) => (
+                                                   <option key={category}>
+                                                      {category
+                                                         .charAt(0)
+                                                         .toUpperCase() +
+                                                         category.slice(1)}
+                                                   </option>
+                                                ))}
+                                             </select>
+                                          )}
+                                       />
                                     </div>
                                  </div>
                               </div>
@@ -211,15 +162,11 @@ const AdminDashboard = () => {
                                  <div className="relative">
                                     <Upload className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                                     <Input
-                                       id="imageUrl"
-                                       value={newsData.imageUrl}
-                                       onChange={(e) =>
-                                          handleInputChange(
-                                             "imageUrl",
-                                             e.target.value
-                                          )
-                                       }
-                                       placeholder="https://example.com/image.jpg"
+                                       type="file"
+                                       accept="image/*"
+                                       {...register("coverImage", {
+                                          required: true,
+                                       })}
                                        className="pl-10"
                                     />
                                  </div>
@@ -231,13 +178,7 @@ const AdminDashboard = () => {
                                  </Label>
                                  <Textarea
                                     id="summary"
-                                    value={newsData.summary}
-                                    onChange={(e) =>
-                                       handleInputChange(
-                                          "summary",
-                                          e.target.value
-                                       )
-                                    }
+                                    {...register("summary", { required: true })}
                                     placeholder="Brief summary of the article (2-3 sentences)..."
                                     required
                                     rows={3}
@@ -249,19 +190,30 @@ const AdminDashboard = () => {
                                  <Label htmlFor="content">
                                     Article Content *
                                  </Label>
-                                 <Textarea
-                                    id="content"
-                                    value={newsData.content}
-                                    onChange={(e) =>
-                                       handleInputChange(
-                                          "content",
-                                          e.target.value
-                                       )
-                                    }
-                                    placeholder="Write your full article content here..."
-                                    required
-                                    rows={12}
-                                    className="resize-none"
+                                 <Controller
+                                    name="content"
+                                    control={control}
+                                    rules={{
+                                       required: true,
+                                       minLength: {
+                                          value: 100,
+                                          message: "Content too short",
+                                       },
+                                    }}
+                                    render={({
+                                       field: { value, onChange },
+                                    }) => (
+                                       <FroalaEditor
+                                          tag="textarea"
+                                          model={value}
+                                          onModelChange={onChange}
+                                          config={{
+                                             placeholderText:
+                                                "Enter Content Here!",
+                                             charCounterCount: true,
+                                          }}
+                                       />
+                                    )}
                                  />
                               </div>
 
@@ -269,7 +221,7 @@ const AdminDashboard = () => {
                                  <Button
                                     type="submit"
                                     disabled={isLoading}
-                                    className="bg-red-600 hover:bg-red-700 text-white font-medium transition-all duration-300"
+                                    className="bg-gray-300 hover:bg-gray-400 text-gray-900 font-medium transition-all"
                                  >
                                     {isLoading ? (
                                        <div className="flex items-center space-x-2">
@@ -284,14 +236,20 @@ const AdminDashboard = () => {
                                     )}
                                  </Button>
 
-                                 <Button
+                                 {/* <Button
                                     type="button"
                                     variant="outline"
                                     onClick={() => setPreviewMode(!previewMode)}
                                  >
-                                    <Eye className="w-4 h-4 mr-2" />
-                                    {previewMode ? "Edit Mode" : "Preview"}
-                                 </Button>
+                                    {previewMode ? (
+                                       <Eye className="w-4 h-4 mr-2" />
+                                    ) : (
+                                       <EyeClosed className="w-4 h-4 mr-2" />
+                                    )}
+                                    {previewMode
+                                       ? "Hide Preview"
+                                       : "Show Preview"}
+                                 </Button> */}
                               </div>
                            </form>
                         </CardContent>
@@ -300,95 +258,22 @@ const AdminDashboard = () => {
 
                   {/* Sidebar */}
                   <div className="space-y-6">
-                     {/* Quick Stats */}
-                     <Card>
-                        <CardHeader>
-                           <CardTitle className="text-lg">
-                              Publishing Info
-                           </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                           <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-                              <Calendar className="w-4 h-4" />
-                              <span>{new Date().toLocaleDateString()}</span>
-                           </div>
-                           <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-                              <User className="w-4 h-4" />
-                              <span>Admin User</span>
-                           </div>
-                           {newsData.category && (
-                              <Badge variant="secondary" className="capitalize">
-                                 {newsData.category}
-                              </Badge>
-                           )}
-                        </CardContent>
-                     </Card>
-
-                     {/* Guidelines */}
-                     <Card>
-                        <CardHeader>
-                           <CardTitle className="text-lg">
-                              Writing Guidelines
-                           </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
-                           <div className="flex items-start space-x-2">
-                              <div className="w-2 h-2 bg-red-600 rounded-full mt-2 shrink-0"></div>
-                              <span>Use clear, concise headlines</span>
-                           </div>
-                           <div className="flex items-start space-x-2">
-                              <div className="w-2 h-2 bg-red-600 rounded-full mt-2 shrink-0"></div>
-                              <span>Keep paragraphs short and readable</span>
-                           </div>
-                           <div className="flex items-start space-x-2">
-                              <div className="w-2 h-2 bg-red-600 rounded-full mt-2 shrink-0"></div>
-                              <span>Include relevant keywords</span>
-                           </div>
-                           <div className="flex items-start space-x-2">
-                              <div className="w-2 h-2 bg-red-600 rounded-full mt-2 shrink-0"></div>
-                              <span>Verify facts before publishing</span>
-                           </div>
-                        </CardContent>
-                     </Card>
+                     <PublishingInfo
+                        category={values.category}
+                        faculty={user?.scope || ""}
+                     />
+                     <NewsGuidelines />
                   </div>
                </div>
 
                {/* Preview Mode */}
-               {previewMode && newsData.title && (
-                  <Card className="mt-8 shadow-lg">
+               {previewMode && (
+                  <Card className="mt-8 shadow-lg text-gray-300">
                      <CardHeader>
                         <CardTitle>Article Preview</CardTitle>
                      </CardHeader>
                      <CardContent>
-                        <div className="prose prose-lg dark:prose-invert max-w-none">
-                           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                              {newsData.title}
-                           </h1>
-                           <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400 mb-6">
-                              <span>By {newsData.author || "Author Name"}</span>
-                              <span>•</span>
-                              <span>{new Date().toLocaleDateString()}</span>
-                              <Badge variant="secondary" className="capitalize">
-                                 {newsData.category}
-                              </Badge>
-                           </div>
-                           {newsData.imageUrl && (
-                              <img
-                                 src={newsData.imageUrl}
-                                 alt={newsData.title}
-                                 className="w-full h-64 object-cover rounded-lg mb-6"
-                              />
-                           )}
-                           {newsData.summary && (
-                              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-6 italic">
-                                 {newsData.summary}
-                              </div>
-                           )}
-                           <div className="whitespace-pre-wrap">
-                              {newsData.content ||
-                                 "Article content will appear here..."}
-                           </div>
-                        </div>
+                        <FroalaEditorView model={values.content || ""} />
                      </CardContent>
                   </Card>
                )}

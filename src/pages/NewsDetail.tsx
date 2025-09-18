@@ -1,8 +1,7 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Calendar, User, Share2, ArrowLeft, Clock } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const NewsDetail = () => {
    const { id } = useParams();

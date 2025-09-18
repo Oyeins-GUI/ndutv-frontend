@@ -3,7 +3,7 @@ import HeroSection from "../components/HeroSection";
 import NewsSection from "../components/NewsSection";
 import Footer from "../components/Footer";
 
-const Index = () => {
+const Home = () => {
    return (
       <div className="min-h-screen bg-gray-50">
          <Header />
@@ -15,4 +15,4 @@ const Index = () => {
    );
 };
 
-export default Index;
+export default Home;
