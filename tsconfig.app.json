@@ -1,10 +1,12 @@
 {
-   "compilerOptions": {
-      "composite": true,
-      "skipLibCheck": true,
-      "module": "NodeNext",
-      "moduleResolution": "NodeNext",
-      "allowSyntheticDefaultImports": true
-   },
-   "include": ["vite.config.ts"]
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["vite.config.ts"]
 }
