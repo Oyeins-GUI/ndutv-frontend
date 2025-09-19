@@ -33,7 +33,7 @@ type NewsData = {
    content: string;
    category: string;
    author: string;
-   coverImage: FileList;
+   coverImage: File[];
    summary: string;
 };
 
@@ -60,7 +60,7 @@ const AdminDashboard = () => {
 
    return (
       <div className="min-h-screen bg-gray-900 transition-colors duration-300">
-         <AdminDashboardHeader handleLogout={logout} role={"user.role"} />
+         <AdminDashboardHeader handleLogout={logout} />
 
          <div className="container mx-auto px-4 py-8">
             <div className="max-w-4xl mx-auto">
@@ -79,7 +79,8 @@ const AdminDashboard = () => {
                      className="flex items-center justify-center space-x-2 text-gray-300"
                   >
                      <MailIcon className="w-4 h-4" />
-                     <span className="">Invite Admin</span>
+                     <span className="">Invite Admin</span> // Move to settings
+                     page
                   </Button>
                </div>
 

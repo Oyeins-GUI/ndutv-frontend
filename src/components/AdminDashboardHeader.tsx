@@ -3,10 +3,8 @@ import { Link } from "react-router";
 import { Button } from "./ui/button";
 
 export default function AdminDashboardHeader({
-   role,
    handleLogout,
 }: {
-   role: string;
    handleLogout: () => Promise<void>;
 }) {
    return (
@@ -29,17 +27,16 @@ export default function AdminDashboardHeader({
 
                <div className="flex items-center space-x-4 text-gray-300">
                   {/* <ThemeToggle /> */}
-                  {role === "super-admin" && (
-                     <Button
-                        onClick={() => {}}
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center space-x-2"
-                     >
-                        <SettingsIcon className="w-4 h-4" />
-                        <span className="">Setting</span>
-                     </Button>
-                  )}
+                  <Button
+                     onClick={() => {}}
+                     variant="outline"
+                     size="sm"
+                     className="flex items-center space-x-2"
+                  >
+                     <SettingsIcon className="w-4 h-4" />
+                     <span className="">Settings</span>
+                  </Button>
+
                   <Button
                      onClick={handleLogout}
                      variant="outline"

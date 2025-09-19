@@ -5,7 +5,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 import { createBrowserRouter } from "react-router";
 import ProtectedRoute from "./components/ProtectedRoute";
-import NewAdmin from "./components/NewAdmin";
+import AddExecutive from "./components/AddExecutive";
 
 export const router = createBrowserRouter([
    {
@@ -29,10 +29,10 @@ export const router = createBrowserRouter([
       ),
    },
    {
-      path: "admin/new",
+      path: "admin/new-exec", // Add role based access control here
       element: (
          <ProtectedRoute>
-            <NewAdmin />
+            <AddExecutive />
          </ProtectedRoute>
       ),
    },

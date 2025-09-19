@@ -8,5 +8,5 @@ export default function ProtectedRoute({
 }) {
    const { user } = useAuth();
 
-   return user !== null ? <Navigate to="/admin/signin" replace /> : children;
+   return user === null ? <Navigate to="/admin/signin" replace /> : children;
 }
