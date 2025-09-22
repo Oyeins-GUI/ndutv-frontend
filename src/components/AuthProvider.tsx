@@ -1,21 +1,13 @@
-import { BASE_URL } from "@/App";
 import { AuthContext } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
-import React, { useState } from "react";
-
-type ThemeProviderProps = {
-   children: React.ReactNode;
-};
+import { login, logout } from "@/services/auth";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import React from "react";
 
 export type AuthContextType = {
-   login: (data: {
-      identifier: string;
-      password: string;
-      rememberMe: boolean;
-   }) => Promise<void>;
+   login: (data: LoginPayload) => Promise<ApiResponse<User>>;
    logout: () => Promise<void>;
    user: User | null;
-   err: string | null;
    isLoading: boolean;
 };
 
@@ -44,80 +36,71 @@ export type ApiResponse<T> = {
    data: T;
 };
 
-export function AuthProvider({ children, ...props }: ThemeProviderProps) {
-   const [user, setUser] = useState<User | null>(null);
-   const [isLoading, setIsLoading] = useState(false);
-   const [err, setErr] = useState<string | null>(null);
+export type LoginPayload = {
+   identifier: string;
+   password: string;
+   rememberMe: boolean;
+};
+
+export function AuthProvider({
+   children,
+   ...props
+}: {
+   children: React.ReactNode;
+}) {
    const { toast } = useToast();
+   const queryClient = useQueryClient();
 
-   async function login(data: {
-      identifier: string;
-      password: string;
-      rememberMe: boolean;
-   }) {
-      try {
-         setIsLoading(true);
-         const res = await fetch(`${BASE_URL}/auth/login`, {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
+   const { data: user } = useQuery<User | null>({
+      queryKey: ["user"],
+      // queryFn: getUser,
+      queryFn: async () => null,
+      retry: false,
+   });
+
+   const loginMutation = useMutation({
+      mutationFn: login,
+      onSuccess: (data: ApiResponse<User>) => {
+         queryClient.setQueryData(["user"], data.data);
+         toast({
+            title: "Login Successful",
+            description: `${data.message}`,
+            className: "border text-gray-300",
          });
-
-         if (!res.ok) {
-            const error: ApiResponse<Error> = await res.json();
-            setErr(error.message);
-            toast({
-               title: "Login Failed",
-               description: error.message || "Failed to login user",
-               variant: "destructive",
-            });
-            throw new Error(error.message || "Failed to fetch user data");
-         }
-
-         const { data: user }: ApiResponse<User> = await res.json();
-         setUser(user);
-      } catch (error) {
-         console.error(error);
+      },
+      onError: (error: ApiResponse<Error>) => {
          toast({
             title: "Login Failed",
-            description: "Internal server error",
+            description: error.message || "Something went wrong",
             variant: "destructive",
-            className: "text-gray-300 border border-gray-300",
+            className: "border border-red-500 text-gray-300",
          });
-      } finally {
-         setIsLoading(false);
-      }
-   }
+      },
+   });
 
-   async function logout() {
-      try {
-         const res = await fetch(`${BASE_URL}/auth/logout`, {
-            method: "POST",
+   const logoutMutation = useMutation({
+      mutationFn: logout,
+      onSuccess: () => {
+         queryClient.setQueryData(["user"], null);
+      },
+      onError: (error: ApiResponse<Error>) => {
+         toast({
+            title: "Logout Failed",
+            description: error.message || "Something went wrong",
+            variant: "destructive",
+            className: "border border-red-500 text-gray-300",
          });
-
-         if (!res.ok) {
-            const error: ApiResponse<Error> = await res.json();
-            throw new Error(error.message || "Failed to logout user");
-         }
-
-         setUser(null);
-      } catch (error) {
-         console.error(error);
-         throw error;
-      }
-   }
+      },
+   });
 
    return (
       <AuthContext
          {...props}
          value={{
-            user,
-            login,
-            logout,
-            err,
-            isLoading,
+            user: user ?? null,
+            login: loginMutation.mutateAsync,
+            logout: logoutMutation.mutateAsync,
+            isLoading: loginMutation.isPending,
          }}
       >
          {children}

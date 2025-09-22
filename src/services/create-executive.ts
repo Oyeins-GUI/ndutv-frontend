@@ -1,5 +1,6 @@
 import { BASE_URL } from "@/App";
 import uploadImage from "./upload-image";
+import { ApiResponse } from "@/components/AuthProvider";
 
 export type Executive = {
    name: string;
@@ -20,13 +21,17 @@ export default async function createExecutive(data: Executive) {
 
    const executiveData = { ...data, image: imageUrl };
 
-   const response = await fetch(`${BASE_URL}/admin/executives`, {
+   const res = await fetch(`${BASE_URL}/admin/executives`, {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(executiveData),
    });
 
-   if (!response.ok) throw new Error("Failed to add executive");
+   if (!res.ok) {
+      const error: ApiResponse<Error> = await res.json();
+      throw new Error(error.message);
+   }
 
-   return response.json();
+   return res.json();
 }

@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Upload, Save, User as UserIcon, Tag, MailIcon } from "lucide-react";
+import { Upload, Save, User as UserIcon, Tag, PlusIcon } from "lucide-react";
 import NewsGuidelines from "@/components/NewsGuidelines";
 import AdminDashboardHeader from "@/components/AdminDashboardHeader";
 import PublishingInfo from "@/components/PublishingInfo";
@@ -15,6 +15,14 @@ import "froala-editor/css/froala_style.min.css";
 import "froala-editor/css/froala_editor.pkgd.min.css";
 import "froala-editor/js/plugins.pkgd.min.js";
 import { useAuth } from "@/hooks/use-auth";
+import {
+   Dialog,
+   DialogContent,
+   DialogDescription,
+   DialogTitle,
+   DialogTrigger,
+} from "@/components/ui/dialog";
+import AddExecutive from "@/components/AddExecutive";
 
 const categories = [
    "general",
@@ -73,15 +81,23 @@ const AdminDashboard = () => {
                         Publish news and updates for the NDUtv platform
                      </p>
                   </div>
-                  <Button
-                     variant="outline"
-                     size="sm"
-                     className="flex items-center justify-center space-x-2 text-gray-300"
-                  >
-                     <MailIcon className="w-4 h-4" />
-                     <span className="">Invite Admin</span> // Move to settings
-                     page
-                  </Button>
+                  <Dialog>
+                     <DialogTrigger asChild>
+                        <Button
+                           variant="outline"
+                           size="sm"
+                           className="flex items-center justify-center space-x-2 text-gray-300"
+                        >
+                           <PlusIcon className="w-4 h-4" />
+                           <span className="">Add Exective</span>{" "}
+                        </Button>
+                     </DialogTrigger>
+                     <DialogContent className="w-full max-w-3xl">
+                        <DialogTitle></DialogTitle>
+                        <DialogDescription></DialogDescription>
+                        <AddExecutive />
+                     </DialogContent>
+                  </Dialog>
                </div>
 
                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-gray-400">

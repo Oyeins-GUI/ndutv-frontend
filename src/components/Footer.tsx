@@ -99,8 +99,8 @@ const Footer = () => {
 
             <div className="border-t border-gray-800 pt-6 text-center">
                <p className="text-gray-400 text-sm">
-                  © 2024 NDUtv. All rights reserved. Powered by Student Union
-                  Government, Niger Delta University.
+                  © {new Date().getFullYear()} NDUtv. All rights reserved.
+                  Powered by Student Union Government, Niger Delta University.
                </p>
             </div>
          </div>
