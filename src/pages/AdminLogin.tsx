@@ -144,7 +144,7 @@ const AdminLogin = () => {
                         <label className="flex items-center">
                            <input
                               type="checkbox"
-                              {...register("rememberMe")}
+                              {...register("remember_me")}
                               className="rounded border-gray-300 text-red-600 focus:ring-red-500"
                            />
                            <span className="ml-2 text-gray-400">
