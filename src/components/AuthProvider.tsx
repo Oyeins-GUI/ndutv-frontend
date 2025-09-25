@@ -39,7 +39,7 @@ export type ApiResponse<T> = {
 export type LoginPayload = {
    identifier: string;
    password: string;
-   rememberMe: boolean;
+   remember_me: boolean;
 };
 
 export function AuthProvider({
