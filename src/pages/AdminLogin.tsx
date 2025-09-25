@@ -17,7 +17,7 @@ import { useAuth } from "@/hooks/use-auth";
 type FormFields = {
    email: string;
    password: string;
-   rememberMe: boolean;
+   remember_me: boolean;
 };
 
 const AdminLogin = () => {
@@ -28,16 +28,16 @@ const AdminLogin = () => {
       defaultValues: {
          email: "",
          password: "",
-         rememberMe: false,
+         remember_me: false,
       },
    });
 
    const onSubmit: SubmitHandler<FormFields> = async ({
       email,
       password,
-      rememberMe,
+      remember_me,
    }) => {
-      await login({ identifier: email, password, remember_me: rememberMe });
+      await login({ identifier: email, password, remember_me});
    };
 
    useEffect(() => {
