@@ -64,16 +64,14 @@ export function AuthProvider({
          queryClient.setQueryData(["user"], data.data);
          toast({
             title: "Login Successful",
-            description: `${data.message}`,
-            className: "border text-gray-300",
+            description: data.message,
          });
       },
       onError: (error: ApiResponse<Error>) => {
          toast({
             title: "Login Failed",
             description: error.message || "Something went wrong",
-            variant: "destructive",
-            className: "border border-red-500 text-gray-300",
+            variant: "error",
          });
       },
    });
@@ -87,7 +85,7 @@ export function AuthProvider({
          toast({
             title: "Logout Failed",
             description: error.message || "Something went wrong",
-            variant: "destructive",
+            variant: "error",
             className: "border border-red-500 text-gray-300",
          });
       },

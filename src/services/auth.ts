@@ -15,7 +15,6 @@ export async function getUser(): Promise<User | null> {
 export async function login(loginData: LoginPayload) {
    const res = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
-      credentials: "include",
       headers: {
          "Content-Type": "application/json",
       },

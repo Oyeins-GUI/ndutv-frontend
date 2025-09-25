@@ -42,7 +42,7 @@ function AddExecutive() {
             title: "Error",
             description:
                error.message || "Something went wrong. Please try again.",
-            variant: "destructive",
+            variant: "error",
             className: "bg-red-500 text-gray-300 border-none",
          });
       },
