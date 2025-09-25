@@ -83,14 +83,16 @@ const AdminDashboard = () => {
                   </div>
                   <Dialog>
                      <DialogTrigger asChild>
-                        <Button
-                           variant="outline"
-                           size="sm"
-                           className="flex items-center justify-center space-x-2 text-gray-300"
-                        >
-                           <PlusIcon className="w-4 h-4" />
-                           <span className="">Add Exective</span>{" "}
-                        </Button>
+                        {user?.role === "super_admin" && (
+                           <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex items-center justify-center space-x-2 text-gray-300"
+                           >
+                              <PlusIcon className="w-4 h-4" />
+                              <span className="">Add Exective</span>{" "}
+                           </Button>
+                        )}
                      </DialogTrigger>
                      <DialogContent className="w-full max-w-3xl">
                         <DialogTitle></DialogTitle>

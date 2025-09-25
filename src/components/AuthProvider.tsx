@@ -15,13 +15,12 @@ export type User = {
    name: string;
    email: string;
    matric_number: string;
-   position_id: string;
-   session_id: string;
-   faculty_id: string;
-   department_id: string;
-   phone_number: string;
-   scope: "DEPARTMENT" | "FACULTY" | "SUG";
-   image_url: string;
+   position: string;
+   role: string;
+   faculty: string;
+   department: string;
+   scope: "DEPARTMENT" | "FACULTY" | "CENTRAL";
+   last_login_at: string | null;
 };
 
 export type Error = {
@@ -95,7 +94,7 @@ export function AuthProvider({
       <AuthContext
          {...props}
          value={{
-            user: user ?? null,
+            user: loginMutation.data?.data ?? null,
             login: loginMutation.mutateAsync,
             logout: logoutMutation.mutateAsync,
             isLoading: loginMutation.isPending,
