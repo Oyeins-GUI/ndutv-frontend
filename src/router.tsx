@@ -1,11 +1,17 @@
 import Home from "./pages/Home";
 import NewsDetail from "./pages/NewsDetail";
 import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 import { createBrowserRouter } from "react-router";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AddExecutive from "./components/AddExecutive";
+import AdminLayout from "./components/admin/AdminLayout";
+import Overview from "./pages/admin/Overview";
+import PlatformManagement from "./pages/admin/PlatformManagement";
+import UserManagement from "./pages/admin/UserManagement";
+import ContentManagement from "./pages/admin/ContentManagement";
+import Analytics from "./pages/admin/Analytics";
+import Settings from "./pages/admin/Settings";
+import { SidebarProvider } from "./components/ui/sidebar";
 
 export const router = createBrowserRouter([
    {
@@ -21,20 +27,40 @@ export const router = createBrowserRouter([
       element: <AdminLogin />,
    },
    {
-      path: "admin/dashboard",
+      path: "/admin",
       element: (
          <ProtectedRoute allowedRoles={["admin"]}>
-            <AdminDashboard />
+            <SidebarProvider>
+               <AdminLayout />
+            </SidebarProvider>
          </ProtectedRoute>
       ),
-   },
-   {
-      path: "admin/new-exec", // Add role based access control here
-      element: (
-         <ProtectedRoute>
-            <AddExecutive />
-         </ProtectedRoute>
-      ),
+      children: [
+         {
+            path: "dashboard",
+            element: <Overview />,
+         },
+         {
+            path: "platform",
+            element: <PlatformManagement />,
+         },
+         {
+            path: "users",
+            element: <UserManagement />,
+         },
+         {
+            path: "content",
+            element: <ContentManagement />,
+         },
+         {
+            path: "analytics",
+            element: <Analytics />,
+         },
+         {
+            path: "settings",
+            element: <Settings />,
+         },
+      ],
    },
    {
       path: "*",

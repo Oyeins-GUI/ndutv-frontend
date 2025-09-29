@@ -1,0 +1,162 @@
+import {
+   Card,
+   CardContent,
+   CardDescription,
+   CardHeader,
+   CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
+
+const PlatformManagement = () => {
+   const { toast } = useToast();
+
+   const handleSave = () => {
+      toast({
+         title: "Settings Saved",
+         description: "Platform configuration has been updated successfully",
+      });
+   };
+
+   return (
+      <div className="p-6 space-y-6">
+         <div>
+            <h1 className="text-3xl font-bold text-foreground">
+               Platform Management
+            </h1>
+            <p className="text-muted-foreground mt-2">
+               Configure and manage platform-wide settings and features.
+            </p>
+         </div>
+
+         <Tabs defaultValue="general" className="w-full">
+            <TabsList>
+               <TabsTrigger value="general">General</TabsTrigger>
+               <TabsTrigger value="features">Features</TabsTrigger>
+               <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="general" className="space-y-6">
+               <Card>
+                  <CardHeader>
+                     <CardTitle>Platform Information</CardTitle>
+                     <CardDescription>
+                        Basic information about your platform
+                     </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                     <div className="space-y-2">
+                        <Label htmlFor="platform-name">Platform Name</Label>
+                        <Input id="platform-name" defaultValue="NDUtv" />
+                     </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="platform-tagline">Tagline</Label>
+                        <Input
+                           id="platform-tagline"
+                           defaultValue="Your source for campus news"
+                        />
+                     </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="platform-email">Contact Email</Label>
+                        <Input
+                           id="platform-email"
+                           type="email"
+                           defaultValue="admin@ndutv.com"
+                        />
+                     </div>
+                     <Button onClick={handleSave}>Save Changes</Button>
+                  </CardContent>
+               </Card>
+            </TabsContent>
+
+            <TabsContent value="features" className="space-y-6">
+               <Card>
+                  <CardHeader>
+                     <CardTitle>Feature Toggles</CardTitle>
+                     <CardDescription>
+                        Enable or disable platform features
+                     </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                     <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                           <Label>User Comments</Label>
+                           <p className="text-sm text-muted-foreground">
+                              Allow users to comment on articles
+                           </p>
+                        </div>
+                        <Switch defaultChecked />
+                     </div>
+                     <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                           <Label>Social Sharing</Label>
+                           <p className="text-sm text-muted-foreground">
+                              Enable social media sharing buttons
+                           </p>
+                        </div>
+                        <Switch defaultChecked />
+                     </div>
+                     <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                           <Label>Dark Mode</Label>
+                           <p className="text-sm text-muted-foreground">
+                              Allow users to toggle dark mode
+                           </p>
+                        </div>
+                        <Switch defaultChecked />
+                     </div>
+                     <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                           <Label>Email Notifications</Label>
+                           <p className="text-sm text-muted-foreground">
+                              Send email updates to subscribers
+                           </p>
+                        </div>
+                        <Switch />
+                     </div>
+                     <Button onClick={handleSave}>Save Changes</Button>
+                  </CardContent>
+               </Card>
+            </TabsContent>
+
+            <TabsContent value="maintenance" className="space-y-6">
+               <Card>
+                  <CardHeader>
+                     <CardTitle>Maintenance Mode</CardTitle>
+                     <CardDescription>
+                        Control platform availability
+                     </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                     <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                           <Label>Enable Maintenance Mode</Label>
+                           <p className="text-sm text-muted-foreground">
+                              Platform will be unavailable to regular users
+                           </p>
+                        </div>
+                        <Switch />
+                     </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="maintenance-message">
+                           Maintenance Message
+                        </Label>
+                        <Input
+                           id="maintenance-message"
+                           defaultValue="We're currently performing scheduled maintenance. We'll be back soon!"
+                        />
+                     </div>
+                     <Button onClick={handleSave}>Save Changes</Button>
+                  </CardContent>
+               </Card>
+            </TabsContent>
+         </Tabs>
+      </div>
+   );
+};
+
+export default PlatformManagement;
