@@ -9,11 +9,6 @@ import NewsGuidelines from "@/components/NewsGuidelines";
 import AdminDashboardHeader from "@/components/AdminDashboardHeader";
 import PublishingInfo from "@/components/PublishingInfo";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import FroalaEditor from "react-froala-wysiwyg";
-import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
-import "froala-editor/css/froala_style.min.css";
-import "froala-editor/css/froala_editor.pkgd.min.css";
-import "froala-editor/js/plugins.pkgd.min.js";
 import { useAuth } from "@/hooks/use-auth";
 import {
    Dialog,
@@ -219,19 +214,18 @@ const AdminDashboard = () => {
                                           message: "Content too short",
                                        },
                                     }}
-                                    render={({
-                                       field: { value, onChange },
-                                    }) => (
-                                       <FroalaEditor
-                                          tag="textarea"
-                                          model={value}
-                                          onModelChange={onChange}
-                                          config={{
-                                             placeholderText:
-                                                "Enter Content Here!",
-                                             charCounterCount: true,
-                                          }}
-                                       />
+                                    render={() => (
+                                       // <FroalaEditor
+                                       //    tag="textarea"
+                                       //    model={value}
+                                       //    onModelChange={onChange}
+                                       //    config={{
+                                       //       placeholderText:
+                                       //          "Enter Content Here!",
+                                       //       charCounterCount: true,
+                                       //    }}
+                                       // />
+                                       <p></p>
                                     )}
                                  />
                               </div>
@@ -292,7 +286,7 @@ const AdminDashboard = () => {
                         <CardTitle>Article Preview</CardTitle>
                      </CardHeader>
                      <CardContent>
-                        <FroalaEditorView model={values.content || ""} />
+                        {/* <FroalaEditorView model={values.content || ""} /> */}
                      </CardContent>
                   </Card>
                )}
