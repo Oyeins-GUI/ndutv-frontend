@@ -1,6 +1,6 @@
 import Home from "./pages/Home";
 import NewsDetail from "./pages/NewsDetail";
-import AdminLogin from "./pages/AdminLogin";
+import AdminLogin from "./pages/admin/AdminLogin";
 import NotFound from "./pages/NotFound";
 import { createBrowserRouter } from "react-router";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -12,6 +12,7 @@ import ContentManagement from "./pages/admin/ContentManagement";
 import Analytics from "./pages/admin/Analytics";
 import Settings from "./pages/admin/Settings";
 import { SidebarProvider } from "./components/ui/sidebar";
+import Executives from "./pages/admin/Executives";
 
 export const router = createBrowserRouter([
    {
@@ -29,7 +30,7 @@ export const router = createBrowserRouter([
    {
       path: "/admin",
       element: (
-         <ProtectedRoute allowedRoles={["admin"]}>
+         <ProtectedRoute>
             <SidebarProvider>
                <AdminLayout />
             </SidebarProvider>
@@ -39,26 +40,58 @@ export const router = createBrowserRouter([
          {
             path: "dashboard",
             element: <Overview />,
+            handle: {
+               allowedRoles: [
+                  "super_admin",
+                  "central",
+                  "faculty",
+                  "department",
+               ],
+            },
          },
          {
             path: "platform",
             element: <PlatformManagement />,
+            handle: { allowedRoles: ["super_admin", "central"] },
          },
          {
             path: "users",
             element: <UserManagement />,
+            handle: { allowedRoles: ["super_admin", "central"] },
          },
          {
             path: "content",
             element: <ContentManagement />,
+            handle: {
+               allowedRoles: [
+                  "super_admin",
+                  "central",
+                  "faculty",
+                  "department",
+               ],
+            },
+         },
+         {
+            path: "executives",
+            element: <Executives />,
+            handle: { allowedRoles: ["super_admin", "central"] },
          },
          {
             path: "analytics",
             element: <Analytics />,
+            handle: { allowedRoles: ["super_admin", "central"] },
          },
          {
             path: "settings",
             element: <Settings />,
+            handle: {
+               allowedRoles: [
+                  "super_admin",
+                  "central",
+                  "faculty",
+                  "department",
+               ],
+            },
          },
       ],
    },

@@ -22,7 +22,7 @@ import {
    DialogTitle,
    DialogTrigger,
 } from "@/components/ui/dialog";
-import AddExecutive from "@/components/AddExecutive";
+import AddExecutive from "@/components/AddExecutiveModal";
 
 const categories = [
    "general",

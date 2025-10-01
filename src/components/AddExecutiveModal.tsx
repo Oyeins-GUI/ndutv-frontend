@@ -5,24 +5,44 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Save } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import createExecutive, { Executive } from "@/services/create-executive";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { ApiResponse, type Error } from "./AuthProvider";
+import getPositions from "@/services/get-positions";
+import getSession from "@/services/get-session";
+import getFaculties from "@/services/get-faculties";
 
 function AddExecutive() {
    const queryClient = useQueryClient();
 
+   useQueries({
+      queries: [
+         {
+            queryKey: ["positions"],
+            queryFn: getPositions,
+         },
+         {
+            queryKey: ["session"],
+            queryFn: getSession,
+         },
+         {
+            queryKey: ["faculties"],
+            queryFn: getFaculties,
+         },
+      ],
+   });
+
    const { register, handleSubmit } = useForm<Executive>({
       defaultValues: {
-         name: "sdfljkl",
-         email: "sdf@gmail.com",
-         matric_number: "sdfj",
-         position_id: "sdjfkl",
-         session_id: "sdjk",
-         faculty_id: "asdfjk",
-         department_id: "slkjfs",
-         phone_number: "sdkjl",
-         scope: "sdfkjl",
+         name: "Oyeins",
+         email: "oyeins7@gmail.com",
+         matric_number: "UG/12/3422",
+         position_id: "President",
+         session_id: "2024/2025",
+         faculty_id: "Pharm",
+         department_id: "Pharm",
+         phone_number: "09238473637",
+         scope: "CENTRAL",
          image: [],
       },
    });

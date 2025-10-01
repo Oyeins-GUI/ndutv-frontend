@@ -8,18 +8,29 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+// import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useToast } from "@/hooks/use-toast";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type PlatformSettings = {
+   platformName: string;
+   tagline: string;
+   contactEmail: string;
+   currentSession: string;
+};
 
 const PlatformManagement = () => {
-   const { toast } = useToast();
+   const { register, handleSubmit } = useForm<PlatformSettings>({
+      defaultValues: {
+         platformName: "NDUtv",
+         tagline: "Your source for campus news",
+         contactEmail: "admin@ndutv.com",
+         currentSession: "2024/2025",
+      },
+   });
 
-   const handleSave = () => {
-      toast({
-         title: "Settings Saved",
-         description: "Platform configuration has been updated successfully",
-      });
+   const handleSave: SubmitHandler<PlatformSettings> = (data) => {
+      console.log("Saved data:", data);
    };
 
    return (
@@ -48,32 +59,59 @@ const PlatformManagement = () => {
                         Basic information about your platform
                      </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                     <div className="space-y-2">
-                        <Label htmlFor="platform-name">Platform Name</Label>
-                        <Input id="platform-name" defaultValue="NDUtv" />
-                     </div>
-                     <div className="space-y-2">
-                        <Label htmlFor="platform-tagline">Tagline</Label>
-                        <Input
-                           id="platform-tagline"
-                           defaultValue="Your source for campus news"
-                        />
-                     </div>
-                     <div className="space-y-2">
-                        <Label htmlFor="platform-email">Contact Email</Label>
-                        <Input
-                           id="platform-email"
-                           type="email"
-                           defaultValue="admin@ndutv.com"
-                        />
-                     </div>
-                     <Button onClick={handleSave}>Save Changes</Button>
+                  <CardContent>
+                     <form
+                        onSubmit={handleSubmit(handleSave)}
+                        className="space-y-4"
+                     >
+                        <div className="space-y-2">
+                           <Label htmlFor="platform-name">Platform Name</Label>
+                           <Input
+                              id="platform-name"
+                              {...register("platformName", {
+                                 required: true,
+                              })}
+                           />
+                        </div>
+                        <div className="space-y-2">
+                           <Label htmlFor="platform-tagline">Tagline</Label>
+                           <Input
+                              id="platform-tagline"
+                              {...register("tagline", {
+                                 required: true,
+                              })}
+                           />
+                        </div>
+                        <div className="space-y-2">
+                           <Label htmlFor="platform-email">Contact Email</Label>
+                           <Input
+                              id="platform-email"
+                              type="email"
+                              {...register("contactEmail", {
+                                 required: true,
+                                 pattern:
+                                    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                              })}
+                           />
+                        </div>
+                        <div className="space-y-2">
+                           <Label htmlFor="current-session">
+                              Current Session
+                           </Label>
+                           <Input
+                              id="current-session"
+                              {...register("currentSession", {
+                                 required: true,
+                              })}
+                           />
+                        </div>
+                        <Button onClick={() => {}}>Save Changes</Button>
+                     </form>
                   </CardContent>
                </Card>
             </TabsContent>
 
-            <TabsContent value="features" className="space-y-6">
+            {/* <TabsContent value="features" className="space-y-6">
                <Card>
                   <CardHeader>
                      <CardTitle>Feature Toggles</CardTitle>
@@ -89,7 +127,7 @@ const PlatformManagement = () => {
                               Allow users to comment on articles
                            </p>
                         </div>
-                        <Switch defaultChecked />
+                        <Switch />
                      </div>
                      <div className="flex items-center justify-between">
                         <div className="space-y-0.5">
@@ -98,7 +136,7 @@ const PlatformManagement = () => {
                               Enable social media sharing buttons
                            </p>
                         </div>
-                        <Switch defaultChecked />
+                        <Switch />
                      </div>
                      <div className="flex items-center justify-between">
                         <div className="space-y-0.5">
@@ -107,7 +145,7 @@ const PlatformManagement = () => {
                               Allow users to toggle dark mode
                            </p>
                         </div>
-                        <Switch defaultChecked />
+                        <Switch />
                      </div>
                      <div className="flex items-center justify-between">
                         <div className="space-y-0.5">
@@ -121,9 +159,9 @@ const PlatformManagement = () => {
                      <Button onClick={handleSave}>Save Changes</Button>
                   </CardContent>
                </Card>
-            </TabsContent>
+            </TabsContent> */}
 
-            <TabsContent value="maintenance" className="space-y-6">
+            {/* <TabsContent value="maintenance" className="space-y-6">
                <Card>
                   <CardHeader>
                      <CardTitle>Maintenance Mode</CardTitle>
@@ -153,7 +191,7 @@ const PlatformManagement = () => {
                      <Button onClick={handleSave}>Save Changes</Button>
                   </CardContent>
                </Card>
-            </TabsContent>
+            </TabsContent> */}
          </Tabs>
       </div>
    );

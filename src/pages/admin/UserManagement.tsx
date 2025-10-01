@@ -16,7 +16,28 @@ import {
    TableHeader,
    TableRow,
 } from "@/components/ui/table";
-import { Search, UserPlus, MoreVertical } from "lucide-react";
+import {
+   Search,
+   UserPlus,
+   MoreVertical,
+   Trash2,
+   Ban,
+   Save,
+} from "lucide-react";
+import {
+   Dialog,
+   DialogContent,
+   DialogDescription,
+   DialogTitle,
+   DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+   DropdownMenu,
+   DropdownMenuTrigger,
+   DropdownMenuContent,
+   DropdownMenuItem,
+   DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 const UserManagement = () => {
    const users = [
@@ -24,44 +45,16 @@ const UserManagement = () => {
          id: 1,
          name: "John Doe",
          email: "john@example.com",
-         role: "Admin",
-         status: "Active",
-      },
-      {
-         id: 2,
-         name: "Jane Smith",
-         email: "jane@example.com",
-         role: "Editor",
-         status: "Active",
-      },
-      {
-         id: 3,
-         name: "Mike Johnson",
-         email: "mike@example.com",
-         role: "User",
-         status: "Active",
-      },
-      {
-         id: 4,
-         name: "Sarah Williams",
-         email: "sarah@example.com",
-         role: "Editor",
-         status: "Inactive",
-      },
-      {
-         id: 5,
-         name: "Tom Brown",
-         email: "tom@example.com",
-         role: "User",
+         role: "Central",
          status: "Active",
       },
    ];
 
    const getRoleBadgeVariant = (role: string) => {
       switch (role) {
-         case "Admin":
+         case "Central":
             return "destructive";
-         case "Editor":
+         case "Faculty":
             return "default";
          default:
             return "secondary";
@@ -73,23 +66,47 @@ const UserManagement = () => {
          <div className="flex items-center justify-between">
             <div>
                <h1 className="text-3xl font-bold text-foreground">
-                  User Management
+                  Admins Management
                </h1>
                <p className="text-muted-foreground mt-2">
-                  Manage user accounts and permissions.
+                  Manage admin accounts and permissions.
                </p>
             </div>
-            <Button className="gap-2">
-               <UserPlus className="w-4 h-4" />
-               Add User
-            </Button>
+
+            <Dialog>
+               <DialogTrigger asChild>
+                  <Button className="gap-2">
+                     <UserPlus className="w-4 h-4" />
+                     Add Admin
+                  </Button>
+               </DialogTrigger>
+               <DialogContent className="w-full max-w-3xl">
+                  <DialogTitle></DialogTitle>
+                  <DialogDescription></DialogDescription>
+                  <div className="bg-gray-900 w-full">
+                     <div className="text-gray-400">
+                        {/* <div className=""> */}
+                        <Card className="shadow-lg">
+                           <CardHeader>
+                              <CardTitle className="flex items-center space-x-2">
+                                 <Save className="w-5 h-5" />
+                                 <span>Add Admin</span>
+                              </CardTitle>
+                           </CardHeader>
+                           <CardContent></CardContent>
+                        </Card>
+                        {/* </div> */}
+                     </div>
+                  </div>
+               </DialogContent>
+            </Dialog>
          </div>
 
          <Card>
             <CardHeader>
-               <CardTitle>All Users</CardTitle>
+               <CardTitle>All Admins</CardTitle>
                <CardDescription>
-                  View and manage all registered users
+                  View and manage all registered admins
                </CardDescription>
             </CardHeader>
             <CardContent>
@@ -106,7 +123,7 @@ const UserManagement = () => {
                         <TableHead>Name</TableHead>
                         <TableHead>Email</TableHead>
                         <TableHead>Role</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>Scope</TableHead>
                         <TableHead className="text-right">Actions</TableHead>
                      </TableRow>
                   </TableHeader>
@@ -134,9 +151,7 @@ const UserManagement = () => {
                               </Badge>
                            </TableCell>
                            <TableCell className="text-right">
-                              <Button variant="ghost" size="sm">
-                                 <MoreVertical className="w-4 h-4" />
-                              </Button>
+                              <ActionsMenu />
                            </TableCell>
                         </TableRow>
                      ))}
@@ -146,9 +161,9 @@ const UserManagement = () => {
          </Card>
 
          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card>
+            {/* <Card>
                <CardHeader>
-                  <CardTitle>Total Users</CardTitle>
+                  <CardTitle>Total Admins</CardTitle>
                </CardHeader>
                <CardContent>
                   <p className="text-3xl font-bold">2,543</p>
@@ -156,9 +171,9 @@ const UserManagement = () => {
                      +12.5% from last month
                   </p>
                </CardContent>
-            </Card>
+            </Card> */}
 
-            <Card>
+            {/* <Card>
                <CardHeader>
                   <CardTitle>Active Users</CardTitle>
                </CardHeader>
@@ -168,9 +183,9 @@ const UserManagement = () => {
                      92.1% of total
                   </p>
                </CardContent>
-            </Card>
+            </Card> */}
 
-            <Card>
+            {/* <Card>
                <CardHeader>
                   <CardTitle>New This Month</CardTitle>
                </CardHeader>
@@ -180,10 +195,35 @@ const UserManagement = () => {
                      11.2% of total
                   </p>
                </CardContent>
-            </Card>
+            </Card> */}
          </div>
       </div>
    );
 };
 
 export default UserManagement;
+
+export function ActionsMenu() {
+   return (
+      <DropdownMenu>
+         <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm">
+               <MoreVertical className="w-4 h-4" />
+            </Button>
+         </DropdownMenuTrigger>
+         <DropdownMenuContent align="end">
+            <DropdownMenuItem onSelect={() => console.log("Delete")}>
+               <Trash2 className="w-4 h-4 mr-2 text-red-500" /> Delete
+            </DropdownMenuItem>
+
+            <DropdownMenuItem onSelect={() => console.log("Suspend")}>
+               <Ban className="w-4 h-4 mr-2 text-yellow-500" /> Suspend
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {/* <DropdownMenuItem onSelect={() => console.log("Other Action")}>
+               Another action
+            </DropdownMenuItem> */}
+         </DropdownMenuContent>
+      </DropdownMenu>
+   );
+}

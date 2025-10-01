@@ -9,7 +9,17 @@ import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { useAuth } from "@/hooks/use-auth";
 import PublishingInfo from "@/components/PublishingInfo";
 import NewsGuidelines from "@/components/NewsGuidelines";
-import FroalaEditor from "react-froala-wysiwyg";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
+
+const modules = {
+   toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+   ],
+};
 
 type NewsData = {
    title: string;
@@ -180,14 +190,17 @@ const ContentManagement = () => {
                                     },
                                  }}
                                  render={({ field: { value, onChange } }) => (
-                                    <FroalaEditor
-                                       tag="textarea"
-                                       model={value}
-                                       onModelChange={onChange}
-                                       config={{
-                                          placeholderText:
-                                             "Enter Content Here!",
-                                          charCounterCount: true,
+                                    <ReactQuill
+                                       theme="snow"
+                                       value={value}
+                                       onChange={onChange}
+                                       modules={modules}
+                                       placeholder="Write something..."
+                                       style={{
+                                          color: "black",
+                                          background: "white",
+                                          border: "1px solid transparent",
+                                          borderRadius: "6px",
                                        }}
                                     />
                                  )}

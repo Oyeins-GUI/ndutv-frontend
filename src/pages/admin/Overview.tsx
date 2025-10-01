@@ -1,16 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, FileText, Eye, TrendingUp } from "lucide-react";
+import { Users, FileText, TrendingUp } from "lucide-react";
 import { Link } from "react-router";
 
 const Overview = () => {
    const stats = [
-      {
-         title: "Total Users",
-         value: "2,543",
-         change: "+12.5%",
-         icon: Users,
-         color: "text-blue-600 dark:text-blue-400",
-      },
+      // {
+      //    title: "Total Users",
+      //    value: "2,543",
+      //    change: "+12.5%",
+      //    icon: Users,
+      //    color: "text-blue-600 dark:text-blue-400",
+      // },
       {
          title: "Published Articles",
          value: "487",
@@ -18,20 +18,20 @@ const Overview = () => {
          icon: FileText,
          color: "text-green-600 dark:text-green-400",
       },
-      {
-         title: "Total Views",
-         value: "124.5K",
-         change: "+23.1%",
-         icon: Eye,
-         color: "text-purple-600 dark:text-purple-400",
-      },
-      {
-         title: "Engagement Rate",
-         value: "68.4%",
-         change: "+5.3%",
-         icon: TrendingUp,
-         color: "text-orange-600 dark:text-orange-400",
-      },
+      // {
+      //    title: "Total Views",
+      //    value: "124.5K",
+      //    change: "+23.1%",
+      //    icon: Eye,
+      //    color: "text-purple-600 dark:text-purple-400",
+      // },
+      // {
+      //    title: "Engagement Rate",
+      //    value: "68.4%",
+      //    change: "+5.3%",
+      //    icon: TrendingUp,
+      //    color: "text-orange-600 dark:text-orange-400",
+      // },
    ];
 
    return (
@@ -68,7 +68,7 @@ const Overview = () => {
          </div>
 
          {/* Recent Activity */}
-         <Card>
+         {/* <Card>
             <CardHeader>
                <CardTitle>Platform Information</CardTitle>
             </CardHeader>
@@ -108,7 +108,7 @@ const Overview = () => {
                   </div>
                </div>
             </CardContent>
-         </Card>
+         </Card> */}
 
          {/* Quick Actions */}
          <Card>

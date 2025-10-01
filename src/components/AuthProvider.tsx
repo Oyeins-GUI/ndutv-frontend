@@ -16,7 +16,7 @@ export type User = {
    email: string;
    matric_number: string;
    position: string;
-   role: string;
+   role: "super_admin" | "central" | "faculty" | "department";
    faculty: string;
    department: string;
    scope: "DEPARTMENT" | "FACULTY" | "CENTRAL";
@@ -50,7 +50,7 @@ export function AuthProvider({
    const { toast } = useToast();
    const queryClient = useQueryClient();
 
-   const { data: user } = useQuery<User | null>({
+   useQuery<User | null>({
       queryKey: ["user"],
       // queryFn: getUser,
       queryFn: async () => null,
