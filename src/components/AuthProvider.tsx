@@ -16,12 +16,19 @@ export type User = {
    email: string;
    matric_number: string;
    position: string;
-   role: "super_admin" | "central" | "faculty" | "department";
+   role: UserRole;
    faculty: string;
    department: string;
-   scope: "DEPARTMENT" | "FACULTY" | "CENTRAL";
+   scope: UserScope;
    last_login_at: string | null;
 };
+
+export type UserRole =
+   | "super_admin"
+   | "central_exec"
+   | "faculty_exec"
+   | "department_exec";
+export type UserScope = "DEPARTMENT" | "FACULTY" | "CENTRAL";
 
 export type Error = {
    code: string;

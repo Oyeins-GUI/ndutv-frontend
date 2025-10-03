@@ -43,21 +43,21 @@ export const router = createBrowserRouter([
             handle: {
                allowedRoles: [
                   "super_admin",
-                  "central",
-                  "faculty",
-                  "department",
+                  "central_exec",
+                  "faculty_exec",
+                  "department_exec",
                ],
             },
          },
          {
             path: "platform",
             element: <PlatformManagement />,
-            handle: { allowedRoles: ["super_admin", "central"] },
+            handle: { allowedRoles: ["super_admin", "central_exec"] },
          },
          {
             path: "users",
             element: <UserManagement />,
-            handle: { allowedRoles: ["super_admin", "central"] },
+            handle: { allowedRoles: ["super_admin", "central_exec"] },
          },
          {
             path: "content",
@@ -65,21 +65,21 @@ export const router = createBrowserRouter([
             handle: {
                allowedRoles: [
                   "super_admin",
-                  "central",
-                  "faculty",
-                  "department",
+                  "central_exec",
+                  "faculty_exec",
+                  "department_exec",
                ],
             },
          },
          {
             path: "executives",
             element: <Executives />,
-            handle: { allowedRoles: ["super_admin", "central"] },
+            handle: { allowedRoles: ["super_admin", "central_exec"] },
          },
          {
             path: "analytics",
             element: <Analytics />,
-            handle: { allowedRoles: ["super_admin", "central"] },
+            handle: { allowedRoles: ["super_admin", "central_exec"] },
          },
          {
             path: "settings",
@@ -87,9 +87,9 @@ export const router = createBrowserRouter([
             handle: {
                allowedRoles: [
                   "super_admin",
-                  "central",
-                  "faculty",
-                  "department",
+                  "central_exec",
+                  "faculty_exec",
+                  "department_exec",
                ],
             },
          },

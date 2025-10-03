@@ -26,17 +26,53 @@ import {
 import { useAuth } from "@/hooks/use-auth";
 
 const menuItems = [
-   { title: "Overview", url: "/admin/dashboard", icon: LayoutDashboard },
-   { title: "Platform Management", url: "/admin/platform", icon: Cog },
-   { title: "Executives", url: "/admin/executives", icon: Users },
-   { title: "Admins Management", url: "/admin/users", icon: ShieldCheck },
-   { title: "Content Management", url: "/admin/content", icon: FileText },
-   { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
-   { title: "Settings", url: "/admin/settings", icon: Settings },
+   {
+      title: "Overview",
+      url: "/admin/dashboard",
+      icon: LayoutDashboard,
+      roles: ["super_admin", "central_exec", "faculty_exec", "department_exec"],
+   },
+   {
+      title: "Platform Management",
+      url: "/admin/platform",
+      icon: Cog,
+      roles: ["super_admin", "central_exec"],
+   },
+   {
+      title: "Executives",
+      url: "/admin/executives",
+      icon: Users,
+      roles: ["super_admin", "central_exec"],
+   },
+   {
+      title: "Admins Management",
+      url: "/admin/users",
+      icon: ShieldCheck,
+      roles: ["super_admin", "central_exec"],
+   },
+   {
+      title: "Content Management",
+      url: "/admin/content",
+      icon: FileText,
+      roles: ["super_admin", "central_exec", "faculty_exec", "department_exec"],
+   },
+   {
+      title: "Analytics",
+      url: "/admin/analytics",
+      icon: BarChart3,
+      roles: ["super_admin", "central_exec"],
+   },
+   {
+      title: "Settings",
+      url: "/admin/settings",
+      icon: Settings,
+      roles: ["super_admin", "central_exec"],
+   },
 ];
 
 export function AdminSidebar() {
    const location = useLocation();
+   const { user } = useAuth();
 
    return (
       <Sidebar>
@@ -45,19 +81,26 @@ export function AdminSidebar() {
                <SidebarGroupLabel>Menu</SidebarGroupLabel>
                <SidebarGroupContent>
                   <SidebarMenu>
-                     {menuItems.map((item) => {
-                        const isActive = location.pathname === item.url;
-                        return (
-                           <SidebarMenuItem key={item.title} className="mb-2">
-                              <SidebarMenuButton asChild isActive={isActive}>
-                                 <Link to={item.url}>
-                                    <item.icon className="w-4 h-4" />
-                                    <span>{item.title}</span>
-                                 </Link>
-                              </SidebarMenuButton>
-                           </SidebarMenuItem>
-                        );
-                     })}
+                     {menuItems
+                        .filter(
+                           (item) => user && item.roles.includes(user.role)
+                        )
+                        .map((item) => {
+                           const isActive = location.pathname === item.url;
+                           return (
+                              <SidebarMenuItem
+                                 key={item.title}
+                                 className="mb-2"
+                              >
+                                 <SidebarMenuButton asChild isActive={isActive}>
+                                    <Link to={item.url}>
+                                       <item.icon className="w-4 h-4" />
+                                       <span>{item.title}</span>
+                                    </Link>
+                                 </SidebarMenuButton>
+                              </SidebarMenuItem>
+                           );
+                        })}
                   </SidebarMenu>
                </SidebarGroupContent>
             </SidebarGroup>
