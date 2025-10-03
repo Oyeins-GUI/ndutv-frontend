@@ -1,6 +1,6 @@
 import { AuthContext } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
-import { login, logout } from "@/services/auth";
+import { getUser, login, logout } from "@/services/auth";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
@@ -50,10 +50,10 @@ export function AuthProvider({
    const { toast } = useToast();
    const queryClient = useQueryClient();
 
-   useQuery<User | null>({
+   const { data: user, isLoading } = useQuery<User | null>({
       queryKey: ["user"],
-      // queryFn: getUser,
-      queryFn: async () => null,
+      queryFn: getUser,
+      staleTime: 5 * 60,
       retry: false,
    });
 
@@ -61,6 +61,7 @@ export function AuthProvider({
       mutationFn: login,
       onSuccess: (data: ApiResponse<User>) => {
          queryClient.setQueryData(["user"], data.data);
+         queryClient.invalidateQueries({ queryKey: ["user"] });
          toast({
             title: "Login Successful",
             description: data.message,
@@ -94,10 +95,10 @@ export function AuthProvider({
       <AuthContext
          {...props}
          value={{
-            user: loginMutation.data?.data ?? null,
+            user: user ?? null,
             login: loginMutation.mutateAsync,
             logout: logoutMutation.mutateAsync,
-            isLoading: loginMutation.isPending,
+            isLoading: loginMutation.isPending || isLoading,
          }}
       >
          {children}

@@ -8,28 +8,53 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-// import { Switch } from "@/components/ui/switch";
+import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
+import { BASE_URL } from "@/App";
+import { ApiResponse } from "@/components/AuthProvider";
+import { useEffect } from "react";
 
-type PlatformSettings = {
-   platformName: string;
-   tagline: string;
-   contactEmail: string;
-   currentSession: string;
+type PlatformConfig = {
+   current_session_id: string;
+   current_session: string;
+   is_publishing_enabled: boolean;
+   platform_name: string;
+   platform_tagline: string;
 };
 
 const PlatformManagement = () => {
-   const { register, handleSubmit } = useForm<PlatformSettings>({
+   const { data: platformConfig } = useQuery<PlatformConfig>({
+      queryKey: ["platform-settings"],
+      queryFn: async () => {
+         const res = await fetch(`${BASE_URL}/admin/platform-config`, {
+            credentials: "include",
+         });
+         if (!res.ok) {
+            throw new Error("Failed to fetch platform settings");
+         }
+         const { data }: ApiResponse<PlatformConfig> = await res.json();
+         return data;
+      },
+   });
+   const { register, handleSubmit, reset } = useForm<PlatformConfig>({
       defaultValues: {
-         platformName: "NDUtv",
-         tagline: "Your source for campus news",
-         contactEmail: "admin@ndutv.com",
-         currentSession: "2024/2025",
+         platform_name: "",
+         platform_tagline: "",
+         current_session: "",
+         is_publishing_enabled: false,
+         current_session_id: "",
       },
    });
 
-   const handleSave: SubmitHandler<PlatformSettings> = (data) => {
+   useEffect(() => {
+      if (platformConfig) {
+         reset(platformConfig);
+      }
+   }, [reset, platformConfig]);
+
+   const handleSave: SubmitHandler<PlatformConfig> = (data) => {
       console.log("Saved data:", data);
    };
 
@@ -48,7 +73,7 @@ const PlatformManagement = () => {
             <TabsList>
                <TabsTrigger value="general">General</TabsTrigger>
                <TabsTrigger value="features">Features</TabsTrigger>
-               <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
+               {/* <TabsTrigger value="maintenance">Maintenance</TabsTrigger> */}
             </TabsList>
 
             <TabsContent value="general" className="space-y-6">
@@ -68,7 +93,7 @@ const PlatformManagement = () => {
                            <Label htmlFor="platform-name">Platform Name</Label>
                            <Input
                               id="platform-name"
-                              {...register("platformName", {
+                              {...register("platform_name", {
                                  required: true,
                               })}
                            />
@@ -77,20 +102,8 @@ const PlatformManagement = () => {
                            <Label htmlFor="platform-tagline">Tagline</Label>
                            <Input
                               id="platform-tagline"
-                              {...register("tagline", {
+                              {...register("platform_tagline", {
                                  required: true,
-                              })}
-                           />
-                        </div>
-                        <div className="space-y-2">
-                           <Label htmlFor="platform-email">Contact Email</Label>
-                           <Input
-                              id="platform-email"
-                              type="email"
-                              {...register("contactEmail", {
-                                 required: true,
-                                 pattern:
-                                    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
                               })}
                            />
                         </div>
@@ -100,7 +113,7 @@ const PlatformManagement = () => {
                            </Label>
                            <Input
                               id="current-session"
-                              {...register("currentSession", {
+                              {...register("current_session", {
                                  required: true,
                               })}
                            />
@@ -111,7 +124,7 @@ const PlatformManagement = () => {
                </Card>
             </TabsContent>
 
-            {/* <TabsContent value="features" className="space-y-6">
+            <TabsContent value="features" className="space-y-6">
                <Card>
                   <CardHeader>
                      <CardTitle>Feature Toggles</CardTitle>
@@ -138,7 +151,7 @@ const PlatformManagement = () => {
                         </div>
                         <Switch />
                      </div>
-                     <div className="flex items-center justify-between">
+                     {/* <div className="flex items-center justify-between">
                         <div className="space-y-0.5">
                            <Label>Dark Mode</Label>
                            <p className="text-sm text-muted-foreground">
@@ -146,8 +159,8 @@ const PlatformManagement = () => {
                            </p>
                         </div>
                         <Switch />
-                     </div>
-                     <div className="flex items-center justify-between">
+                     </div> */}
+                     {/* <div className="flex items-center justify-between">
                         <div className="space-y-0.5">
                            <Label>Email Notifications</Label>
                            <p className="text-sm text-muted-foreground">
@@ -155,11 +168,11 @@ const PlatformManagement = () => {
                            </p>
                         </div>
                         <Switch />
-                     </div>
-                     <Button onClick={handleSave}>Save Changes</Button>
+                     </div> */}
+                     {/* <Button onClick={() =>handleSave}>Save Changes</Button> */}
                   </CardContent>
                </Card>
-            </TabsContent> */}
+            </TabsContent>
 
             {/* <TabsContent value="maintenance" className="space-y-6">
                <Card>

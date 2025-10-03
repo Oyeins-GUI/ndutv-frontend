@@ -8,12 +8,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/use-auth";
 
 const Settings = () => {
    const { toast } = useToast();
+   const { user } = useAuth();
 
    const handleSave = () => {
       toast({
@@ -47,30 +48,16 @@ const Settings = () => {
                      </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                           <Label htmlFor="firstName">First Name</Label>
-                           <Input id="firstName" defaultValue="Admin" />
-                        </div>
-                        <div className="space-y-2">
-                           <Label htmlFor="lastName">Last Name</Label>
-                           <Input id="lastName" defaultValue="User" />
-                        </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="username">User Name</Label>
+                        <Input id="username" defaultValue={user?.name} />
                      </div>
                      <div className="space-y-2">
                         <Label htmlFor="email">Email Address</Label>
                         <Input
                            id="email"
                            type="email"
-                           defaultValue="admin@ndutv.com"
-                        />
-                     </div>
-                     <div className="space-y-2">
-                        <Label htmlFor="bio">Bio</Label>
-                        <Textarea
-                           id="bio"
-                           placeholder="Tell us about yourself..."
-                           rows={4}
+                           defaultValue={user?.email}
                         />
                      </div>
                      <Button onClick={handleSave}>Save Changes</Button>

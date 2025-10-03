@@ -1,23 +1,21 @@
 import { BASE_URL } from "@/App";
 import { ApiResponse, type Error } from "@/components/AuthProvider";
 
-type Session = {
+type Department = {
    id: string;
-   session: string;
-   is_current_session: boolean;
+   department: string;
 };
 
-export default async function getSession() {
-   const res = await fetch(`${BASE_URL}/admin/acadmic-sessions`, {
+export default async function getDepartments(facultyId: string) {
+   const res = await fetch(`${BASE_URL}/departments?faculty_id=${facultyId}`, {
       credentials: "include",
    });
 
    if (!res.ok) {
       const error: ApiResponse<Error> = await res.json();
-      console.log("session error", error.message);
       throw new Error(error.message);
    }
 
-   const data: ApiResponse<Session[]> = await res.json();
+   const { data }: ApiResponse<Department[]> = await res.json();
    return data;
 }

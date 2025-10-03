@@ -7,11 +7,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import {
    Table,
    TableBody,
-   TableCell,
+   // TableCell,
    TableHead,
    TableHeader,
    TableRow,
@@ -38,27 +38,64 @@ import {
    DropdownMenuItem,
    DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Label } from "@/components/ui/label";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getExecutives } from "@/services/create-executive";
+import { getRoles } from "@/services/get-roles";
+// import { getRoleBadgeVariant } from "@/utils/badge-variant";
+import addAdmin, { AdminData } from "@/services/admin";
+import { ApiResponse, type Error } from "@/components/AuthProvider";
+import { toast } from "@/hooks/use-toast";
 
 const UserManagement = () => {
-   const users = [
-      {
-         id: 1,
-         name: "John Doe",
-         email: "john@example.com",
-         role: "Central",
-         status: "Active",
-      },
-   ];
+   const queryClient = useQueryClient();
+   const { data: executives, isPending: isExecutivesPending } = useQuery({
+      queryKey: ["executives"],
+      queryFn: getExecutives,
+   });
+   const { data: roles, isPending: isRolesPending } = useQuery({
+      queryKey: ["roles"],
+      queryFn: getRoles,
+   });
 
-   const getRoleBadgeVariant = (role: string) => {
-      switch (role) {
-         case "Central":
-            return "destructive";
-         case "Faculty":
-            return "default";
-         default:
-            return "secondary";
-      }
+   const { handleSubmit, control } = useForm<{
+      executive_id: string;
+      role_id: string;
+   }>({
+      defaultValues: {
+         executive_id: "",
+         role_id: "",
+      },
+   });
+
+   const mutation = useMutation({
+      mutationFn: addAdmin,
+      onSuccess: (data: ApiResponse<AdminData>) => {
+         toast({
+            title: "Admin added!",
+            description: data?.message ?? "Success",
+            className: "bg-gray-300 text-gray-900",
+         });
+         queryClient.invalidateQueries({ queryKey: ["admins"] });
+      },
+      onError: (error: ApiResponse<Error>) => {
+         toast({
+            title: "Error",
+            description:
+               error.message || "Something went wrong. Please try again.",
+            variant: "error",
+            className: "bg-red-500 text-gray-300 border-none",
+         });
+      },
+   });
+
+   const onSubmit: SubmitHandler<{
+      executive_id: string;
+      role_id: string;
+   }> = (data) => {
+      console.log(data);
+      mutation.mutate(data);
    };
 
    return (
@@ -93,7 +130,117 @@ const UserManagement = () => {
                                  <span>Add Admin</span>
                               </CardTitle>
                            </CardHeader>
-                           <CardContent></CardContent>
+                           <CardContent>
+                              <form
+                                 onSubmit={handleSubmit(onSubmit)}
+                                 className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                                 noValidate
+                              >
+                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                       <Label htmlFor="executive">
+                                          Executive *
+                                       </Label>
+                                       <div className="relative">
+                                          <Controller
+                                             name="executive_id"
+                                             control={control}
+                                             render={({
+                                                field: { value, onChange },
+                                             }) => (
+                                                <>
+                                                   <select
+                                                      id="position_id"
+                                                      className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
+                                                      required
+                                                      value={value}
+                                                      onChange={onChange}
+                                                   >
+                                                      <option value="" disabled>
+                                                         {isExecutivesPending
+                                                            ? "Loading..."
+                                                            : "Select Executive"}
+                                                      </option>
+                                                      {executives?.success &&
+                                                         executives.data?.map(
+                                                            (executive) => (
+                                                               <option
+                                                                  key={
+                                                                     executive.id
+                                                                  }
+                                                                  value={
+                                                                     executive.id
+                                                                  }
+                                                               >
+                                                                  {
+                                                                     executive.name
+                                                                  }
+                                                               </option>
+                                                            )
+                                                         )}
+                                                   </select>
+                                                </>
+                                             )}
+                                          />
+                                       </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                       <Label htmlFor="role">Role *</Label>
+                                       <div className="relative">
+                                          <Controller
+                                             name="role_id"
+                                             control={control}
+                                             render={({
+                                                field: { value, onChange },
+                                             }) => (
+                                                <select
+                                                   id="position_id"
+                                                   className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
+                                                   required
+                                                   value={value}
+                                                   onChange={onChange}
+                                                >
+                                                   <option value="" disabled>
+                                                      {isRolesPending
+                                                         ? "Loading..."
+                                                         : "Select Role"}
+                                                   </option>
+                                                   {roles &&
+                                                      roles.data?.map(
+                                                         (role) => (
+                                                            <option
+                                                               key={role.id}
+                                                               value={role.id}
+                                                            >
+                                                               {role.role}
+                                                            </option>
+                                                         )
+                                                      )}
+                                                </select>
+                                             )}
+                                          />
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                 <div className="flex items-center space-x-4 pt-4">
+                                    <Button
+                                       type="submit"
+                                       className="bg-gray-300 hover:bg-gray-400 text-gray-900 font-medium transition-all"
+                                    >
+                                       {mutation.isPending ? (
+                                          <div className="flex items-center space-x-2">
+                                             <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                                             <span>Adding...</span>
+                                          </div>
+                                       ) : (
+                                          <>Add</>
+                                       )}
+                                    </Button>
+                                 </div>
+                              </form>
+                           </CardContent>
                         </Card>
                         {/* </div> */}
                      </div>
@@ -128,15 +275,15 @@ const UserManagement = () => {
                      </TableRow>
                   </TableHeader>
                   <TableBody>
-                     {users.map((user) => (
+                     {/* {users.map((user) => (
                         <TableRow key={user.id}>
                            <TableCell className="font-medium">
                               {user.name}
                            </TableCell>
                            <TableCell>{user.email}</TableCell>
                            <TableCell>
-                              <Badge variant={getRoleBadgeVariant(user.role)}>
-                                 {user.role}
+                              <Badge variant={getRoleBadgeVariant(user.scope)}>
+                                 {user.scope}
                               </Badge>
                            </TableCell>
                            <TableCell>
@@ -154,7 +301,7 @@ const UserManagement = () => {
                               <ActionsMenu />
                            </TableCell>
                         </TableRow>
-                     ))}
+                     ))} */}
                   </TableBody>
                </Table>
             </CardContent>

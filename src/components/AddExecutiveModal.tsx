@@ -3,19 +3,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Save } from "lucide-react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import createExecutive, { Executive } from "@/services/create-executive";
-import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import createExecutive, { ExecutivePayload } from "@/services/create-executive";
+import {
+   useMutation,
+   useQueries,
+   useQuery,
+   useQueryClient,
+} from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { ApiResponse, type Error } from "./AuthProvider";
 import getPositions from "@/services/get-positions";
 import getSession from "@/services/get-session";
 import getFaculties from "@/services/get-faculties";
+import getDepartments from "@/services/get-departments";
 
 function AddExecutive() {
    const queryClient = useQueryClient();
 
-   useQueries({
+   const [positionResult, sessionResult, facultiesResult] = useQueries({
       queries: [
          {
             queryKey: ["positions"],
@@ -32,24 +38,33 @@ function AddExecutive() {
       ],
    });
 
-   const { register, handleSubmit } = useForm<Executive>({
-      defaultValues: {
-         name: "Oyeins",
-         email: "oyeins7@gmail.com",
-         matric_number: "UG/12/3422",
-         position_id: "President",
-         session_id: "2024/2025",
-         faculty_id: "Pharm",
-         department_id: "Pharm",
-         phone_number: "09238473637",
-         scope: "CENTRAL",
-         image: [],
-      },
+   const { register, handleSubmit, control, watch } = useForm<ExecutivePayload>(
+      {
+         defaultValues: {
+            name: "",
+            email: "",
+            matric_number: "",
+            position_id: "",
+            session_id: "",
+            faculty_id: "",
+            department_id: "",
+            phone_number: "",
+            scope: "",
+            image_url: [],
+         },
+      }
+   );
+   const values = watch();
+
+   const { data: departments, isLoading } = useQuery({
+      queryKey: ["departments", values.faculty_id],
+      queryFn: () => getDepartments(values.faculty_id!),
+      enabled: !!values.faculty_id,
    });
 
    const mutation = useMutation({
       mutationFn: createExecutive,
-      onSuccess: (data: ApiResponse<Executive>) => {
+      onSuccess: (data: ApiResponse<ExecutivePayload>) => {
          toast({
             title: "Executive added!",
             description: data?.message ?? "Success",
@@ -68,7 +83,7 @@ function AddExecutive() {
       },
    });
 
-   const onSubmit: SubmitHandler<Executive> = async (data) => {
+   const onSubmit: SubmitHandler<ExecutivePayload> = async (data) => {
       mutation.mutate(data);
    };
 
@@ -96,7 +111,7 @@ function AddExecutive() {
                               {...register("name", { required: true })}
                               placeholder="Enter name"
                               required
-                              className="text-lg font-medium"
+                              className=""
                            />
                         </div>
 
@@ -137,13 +152,39 @@ function AddExecutive() {
                            <div className="space-y-2">
                               <Label htmlFor="position">Position *</Label>
                               <div className="relative">
-                                 <Input
-                                    id="position"
-                                    {...register("position_id", {
-                                       required: true,
-                                    })}
-                                    className=""
-                                    placeholder="Position"
+                                 <Controller
+                                    name="position_id"
+                                    control={control}
+                                    render={({
+                                       field: { value, onChange },
+                                    }) => (
+                                       <>
+                                          <select
+                                             id="position_id"
+                                             className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
+                                             required
+                                             value={value}
+                                             onChange={onChange}
+                                          >
+                                             <option value="" disabled>
+                                                {positionResult.isLoading
+                                                   ? "Loading..."
+                                                   : "Select Position"}
+                                             </option>
+                                             {positionResult.data?.success &&
+                                                positionResult.data?.data.map(
+                                                   (position) => (
+                                                      <option
+                                                         key={position.id}
+                                                         value={position.id}
+                                                      >
+                                                         {position.title}
+                                                      </option>
+                                                   )
+                                                )}
+                                          </select>
+                                       </>
+                                    )}
                                  />
                               </div>
                            </div>
@@ -151,42 +192,113 @@ function AddExecutive() {
                            <div className="space-y-2">
                               <Label htmlFor="session_id">Session *</Label>
                               <div className="relative">
-                                 <Input
-                                    id="session_id"
-                                    {...register("session_id", {
-                                       required: true,
-                                    })}
-                                    className=""
-                                    placeholder="Enter session"
+                                 <Controller
+                                    name="session_id"
+                                    control={control}
+                                    render={({
+                                       field: { value, onChange },
+                                    }) => (
+                                       <>
+                                          <select
+                                             id="session_id"
+                                             className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
+                                             required
+                                             value={value}
+                                             onChange={onChange}
+                                          >
+                                             <option value="" disabled>
+                                                {sessionResult.isLoading
+                                                   ? "Loading..."
+                                                   : "Select Session"}
+                                             </option>
+                                             {sessionResult.data?.success &&
+                                                sessionResult.data?.data.map(
+                                                   (session) => (
+                                                      <option
+                                                         key={session.id}
+                                                         value={session.id}
+                                                      >
+                                                         {session.session}
+                                                      </option>
+                                                   )
+                                                )}
+                                          </select>
+                                       </>
+                                    )}
                                  />
                               </div>
                            </div>
                         </div>
 
                         <div className="space-y-2">
-                           <Label htmlFor="faculty">Faculty *</Label>
+                           <Label htmlFor="faculty_id">Faculty *</Label>
                            <div className="relative">
-                              <Input
-                                 id="faculty_id"
-                                 {...register("faculty_id", {
-                                    required: true,
-                                 })}
-                                 className=""
-                                 placeholder="Enter faculty"
+                              <Controller
+                                 name="faculty_id"
+                                 control={control}
+                                 render={({ field: { value, onChange } }) => (
+                                    <>
+                                       <select
+                                          id="faculty_id"
+                                          className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
+                                          required
+                                          value={value}
+                                          onChange={onChange}
+                                       >
+                                          <option value="" disabled>
+                                             {facultiesResult.isLoading
+                                                ? "Loading..."
+                                                : "Select Faculty"}
+                                          </option>
+                                          {facultiesResult.data?.success &&
+                                             facultiesResult.data.data.map(
+                                                (faculty) => (
+                                                   <option
+                                                      key={faculty.id}
+                                                      value={faculty.id}
+                                                   >
+                                                      {faculty.faculty}
+                                                   </option>
+                                                )
+                                             )}
+                                       </select>
+                                    </>
+                                 )}
                               />
                            </div>
                         </div>
 
                         <div className="space-y-2">
-                           <Label htmlFor="department">Department *</Label>
+                           <Label htmlFor="department_id">Department *</Label>
                            <div className="relative">
-                              <Input
-                                 id="department"
-                                 {...register("department_id", {
-                                    required: true,
-                                 })}
-                                 className=""
-                                 placeholder="Enter department"
+                              <Controller
+                                 name="department_id"
+                                 control={control}
+                                 render={({ field: { value, onChange } }) => (
+                                    <>
+                                       <select
+                                          id="department_id"
+                                          className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
+                                          required
+                                          value={value}
+                                          onChange={onChange}
+                                       >
+                                          <option value="" disabled>
+                                             {isLoading
+                                                ? "Loading..."
+                                                : "Select Department"}
+                                          </option>
+                                          {departments &&
+                                             departments.map(
+                                                ({ id, department }) => (
+                                                   <option key={id} value={id}>
+                                                      {department}
+                                                   </option>
+                                                )
+                                             )}
+                                       </select>
+                                    </>
+                                 )}
                               />
                            </div>
                         </div>
@@ -208,25 +320,44 @@ function AddExecutive() {
                         <div className="space-y-2">
                            <Label htmlFor="scope">Scope *</Label>
                            <div className="relative m-0">
-                              <Input
-                                 id="scope"
-                                 {...register("scope", {
-                                    required: true,
-                                 })}
-                                 className=""
-                                 placeholder="Enter scope"
+                              <Controller
+                                 name="scope"
+                                 control={control}
+                                 render={({ field: { value, onChange } }) => (
+                                    <>
+                                       <select
+                                          id="scope"
+                                          className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
+                                          required
+                                          value={value}
+                                          onChange={onChange}
+                                       >
+                                          <option value="" disabled>
+                                             Select Scope
+                                          </option>
+                                          <option value="CENTRAL">
+                                             CENTRAL
+                                          </option>
+                                          <option value="FACULTY">
+                                             FACULTY
+                                          </option>
+                                          <option value="DEPARTMENT">
+                                             DEPARTMENT
+                                          </option>
+                                       </select>
+                                    </>
+                                 )}
                               />
                            </div>
-                           {/* <p className="text-red-400 text-xs">error</p> */}
                         </div>
 
                         <div className="space-y-2">
-                           <Label htmlFor="image">Featured Image *</Label>
+                           <Label htmlFor="image_url">Featured Image *</Label>
                            <div className="relative">
                               <Input
                                  type="file"
                                  accept="image/*"
-                                 {...register("image", {
+                                 {...register("image_url", {
                                     required: true,
                                  })}
                                  className=""
