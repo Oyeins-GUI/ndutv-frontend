@@ -1,6 +1,7 @@
 import { BASE_URL } from "@/App";
 import uploadImage from "./upload-image";
 import { ApiResponse } from "@/components/AuthProvider";
+import { formatPhoneNumber } from "@/utils/format-phone-number";
 
 export type Executive = {
    id: string;
@@ -49,7 +50,12 @@ export default async function createExecutive(data: ExecutivePayload) {
    const file = (data.image_url as File[])?.[0];
    const imageUrl = file ? await uploadImage(file) : "";
 
-   const executiveData = { ...data, image_url: imageUrl };
+   const phoneNumber = formatPhoneNumber(data.phone_number);
+   const executiveData = {
+      ...data,
+      image_url: imageUrl,
+      phone_number: phoneNumber,
+   };
 
    const res = await fetch(`${BASE_URL}/admin/executives`, {
       method: "POST",
