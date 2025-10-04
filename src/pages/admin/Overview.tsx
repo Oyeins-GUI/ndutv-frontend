@@ -3,36 +3,36 @@ import { Users, FileText, TrendingUp } from "lucide-react";
 import { Link } from "react-router";
 
 const Overview = () => {
-   const stats = [
-      // {
-      //    title: "Total Users",
-      //    value: "2,543",
-      //    change: "+12.5%",
-      //    icon: Users,
-      //    color: "text-blue-600 dark:text-blue-400",
-      // },
-      {
-         title: "Published Articles",
-         value: "487",
-         change: "+8.2%",
-         icon: FileText,
-         color: "text-green-600 dark:text-green-400",
-      },
-      // {
-      //    title: "Total Views",
-      //    value: "124.5K",
-      //    change: "+23.1%",
-      //    icon: Eye,
-      //    color: "text-purple-600 dark:text-purple-400",
-      // },
-      // {
-      //    title: "Engagement Rate",
-      //    value: "68.4%",
-      //    change: "+5.3%",
-      //    icon: TrendingUp,
-      //    color: "text-orange-600 dark:text-orange-400",
-      // },
-   ];
+   // const stats = [
+   //    // {
+   //    //    title: "Total Users",
+   //    //    value: "2,543",
+   //    //    change: "+12.5%",
+   //    //    icon: Users,
+   //    //    color: "text-blue-600 dark:text-blue-400",
+   //    // },
+   //    {
+   //       title: "Published Articles",
+   //       value: "487",
+   //       change: "+8.2%",
+   //       icon: FileText,
+   //       color: "text-green-600 dark:text-green-400",
+   //    },
+   //    // {
+   //    //    title: "Total Views",
+   //    //    value: "124.5K",
+   //    //    change: "+23.1%",
+   //    //    icon: Eye,
+   //    //    color: "text-purple-600 dark:text-purple-400",
+   //    // },
+   //    // {
+   //    //    title: "Engagement Rate",
+   //    //    value: "68.4%",
+   //    //    change: "+5.3%",
+   //    //    icon: TrendingUp,
+   //    //    color: "text-orange-600 dark:text-orange-400",
+   //    // },
+   // ];
 
    return (
       <div className="p-6 space-y-6">
@@ -45,7 +45,7 @@ const Overview = () => {
          </div>
 
          {/* Stats Grid */}
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+         {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map((stat) => (
                <Card key={stat.title}>
                   <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -65,7 +65,7 @@ const Overview = () => {
                   </CardContent>
                </Card>
             ))}
-         </div>
+         </div> */}
 
          {/* Recent Activity */}
          {/* <Card>

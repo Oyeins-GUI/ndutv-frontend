@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { Menu, X, Search, Play } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 // import ThemeToggle from "./ThemeToggle";
 
 const links = [
@@ -27,9 +27,11 @@ const Header = () => {
                   to="/"
                   className="flex items-center space-x-2 group shrink-0"
                >
-                  <div className="bg-red-600 p-2 rounded group-hover:bg-red-700 transition-all duration-300 group-hover:scale-105">
+                  {/* <div className="bg-red-600 p-2 rounded group-hover:bg-red-700 transition-all duration-300 group-hover:scale-105">
                      <Play className="w-5 h-5 text-white transform group-hover:rotate-12 transition-transform duration-300" />
-                  </div>
+                  </div> */}
+                  <img src="/logo.png" className="w-10" />
+
                   <div className="flex flex-col">
                      <span className="text-xl font-bold text-gray-900 dark:text-white tracking-tight transition-colors duration-300">
                         NDUtv

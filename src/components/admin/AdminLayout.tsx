@@ -1,7 +1,6 @@
 import { Link, Outlet, useLocation } from "react-router";
 import { Button } from "@/components/ui/button";
 import {
-   Play,
    LogOut,
    LayoutDashboard,
    Settings,
@@ -142,9 +141,8 @@ function Header() {
             <SidebarTrigger />
 
             <Link to="/" className="flex items-center gap-2 group">
-               <div className="bg-red-600 p-2 rounded group-hover:bg-red-700 transition-all duration-300">
-                  <Play className="w-5 h-5 text-white" />
-               </div>
+               <img src="/logo.png" className="w-10" />
+
                <div className="flex flex-col">
                   <span className="text-lg font-bold">NDUtv</span>
                   <span className="text-xs text-muted-foreground -mt-1">

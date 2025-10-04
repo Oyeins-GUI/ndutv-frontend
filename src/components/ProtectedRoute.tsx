@@ -17,7 +17,7 @@ export default function ProtectedRoute({
    if (isLoading) {
       return (
          <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
-            <div className="w-6 aspect-square rounded-full border-2 border-foreground border-t-transparent animate-spin"></div>
+            <div className="w-7 aspect-square rounded-full border-2 border-foreground border-t-transparent animate-spin"></div>
          </div>
       );
    }

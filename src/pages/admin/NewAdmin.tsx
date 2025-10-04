@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,29 +15,35 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/use-auth";
 
 type FormFields = {
-   email: string;
    password: string;
-   remember_me: boolean;
+   confirm_password: string;
 };
 
-const AdminLogin = () => {
-   const { user, login, isLoading } = useAuth();
+const NewAdmin = () => {
+   const [params] = useSearchParams();
+   const { user } = useAuth();
+   const [isLoading] = useState(false);
    const [showPassword, setShowPassword] = useState(false);
+   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
    const navigate = useNavigate();
    const { register, handleSubmit } = useForm<FormFields>({
       defaultValues: {
-         email: "",
          password: "",
-         remember_me: false,
+         confirm_password: "",
       },
    });
+   const token = params.get("token") || "";
 
    const onSubmit: SubmitHandler<FormFields> = async ({
-      email,
       password,
-      remember_me,
+      confirm_password,
    }) => {
-      await login({ identifier: email, password, remember_me });
+      if (password === confirm_password && token) {
+         console.log({ token, password });
+         navigate("/admin/signin");
+      } else {
+         alert("Passwords mismatch or invalid token");
+      }
    };
 
    useEffect(() => {
@@ -77,32 +83,14 @@ const AdminLogin = () => {
             <Card className="shadow-2xl border-0 bg-gray-800/80 backdrop-blur-sm">
                <CardHeader className="text-center pb-4">
                   <CardTitle className="text-2xl font-bold text-white">
-                     Admin Login
+                     Create Account
                   </CardTitle>
                   <CardDescription className="text-gray-400">
-                     Sign in to manage NDUtv news platform
+                     Set password to manage NDUtv news platform
                   </CardDescription>
                </CardHeader>
                <CardContent>
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                     <div className="space-y-2">
-                        <Label
-                           htmlFor="email"
-                           className="text-sm font-medium text-gray-300"
-                        >
-                           Email Address
-                        </Label>
-                        <Input
-                           type="email"
-                           {...register("email", {
-                              required: "Email is required",
-                           })}
-                           placeholder="admin@ndutv.com"
-                           required
-                           className="h-12 text-gray-300 border-px border-gray-600 focus:border-gray-400 transition-colors duration-300"
-                        />
-                     </div>
-
                      <div className="space-y-2">
                         <Label
                            htmlFor="password"
@@ -114,14 +102,14 @@ const AdminLogin = () => {
                            <Input
                               type={showPassword ? "text" : "password"}
                               {...register("password", {
-                                 required: "Password is required",
+                                 required: "Enter your password",
                                  minLength: {
                                     value: 6,
                                     message:
                                        "Password must be at least 6 characters long",
                                  },
                               })}
-                              placeholder="Enter your password"
+                              placeholder="Enter password"
                               required
                               className="h-12 pr-12 text-gray-300 border-gray-600 focus:border-red-400 transition-colors duration-300"
                            />
@@ -139,23 +127,42 @@ const AdminLogin = () => {
                         </div>
                      </div>
 
-                     <div className="flex items-center justify-between text-sm">
-                        <label className="flex items-center">
-                           <input
-                              type="checkbox"
-                              {...register("remember_me")}
-                              className="rounded border-gray-300 text-red-600 focus:ring-red-500"
-                           />
-                           <span className="ml-2 text-gray-400">
-                              Remember me
-                           </span>
-                        </label>
-                        <a
-                           href="#"
-                           className="text-red-400 hover:text-red-300 transition-colors duration-300"
+                     <div className="space-y-2">
+                        <Label
+                           htmlFor="confirm_password"
+                           className="text-sm font-medium text-gray-300"
                         >
-                           Forgot password?
-                        </a>
+                           Confirm Password
+                        </Label>
+                        <div className="relative">
+                           <Input
+                              type={showConfirmPassword ? "text" : "password"}
+                              {...register("confirm_password", {
+                                 required: "Confirm your password",
+                                 minLength: {
+                                    value: 6,
+                                    message:
+                                       "Password must be at least 6 characters long",
+                                 },
+                              })}
+                              placeholder="Confirm password"
+                              required
+                              className="h-12 pr-12 text-gray-300 border-gray-600 focus:border-red-400 transition-colors duration-300"
+                           />
+                           <button
+                              type="button"
+                              onClick={() =>
+                                 setShowConfirmPassword(!showConfirmPassword)
+                              }
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors duration-300"
+                           >
+                              {showConfirmPassword ? (
+                                 <Eye className="w-5 h-5" />
+                              ) : (
+                                 <EyeOff className="w-5 h-5" />
+                              )}
+                           </button>
+                        </div>
                      </div>
 
                      <Button
@@ -166,22 +173,13 @@ const AdminLogin = () => {
                         {isLoading ? (
                            <div className="flex items-center space-x-2">
                               <div className="w-4 h-4 border-2 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
-                              <span>Signing in...</span>
+                              <span>Creating...</span>
                            </div>
                         ) : (
-                           "Sign In"
+                           "Create Account"
                         )}
                      </Button>
                   </form>
-
-                  {/* <div className="mt-6 text-center text-sm text-gray-400">
-                     <p>Demo credentials:</p>
-                     <p className="font-mono bg-gray-700 p-2 rounded mt-2">
-                        Email: admin@ndutv.com
-                        <br />
-                        Password: admin123
-                     </p>
-                  </div> */}
                </CardContent>
             </Card>
          </div>
@@ -189,4 +187,4 @@ const AdminLogin = () => {
    );
 };
 
-export default AdminLogin;
+export default NewAdmin;
