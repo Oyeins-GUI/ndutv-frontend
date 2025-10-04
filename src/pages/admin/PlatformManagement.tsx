@@ -90,7 +90,6 @@ const PlatformManagement = () => {
    });
 
    const handleSave: SubmitHandler<PlatformConfig> = async (data) => {
-      console.log("Saved data:", data);
       mutation.mutate(data);
    };
 
