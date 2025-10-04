@@ -10,13 +10,17 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useQuery } from "@tanstack/react-query";
-import { BASE_URL } from "@/App";
-import { ApiResponse } from "@/components/AuthProvider";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import {
+   getPlatformConfig,
+   updatePlatformConfig,
+} from "@/services/platform-config";
+import { ApiResponse } from "@/components/AuthProvider";
+import { toast } from "@/hooks/use-toast";
 
-type PlatformConfig = {
+export type PlatformConfig = {
    current_session_id: string;
    current_session: string;
    is_publishing_enabled: boolean;
@@ -25,28 +29,38 @@ type PlatformConfig = {
 };
 
 const PlatformManagement = () => {
+   const queryClient = useQueryClient();
    const { data: platformConfig } = useQuery<PlatformConfig>({
-      queryKey: ["platform-settings"],
-      queryFn: async () => {
-         const res = await fetch(`${BASE_URL}/admin/platform-config`, {
-            credentials: "include",
-         });
-         if (!res.ok) {
-            throw new Error("Failed to fetch platform settings");
-         }
-         const { data }: ApiResponse<PlatformConfig> = await res.json();
-         return data;
-      },
+      queryKey: ["platform-config"],
+      queryFn: getPlatformConfig,
    });
-   const { register, handleSubmit, reset } = useForm<PlatformConfig>({
+
+   const {
+      register,
+      handleSubmit,
+      reset,
+      control,
+      watch,
+      formState: { isDirty, dirtyFields, defaultValues },
+   } = useForm<PlatformConfig>({
       defaultValues: {
          platform_name: "",
          platform_tagline: "",
-         current_session: "",
+         current_session: "2024/2025",
          is_publishing_enabled: false,
          current_session_id: "",
       },
    });
+
+   const values = watch();
+
+   const hasChanges =
+      isDirty &&
+      Object.keys(dirtyFields).some(
+         (key) =>
+            values[key as keyof PlatformConfig] !==
+            defaultValues?.[key as keyof PlatformConfig]
+      );
 
    useEffect(() => {
       if (platformConfig) {
@@ -54,8 +68,30 @@ const PlatformManagement = () => {
       }
    }, [reset, platformConfig]);
 
-   const handleSave: SubmitHandler<PlatformConfig> = (data) => {
+   const mutation = useMutation({
+      mutationFn: updatePlatformConfig,
+      onSuccess: (data: ApiResponse<PlatformConfig>) => {
+         toast({
+            title: "Platform Config changed!",
+            description: data?.message ?? "Success",
+            className: "bg-gray-300 text-gray-900",
+         });
+         queryClient.invalidateQueries({ queryKey: ["platform-config"] });
+      },
+      onError: (error: ApiResponse<Error>) => {
+         toast({
+            title: "Error",
+            description:
+               error.message || "Something went wrong. Please try again.",
+            variant: "error",
+            className: "bg-red-500 text-gray-300 border-none",
+         });
+      },
+   });
+
+   const handleSave: SubmitHandler<PlatformConfig> = async (data) => {
       console.log("Saved data:", data);
+      mutation.mutate(data);
    };
 
    return (
@@ -90,35 +126,66 @@ const PlatformManagement = () => {
                         className="space-y-4"
                      >
                         <div className="space-y-2">
-                           <Label htmlFor="platform-name">Platform Name</Label>
+                           <Label htmlFor="platform_name">Platform Name</Label>
                            <Input
-                              id="platform-name"
+                              id="platform_name"
                               {...register("platform_name", {
                                  required: true,
                               })}
                            />
                         </div>
                         <div className="space-y-2">
-                           <Label htmlFor="platform-tagline">Tagline</Label>
+                           <Label htmlFor="platform_tagline">Tagline</Label>
                            <Input
-                              id="platform-tagline"
+                              id="platform_tagline"
                               {...register("platform_tagline", {
                                  required: true,
                               })}
                            />
                         </div>
                         <div className="space-y-2">
-                           <Label htmlFor="current-session">
+                           <Label htmlFor="current_session">
                               Current Session
                            </Label>
                            <Input
-                              id="current-session"
+                              id="current_session"
+                              disabled
                               {...register("current_session", {
                                  required: true,
                               })}
                            />
                         </div>
-                        <Button onClick={() => {}}>Save Changes</Button>
+                        <div className="space-y-2 flex items-center justify-between">
+                           <div className="space-y-0.5">
+                              <Label>Enable Publishing</Label>
+                              <p className="text-sm text-muted-foreground">
+                                 Allow admins to publish articles
+                              </p>
+                           </div>
+                           <Controller
+                              name="is_publishing_enabled"
+                              control={control}
+                              render={({ field }) => (
+                                 <Switch
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                 />
+                              )}
+                           />
+                        </div>
+                        <Button
+                           disabled={!hasChanges || mutation.isPending}
+                           type="submit"
+                        >
+                           {mutation.isPending ? (
+                              <div className="flex items-center space-x-2">
+                                 <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                                 <span>Saving...</span>
+                              </div>
+                           ) : (
+                              "Save Changes"
+                           )}
+                        </Button>
                      </form>
                   </CardContent>
                </Card>
@@ -151,30 +218,21 @@ const PlatformManagement = () => {
                         </div>
                         <Switch />
                      </div>
-                     {/* <div className="flex items-center justify-between">
-                        <div className="space-y-0.5">
-                           <Label>Dark Mode</Label>
-                           <p className="text-sm text-muted-foreground">
-                              Allow users to toggle dark mode
-                           </p>
-                        </div>
-                        <Switch />
-                     </div> */}
-                     {/* <div className="flex items-center justify-between">
-                        <div className="space-y-0.5">
-                           <Label>Email Notifications</Label>
-                           <p className="text-sm text-muted-foreground">
-                              Send email updates to subscribers
-                           </p>
-                        </div>
-                        <Switch />
-                     </div> */}
-                     {/* <Button onClick={() =>handleSave}>Save Changes</Button> */}
+                     <Button disabled onClick={() => {}}>
+                        Save Changes
+                     </Button>
                   </CardContent>
                </Card>
             </TabsContent>
+         </Tabs>
+      </div>
+   );
+};
 
-            {/* <TabsContent value="maintenance" className="space-y-6">
+export default PlatformManagement;
+
+{
+   /* <TabsContent value="maintenance" className="space-y-6">
                <Card>
                   <CardHeader>
                      <CardTitle>Maintenance Mode</CardTitle>
@@ -204,10 +262,5 @@ const PlatformManagement = () => {
                      <Button onClick={handleSave}>Save Changes</Button>
                   </CardContent>
                </Card>
-            </TabsContent> */}
-         </Tabs>
-      </div>
-   );
-};
-
-export default PlatformManagement;
+            </TabsContent> */
+}
