@@ -11,12 +11,30 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 const Settings = () => {
    const { toast } = useToast();
    const { user } = useAuth();
 
-   const handleSave = () => {
+   const [showPassword, setShowPassword] = useState(false);
+
+   const { register, handleSubmit } = useForm({
+      defaultValues: {
+         current_password: "",
+         new_password: "",
+         confirm_new_password: "",
+      },
+   });
+
+   const handleUpdate: SubmitHandler<{
+      current_password: string;
+      new_password: string;
+      confirm_new_password: string;
+   }> = (data) => {
+      console.log(data);
       toast({
          title: "Settings Saved",
          description: "Your settings have been updated successfully",
@@ -36,7 +54,7 @@ const Settings = () => {
             <TabsList>
                <TabsTrigger value="profile">Profile</TabsTrigger>
                <TabsTrigger value="security">Security</TabsTrigger>
-               <TabsTrigger value="notifications">Notifications</TabsTrigger>
+               {/* <TabsTrigger value="notifications">Notifications</TabsTrigger> */}
             </TabsList>
 
             <TabsContent value="profile" className="space-y-6">
@@ -60,7 +78,7 @@ const Settings = () => {
                            defaultValue={user?.email}
                         />
                      </div>
-                     <Button onClick={handleSave}>Save Changes</Button>
+                     <Button>Save Changes</Button>
                   </CardContent>
                </Card>
             </TabsContent>
@@ -73,28 +91,112 @@ const Settings = () => {
                         Update your password to keep your account secure
                      </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                     <div className="space-y-2">
-                        <Label htmlFor="currentPassword">
-                           Current Password
-                        </Label>
-                        <Input id="currentPassword" type="password" />
-                     </div>
-                     <div className="space-y-2">
-                        <Label htmlFor="newPassword">New Password</Label>
-                        <Input id="newPassword" type="password" />
-                     </div>
-                     <div className="space-y-2">
-                        <Label htmlFor="confirmPassword">
-                           Confirm New Password
-                        </Label>
-                        <Input id="confirmPassword" type="password" />
-                     </div>
-                     <Button onClick={handleSave}>Update Password</Button>
+                  <CardContent>
+                     <form
+                        className="space-y-3"
+                        onSubmit={handleSubmit(handleUpdate)}
+                     >
+                        <div className="space-y-2">
+                           <Label htmlFor="current_password">
+                              Current Password
+                           </Label>
+                           <div className="relative">
+                              <Input
+                                 type={showPassword ? "text" : "password"}
+                                 {...register("current_password", {
+                                    required: "Current password is required",
+                                    minLength: {
+                                       value: 6,
+                                       message:
+                                          "Current password must be at least 6 characters long",
+                                    },
+                                 })}
+                                 placeholder="Enter your password"
+                                 required
+                                 className="h-12 pr-12 text-gray-300 border-gray-600 focus:border-red-400 transition-colors duration-300"
+                              />
+                              <button
+                                 type="button"
+                                 onClick={() => setShowPassword(!showPassword)}
+                                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors duration-300"
+                              >
+                                 {showPassword ? (
+                                    <Eye className="w-5 h-5" />
+                                 ) : (
+                                    <EyeOff className="w-5 h-5" />
+                                 )}
+                              </button>
+                           </div>
+                        </div>
+                        <div className="space-y-2">
+                           <Label htmlFor="new_password">New Password</Label>
+                           <div className="relative">
+                              <Input
+                                 type={showPassword ? "text" : "password"}
+                                 {...register("new_password", {
+                                    required: "New password is required",
+                                    minLength: {
+                                       value: 6,
+                                       message:
+                                          "New password must be at least 6 characters long",
+                                    },
+                                 })}
+                                 placeholder="Enter a new password"
+                                 required
+                                 className="h-12 pr-12 text-gray-300 border-gray-600 focus:border-red-400 transition-colors duration-300"
+                              />
+                              <button
+                                 type="button"
+                                 onClick={() => setShowPassword(!showPassword)}
+                                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors duration-300"
+                              >
+                                 {showPassword ? (
+                                    <Eye className="w-5 h-5" />
+                                 ) : (
+                                    <EyeOff className="w-5 h-5" />
+                                 )}
+                              </button>
+                           </div>
+                        </div>
+                        <div className="space-y-2">
+                           <Label htmlFor="confirm_new_password">
+                              Confirm New Password
+                           </Label>
+                           <div className="relative">
+                              <Input
+                                 type={showPassword ? "text" : "password"}
+                                 {...register("confirm_new_password", {
+                                    required:
+                                       "Confirm new password is required",
+                                    minLength: {
+                                       value: 6,
+                                       message:
+                                          "Confirm new password must be at least 6 characters long",
+                                    },
+                                 })}
+                                 placeholder="Confirm new password"
+                                 required
+                                 className="h-12 pr-12 text-gray-300 border-gray-600 focus:border-red-400 transition-colors duration-300"
+                              />
+                              <button
+                                 type="button"
+                                 onClick={() => setShowPassword(!showPassword)}
+                                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors duration-300"
+                              >
+                                 {showPassword ? (
+                                    <Eye className="w-5 h-5" />
+                                 ) : (
+                                    <EyeOff className="w-5 h-5" />
+                                 )}
+                              </button>
+                           </div>
+                        </div>
+                        <Button>Update Password</Button>
+                     </form>
                   </CardContent>
                </Card>
 
-               <Card>
+               {/* <Card>
                   <CardHeader>
                      <CardTitle>Two-Factor Authentication</CardTitle>
                      <CardDescription>
@@ -108,10 +210,10 @@ const Settings = () => {
                      </p>
                      <Button variant="outline">Enable 2FA</Button>
                   </CardContent>
-               </Card>
+               </Card> */}
             </TabsContent>
 
-            <TabsContent value="notifications" className="space-y-6">
+            {/* <TabsContent value="notifications" className="space-y-6">
                <Card>
                   <CardHeader>
                      <CardTitle>Email Notifications</CardTitle>
@@ -158,7 +260,7 @@ const Settings = () => {
                      <Button onClick={handleSave}>Save Preferences</Button>
                   </CardContent>
                </Card>
-            </TabsContent>
+            </TabsContent> */}
          </Tabs>
       </div>
    );
