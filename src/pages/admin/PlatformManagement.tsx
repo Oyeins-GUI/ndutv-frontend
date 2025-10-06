@@ -30,10 +30,11 @@ export type PlatformConfig = {
 
 const PlatformManagement = () => {
    const queryClient = useQueryClient();
-   const { data: platformConfig } = useQuery<PlatformConfig>({
-      queryKey: ["platform-config"],
-      queryFn: getPlatformConfig,
-   });
+   const { data: platformConfig, isLoading: isPlatformConfigLoading } =
+      useQuery<PlatformConfig>({
+         queryKey: ["platform-config"],
+         queryFn: getPlatformConfig,
+      });
 
    const {
       register,
@@ -46,7 +47,7 @@ const PlatformManagement = () => {
       defaultValues: {
          platform_name: "",
          platform_tagline: "",
-         current_session: "2024/2025",
+         current_session: "",
          is_publishing_enabled: false,
          current_session_id: "",
       },
@@ -114,7 +115,12 @@ const PlatformManagement = () => {
             <TabsContent value="general" className="space-y-6">
                <Card>
                   <CardHeader>
-                     <CardTitle>Platform Information</CardTitle>
+                     <div className="flex items-center gap-2">
+                        <CardTitle>Platform Information</CardTitle>
+                        {isPlatformConfigLoading && (
+                           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        )}
+                     </div>
                      <CardDescription>
                         Basic information about your platform
                      </CardDescription>
@@ -148,7 +154,6 @@ const PlatformManagement = () => {
                            </Label>
                            <Input
                               id="current_session"
-                              disabled
                               {...register("current_session", {
                                  required: true,
                               })}
