@@ -11,7 +11,7 @@ export type Executive = {
    position: string;
    session: string;
    faculty: string;
-   department: string;
+   deparment: string;
    phone_number: string;
    scope: string;
    image_url: string;
@@ -57,8 +57,42 @@ export default async function createExecutive(data: ExecutivePayload) {
       phone_number: phoneNumber,
    };
 
+   console.log(executiveData);
+
    const res = await fetch(`${BASE_URL}/admin/executives`, {
       method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(executiveData),
+   });
+
+   if (!res.ok) {
+      const error: ApiResponse<Error> = await res.json();
+      console.error(error);
+      throw new Error(error.message);
+   }
+
+   return res.json();
+}
+
+export async function updateExecutive(data: ExecutivePayload) {
+   const file = String(data.image_url)
+      ? data.image_url
+      : (data.image_url as File[])?.[0];
+   const imageUrl =
+      typeof data.image_url === "string"
+         ? file
+         : await uploadImage(file as File);
+
+   const phoneNumber = formatPhoneNumber(data.phone_number);
+   const executiveData = {
+      ...data,
+      image_url: imageUrl,
+      phone_number: phoneNumber,
+   };
+
+   const res = await fetch(`${BASE_URL}/admin/executives`, {
+      method: "PATCH",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(executiveData),
