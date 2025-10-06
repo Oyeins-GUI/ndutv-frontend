@@ -7,6 +7,35 @@ export type AdminData = {
    role_id: string;
 };
 
+export async function setPassword(credentials: {
+   token: string;
+   password: string;
+}) {
+   const res = await fetch(`${BASE_URL}/admin/password/set/confirm`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credentials),
+   });
+
+   if (!res.ok) {
+      const error: ApiResponse<Error> = await res.json();
+      console.error(error);
+      toast({
+         title: "Error",
+         description:
+            error.message || "Failed to set password. Please try again",
+         variant: "error",
+      });
+      throw new Error(error.message);
+   }
+
+   const data: ApiResponse<{ token: string; password: string }> =
+      await res.json();
+
+   return data;
+}
+
 export default async function addAdmin(adminData: AdminData) {
    const res = await fetch(`${BASE_URL}/admin`, {
       method: "POST",

@@ -13,6 +13,10 @@ import {
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/use-auth";
+import { useMutation } from "@tanstack/react-query";
+import { ApiResponse } from "@/components/AuthProvider";
+import { setPassword } from "@/services/admin";
+import { toast } from "@/hooks/use-toast";
 
 type FormFields = {
    password: string;
@@ -22,7 +26,6 @@ type FormFields = {
 const NewAdmin = () => {
    const [params] = useSearchParams();
    const { user } = useAuth();
-   const [isLoading] = useState(false);
    const [showPassword, setShowPassword] = useState(false);
    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
    const navigate = useNavigate();
@@ -34,15 +37,45 @@ const NewAdmin = () => {
    });
    const token = params.get("token") || "";
 
+   const mutation = useMutation({
+      mutationFn: setPassword,
+      onSuccess: (
+         data: ApiResponse<{
+            token: string;
+            password: string;
+         }>
+      ) => {
+         toast({
+            title: "Password set successfully",
+            description: data?.message ?? "Success",
+            className: "bg-gray-300 text-gray-900",
+         });
+         navigate("/admin/signin");
+      },
+      onError: (error: ApiResponse<Error>) => {
+         toast({
+            title: "Error",
+            description:
+               error.message || "Something went wrong. Please try again.",
+            variant: "error",
+            className: "bg-red-500 text-gray-300 border-none",
+         });
+      },
+   });
+
    const onSubmit: SubmitHandler<FormFields> = async ({
       password,
       confirm_password,
    }) => {
       if (password === confirm_password && token) {
-         console.log({ token, password });
-         navigate("/admin/signin");
+         mutation.mutate({ token, password });
       } else {
-         alert("Passwords mismatch or invalid token");
+         toast({
+            title: "Error",
+            description: "Passwords mismatch or invalid token",
+            className: "bg-gray-300 text-gray-900",
+            variant: "error",
+         });
       }
    };
 
@@ -167,10 +200,10 @@ const NewAdmin = () => {
 
                      <Button
                         type="submit"
-                        disabled={isLoading}
+                        disabled={mutation.isPending}
                         className="w-full h-12 border bg-gray-300 text-gray-900 font-medium transition-all cursor-pointer"
                      >
-                        {isLoading ? (
+                        {mutation.isPending ? (
                            <div className="flex items-center space-x-2">
                               <div className="w-4 h-4 border-2 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
                               <span>Creating...</span>
