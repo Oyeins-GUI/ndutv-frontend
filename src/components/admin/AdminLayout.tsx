@@ -7,7 +7,7 @@ import {
    Cog,
    Users,
    FileText,
-   BarChart3,
+   // BarChart3,
    ShieldCheck,
 } from "lucide-react";
 import {
@@ -55,12 +55,12 @@ const menuItems = [
       icon: FileText,
       roles: ["super_admin", "central_exec", "faculty_exec", "department_exec"],
    },
-   {
-      title: "Analytics",
-      url: "/admin/analytics",
-      icon: BarChart3,
-      roles: ["super_admin", "central_exec"],
-   },
+   // {
+   //    title: "Analytics",
+   //    url: "/admin/analytics",
+   //    icon: BarChart3,
+   //    roles: ["super_admin", "central_exec"],
+   // },
    {
       title: "Settings",
       url: "/admin/settings",
