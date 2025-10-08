@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
       element: <SetPassword />,
    },
    {
-      path: "/admin/init-password",
+      path: "/admin/init",
       element: <InitPassword />,
    },
    {
