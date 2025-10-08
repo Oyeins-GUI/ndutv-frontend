@@ -13,7 +13,8 @@ import Analytics from "./pages/admin/Analytics";
 import Settings from "./pages/admin/Settings";
 import { SidebarProvider } from "./components/ui/sidebar";
 import Executives from "./pages/admin/Executives";
-import NewAdmin from "./pages/admin/NewAdmin";
+import SetPassword from "./pages/admin/SetPassword";
+import InitPassword from "./pages/admin/InitPassword";
 
 export const router = createBrowserRouter([
    {
@@ -29,8 +30,12 @@ export const router = createBrowserRouter([
       element: <AdminLogin />,
    },
    {
-      path: "/admin/new",
-      element: <NewAdmin />,
+      path: "/admin/set-password",
+      element: <SetPassword />,
+   },
+   {
+      path: "/admin/init-password",
+      element: <InitPassword />,
    },
    {
       path: "/admin",

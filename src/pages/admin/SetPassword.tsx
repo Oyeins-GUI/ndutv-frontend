@@ -23,7 +23,7 @@ type FormFields = {
    confirm_password: string;
 };
 
-const NewAdmin = () => {
+export default function SetPassword() {
    const [params] = useSearchParams();
    const { user } = useAuth();
    const [showPassword, setShowPassword] = useState(false);
@@ -218,6 +218,4 @@ const NewAdmin = () => {
          </div>
       </div>
    );
-};
-
-export default NewAdmin;
+}
