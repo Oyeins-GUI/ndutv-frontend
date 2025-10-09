@@ -11,7 +11,7 @@ export async function initAdmin(credentials: {
    email: string;
    matric_number: string;
 }) {
-   const res = await fetch(`${BASE_URL}/admin/password/set/init`, {
+   const res = await fetch(`${BASE_URL}/auth/password/set/init`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -39,7 +39,7 @@ export async function setPassword(credentials: {
    token: string;
    password: string;
 }) {
-   const res = await fetch(`${BASE_URL}/admin/password/set/confirm`, {
+   const res = await fetch(`${BASE_URL}/auth/password/set/confirm`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
