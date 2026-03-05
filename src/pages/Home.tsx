@@ -8,7 +8,7 @@ const Home = () => {
       <div className="min-h-screen bg-gray-50">
          <Header />
          <HeroSection />
-         <NewsSection title="Latest News" category="all" />
+         <NewsSection title="Recent News" category="all" />
          <Footer />
       </div>
    );

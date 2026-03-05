@@ -10,8 +10,8 @@ import {
 
 const Footer = () => {
    return (
-      <footer className="bg-surface text-primary_text">
-         <div className="container mx-auto px-4 py-12">
+      <footer className="bg-background text-primary_text">
+         <div className="container mx-auto px-4 py-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
                {/* Brand Section */}
                <div className="lg:col-span-2">
@@ -80,7 +80,7 @@ const Footer = () => {
 
                {/* Socials */}
                <div className="">
-                  <h3 className="text-lg font-bold mb-2">Socials</h3>
+                  <h3 className="text-lg font-bold mb-3">Socials</h3>
                   <div className="flex items-center gap-4">
                      <a
                         href="#"
@@ -109,7 +109,7 @@ const Footer = () => {
                   <ul className="space-y-2">
                      {[
                         { to: "/privacy-policy", label: "Privacy Policy" },
-                        { to: "/terms", label: "Terms of Service" },
+                        { to: "/terms", label: "Terms of Use" },
                      ].map((link) => (
                         <li key={link.to}>
                            <Link

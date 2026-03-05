@@ -1,4 +1,6 @@
+import { Link } from "react-router";
 import NewsCard from "./NewsCard";
+import { ChevronRightIcon } from "@heroicons/react/24/solid";
 
 interface NewsSectionProps {
    title: string;
@@ -70,19 +72,24 @@ const NewsSection = ({ title }: NewsSectionProps) => {
    ];
 
    return (
-      <section className="py-12 bg-dark-green transition-colors duration-300">
+      <section className="py-12 bg-surface transition-colors duration-300">
          <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8 animate-slide-in-right">
-               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
-                  {title}
-                  <div className="w-12 h-1 bg-dark-gold mt-2 transform origin-left transition-transform duration-500 hover:scale-x-150"></div>
-               </h2>
-               <a
-                  href="#"
-                  className="text-dark-gold hover:text-gold-hover font-medium text-sm uppercase tracking-wide border-b border-transparent hover:border-gold-hover transition-all duration-300 transform hover:scale-105"
+               <div>
+                  <h2 className="text-headline_small font-secondary font-bold text-primary_text uppercase transition-colors duration-300">
+                     {title}
+                  </h2>
+                  <p className="text-body_small text-secondary_text">
+                     Stay updated with campus activities
+                  </p>
+               </div>
+               <Link
+                  to="/news"
+                  className="font-medium text-body_medium text-primary_text font-secondary tracking-wide transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
                >
-                  View all
-               </a>
+                  <p className="uppercase">Explore all</p>
+                  <ChevronRightIcon className="size-4" />
+               </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
