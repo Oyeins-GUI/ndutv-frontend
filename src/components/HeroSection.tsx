@@ -98,7 +98,7 @@ const HeroSection = () => {
                   <div>
                      {sideStories.map((story) => (
                         <Link
-                           to={`/${story.category}/${story.id}`}
+                           to={`/${story.category.toLowerCase()}/${story.id}`}
                            key={story.id}
                         >
                            <article

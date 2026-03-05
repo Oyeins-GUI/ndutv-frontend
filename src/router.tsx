@@ -22,7 +22,23 @@ export const router = createBrowserRouter([
       element: <Home />,
    },
    {
-      path: "/news/:id",
+      path: "/zonal",
+      element: <NewsDetail />,
+   },
+   {
+      path: "/zonal/:id",
+      element: <NewsDetail />,
+   },
+   {
+      path: "/national",
+      element: <NewsDetail />,
+   },
+   {
+      path: "/national/:id",
+      element: <NewsDetail />,
+   },
+   {
+      path: "/executives",
       element: <NewsDetail />,
    },
    {

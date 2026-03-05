@@ -1,14 +1,20 @@
 import { useParams, Link } from "react-router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Calendar, User, Share2, ArrowLeft, Clock } from "lucide-react";
+import {
+   BookmarkIcon,
+   ChevronLeftIcon,
+   EllipsisVerticalIcon,
+   ShareIcon,
+} from "@heroicons/react/24/solid";
 
 const NewsDetail = () => {
    const { id } = useParams();
+   console.log(id);
 
    // Mock data - in real app, this would come from an API
    const article = {
-      title: "SUG Announces New Student Welfare Initiatives for 2024 Academic Session",
+      title: "NANS Zone B: Advocating for Student Welfare in the Digital Age",
       content: `
       <p>The Student Union Government (SUG) has unveiled a comprehensive set of welfare programs designed to enhance the quality of life for all students on campus. These initiatives, which will be implemented throughout the 2024 academic session, represent the largest investment in student welfare in the university's recent history.</p>
       
@@ -31,7 +37,7 @@ const NewsDetail = () => {
       <p>The programs are funded through a combination of SUG allocations, university support, and partnerships with local businesses. Implementation will begin immediately, with full rollout expected by the end of the month.</p>
     `,
       image: "photo-1605810230434-7631ac76ec81",
-      category: "SUG",
+      category: "Zonal",
       author: "SUG Press Team",
       date: "2 hours ago",
       readTime: "5 min read",
@@ -41,13 +47,15 @@ const NewsDetail = () => {
       {
          title: "Faculty of Engineering Hosts Annual Tech Summit",
          excerpt: "Students showcase innovative projects in AI and robotics...",
-         category: "Faculty",
+         category: "National",
+         image: "photo-1605810230434-7631ac76ec81",
       },
       {
          title: "New Research Lab Opens in Computer Science Department",
          excerpt:
             "State-of-the-art facility supports AI research initiatives...",
-         category: "Department",
+         category: "Zonal",
+         image: "photo-1605810230434-7631ac76ec81",
       },
    ];
 
@@ -55,51 +63,44 @@ const NewsDetail = () => {
       <div className="min-h-screen bg-white">
          <Header />
 
-         <article className="py-8">
+         <article className="py-8 bg-background">
             <div className="container mx-auto px-4">
                <div className="max-w-4xl mx-auto">
                   {/* Back button */}
-                  <Link
-                     to="/"
-                     className="inline-flex items-center text-red-600 hover:text-red-700 font-medium mb-6 text-sm uppercase tracking-wide"
-                  >
-                     <ArrowLeft className="w-4 h-4 mr-2" />
-                     Back to Home
-                  </Link>
+                  <div className="flex items-center justify-between mb-6">
+                     <Link to="/" className="">
+                        <ChevronLeftIcon className="size-6 text-primary_text" />
+                     </Link>
+                     <div className="flex items-center gap-6">
+                        <BookmarkIcon className="size-6 text-primary_text" />
+                        <ShareIcon className="size-6 text-primary_text" />
+                        <EllipsisVerticalIcon className="size-6 text-primary_text" />
+                     </div>
+                  </div>
 
                   {/* Article Header */}
                   <div className="mb-8">
                      <div className="mb-4">
-                        <span className="bg-red-600 text-white px-3 py-1 text-sm font-medium uppercase tracking-wide">
+                        <span className="bg-surface font-secondary text-primary_text px-3 py-1 text-sm font-medium uppercase tracking-wide">
                            {article.category}
                         </span>
                      </div>
 
-                     <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                     <h1 className="text-headline_medium font-bold text-primary_text mb-3 leading-tight">
                         {article.title}
                      </h1>
 
-                     <div className="flex items-center justify-between border-b border-gray-200 pb-6">
+                     <div className="flex items-center justify-between border-b border-primary_text/10 pb-6">
                         <div className="flex items-center space-x-6 text-gray-600 text-sm">
-                           <div className="flex items-center">
-                              <User className="w-4 h-4 mr-2" />
-                              <span className="font-medium">
+                           <div className="flex flex-col">
+                              <p className="font-medium text-primary_text text-body_medium">
                                  {article.author}
-                              </span>
-                           </div>
-                           <div className="flex items-center">
-                              <Calendar className="w-4 h-4 mr-2" />
-                              {article.date}
-                           </div>
-                           <div className="flex items-center">
-                              <Clock className="w-4 h-4 mr-2" />
-                              {article.readTime}
+                              </p>
+                              <p className="text-body_small text-secondary_text">
+                                 Published {article.date} • {article.readTime}
+                              </p>
                            </div>
                         </div>
-                        <button className="flex items-center text-gray-600 hover:text-red-600 transition-colors text-sm">
-                           <Share2 className="w-4 h-4 mr-2" />
-                           Share
-                        </button>
                      </div>
                   </div>
 
@@ -115,33 +116,63 @@ const NewsDetail = () => {
                   {/* Article Content */}
                   <div className="bg-white mb-12">
                      <div
-                        className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                        className="prose prose-lg max-w-none bg-background text-primary_text leading-relaxed"
                         dangerouslySetInnerHTML={{ __html: article.content }}
                      />
                   </div>
 
                   {/* Related Articles */}
-                  <div className="border-t border-gray-200 pt-8">
-                     <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                  <div className="border-t border-primary_text/10 pt-8">
+                     <h2 className="text-title_medium font-secondary font-bold text-primary_text mb-6">
                         Related Articles
                      </h2>
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {relatedArticles.map((article, index) => (
                            <div
                               key={index}
-                              className="border-l-4 border-red-600 pl-4 hover:bg-gray-50 p-4 transition-colors"
+                              className="border-l-4 border-accent p-4 transition-colors flex items-start gap-4"
                            >
-                              <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
-                                 {article.category}
-                              </span>
-                              <h3 className="font-bold text-gray-900 mb-2 hover:text-red-600 transition-colors">
-                                 {article.title}
-                              </h3>
-                              <p className="text-gray-600 text-sm">
-                                 {article.excerpt}
-                              </p>
+                              <div>
+                                 <img
+                                    src={`https://images.unsplash.com/${article.image}?w=1200&q=80`}
+                                    alt={article.title}
+                                    className="h-24 aspect-square object-cover"
+                                 />
+                              </div>
+
+                              <div>
+                                 <span className="text-xs text-accent uppercase tracking-wide font-medium">
+                                    {article.category}
+                                 </span>
+                                 <h3 className="font-bold font-secondary text-primary_text mb-2 transition-colors">
+                                    {article.title}
+                                 </h3>
+                                 <p className="text-secondary_text text-label_medium">
+                                    2h ago • 4 min read
+                                 </p>
+                              </div>
                            </div>
                         ))}
+                     </div>
+                  </div>
+
+                  <div className="bg-primary_text text-title_medium text-background mt-14 p-2 flex flex-col md:flex-row items-center justify-between">
+                     <div className="text-center">
+                        <p className="font-secondary font-bold">Stay Updated</p>
+                        <p className="font-primary text-body_small">
+                           Get the latest student news and policy updates
+                           delivered to your inbox.
+                        </p>
+                     </div>
+                     <div className="mt-4 md:mt-0">
+                        <input
+                           type="email"
+                           placeholder="Email address"
+                           className="bg-surface text-primary_text border rounded-l-md px-4 py-2 focus:outline-none focus:ring-2 focus:border-transparent"
+                        />
+                        <button className="bg-transparent text-on_primary px-4 py-2 transition-colors">
+                           Join
+                        </button>
                      </div>
                   </div>
                </div>
