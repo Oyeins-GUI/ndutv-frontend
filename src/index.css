@@ -1,44 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap");
 @import "tailwindcss";
 
 @theme {
-   --color-dark-green: hsl(153, 72%, 14%);
-   --color-primary-green: hsl(154, 71%, 21%);
-   --color-light-green: hsl(155, 60%, 30%);
-   --color-soft-green: hsl(154, 38%, 94%);
+   --color-primary: #ffffff;
+   --color-on_primary: #000000;
+   --color-secondary: #22d3ee;
+   --color-on_secondary: #000000;
+   --color-background: #000000;
+   --color-surface: #111111;
+   --color-error: #f87171;
+   --color-on_error: #000000;
+   --color-accent: #fb923c;
+   --color-divider: #333333;
+   --color-hint: #444444;
+   --color-primary_text: #ffffff;
+   --color-secondary_text: #a1a1a6;
+   --color-success: #4ade80;
+   --color-transparent: #00000000;
 
-   --color-dark-gold: hsl(41, 54%, 42%);
-   --color-primary-gold: hsl(42, 54%, 54%);
-   --color-light-gold: hsl(42, 69%, 69%);
-   --color-gold-hover: hsl(46, 64%, 52%);
+   --font-primary: "Inter", sans-serif;
+   --font-secondary: "Space Grotesk", sans-serif;
 
-   --color-bronze: hsl(39, 53%, 36%);
-   --color-dark-bronze: hsl(38, 55%, 27%);
-   --color-light-bronze: hsl(39, 44%, 48%);
+   --text-headline_large: 31px;
+   --text-headline_medium: 27px;
+   --text-title_large: 21px;
+   --text-title_medium: 15px;
+   --text-body_large: 15px;
+   --text-body_medium: 13px;
+   --text-body_small: 12px;
+   --text-label_large: 13px;
+   --text-label_medium: 12px;
+   --text-label_small: 11px;
 
-   --radius: 0.5rem;
+   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
 
-   /* Sidebar */
-   --color-sidebar-background: hsl(0 0% 98%);
-   --color-sidebar-foreground: hsl(240 5.3% 26.1%);
-   --color-sidebar-primary: hsl(240 5.9% 10%);
-   --color-sidebar-primary-foreground: hsl(0 0% 98%);
-   --color-sidebar-accent: hsl(240 4.8% 95.9%);
-   --color-sidebar-accent-foreground: hsl(240 5.9% 10%);
-   --color-sidebar-border: hsl(220 13% 91%);
-   --color-sidebar-ring: hsl(217.2 91.2% 59.8%);
+   --radius-sm: 2px;
+   --radius-md: 4px;
+   --radius-lg: 8px;
+   --radius-full: 9999px;
+
+   --spacing-xs: 4px;
+   --spacing-sm: 8px;
+   --spacing-md: 16px;
+   --spacing-lg: 24px;
+   --spacing-xl: 32px;
 }
 
-/* @theme dark {
-   --color-background: hsl(222.2 84% 4.9%);
-   --color-sidebar-background: hsl(240 5.9% 10%);
-   --color-sidebar-foreground: hsl(240 4.8% 95.9%);
-   --color-sidebar-primary: hsl(224.3 76.3% 48%);
-   --color-sidebar-primary-foreground: hsl(0 0% 100%);
-   --color-sidebar-accent: hsl(240 3.7% 15.9%);
-   --color-sidebar-accent-foreground: hsl(240 4.8% 95.9%);
-   --color-sidebar-border: hsl(240 3.7% 15.9%);
-   --color-sidebar-ring: hsl(217.2 91.2% 59.8%);
-} */
+@theme dark {
+   --color-primary: #111111;
+   --color-on-primary: #ffffff;
+   --color-secondary: #22d3ee;
+   --color-on-secondary: #000000;
+   --color-background: #000000;
+   --color-surface: #222222;
+   --color-error: #f87171;
+   --color-on-error: #000000;
+   --color-accent: #fb923c;
+   --color-divider: #333333;
+   --color-hint: #444444;
+   --color-primary-text: #ffffff;
+   --color-secondary-text: #a1a1a6;
+   --color-success: #4ade80;
+   --color-transparent: #00000000;
+}
 
 @theme {
    @keyframes fade-in {

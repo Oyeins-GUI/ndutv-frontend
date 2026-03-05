@@ -23,7 +23,7 @@ const NewsCard = ({
 }: // featured = false,
 NewsCardProps) => {
    return (
-      <article className="group bg-light-bronze hover:shadow-xl dark:hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] animate-fade-in">
+      <article className="group bg-primary-green hover:shadow-xl dark:hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] animate-fade-in">
          <Link to={`/news/${id}`} className="block">
             <div className="relative overflow-hidden rounded-t-lg">
                <img
@@ -40,15 +40,15 @@ NewsCardProps) => {
             </div>
 
             <div className="p-6">
-               <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3 leading-tight group-hover:text-gold-hover transition-colors duration-300 line-clamp-2">
+               <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3 leading-tight group-hover:text-primary-gold transition-colors duration-300 line-clamp-2">
                   {title}
                </h2>
 
-               <p className="text-gray-400 text-sm mb-4 leading-relaxed line-clamp-3 transition-colors duration-300">
+               <p className="text-gray-300 text-sm mb-4 leading-relaxed line-clamp-3 transition-colors duration-300">
                   {excerpt}
                </p>
 
-               <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+               <div className="flex items-center justify-between text-xs text-gray-300">
                   <div className="flex items-center transform group-hover:translate-x-1 transition-transform duration-300">
                      <User className="w-3 h-3 mr-1" />
                      <span className="font-medium">{author}</span>

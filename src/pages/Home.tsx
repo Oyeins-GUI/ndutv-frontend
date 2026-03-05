@@ -9,7 +9,6 @@ const Home = () => {
          <Header />
          <HeroSection />
          <NewsSection title="Latest News" category="all" />
-         {/* <NewsSection title="Trending Stories" category="trending" /> */}
          <Footer />
       </div>
    );

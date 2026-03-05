@@ -1,14 +1,19 @@
 import { useState } from "react";
-import { Link } from "react-router";
-import { Menu, X, Search } from "lucide-react";
-// import ThemeToggle from "./ThemeToggle";
+import { Link, NavLink } from "react-router";
+import { Menu, X } from "lucide-react";
+import {
+   HomeIcon,
+   ChevronRightIcon,
+   GlobeEuropeAfricaIcon,
+   UserGroupIcon,
+   BuildingLibraryIcon,
+} from "@heroicons/react/24/solid";
 
 const links = [
-   { to: "/sug", label: "nans-zone-b" },
-   { to: "/faculty", label: "nans national politics" },
-   { to: "/executives", label: "executives" },
-   // { to: "/state", label: "State" },
-   // { to: "/national", label: "National" },
+   { to: "/", label: "Home", icon: HomeIcon },
+   { to: "/zonal", label: "Zonal", icon: GlobeEuropeAfricaIcon },
+   { to: "/national", label: "National", icon: BuildingLibraryIcon },
+   { to: "/executives", label: "Executives", icon: UserGroupIcon },
 ];
 
 const Header = () => {
@@ -19,7 +24,7 @@ const Header = () => {
    };
 
    return (
-      <header className=" bg-dark-green shadow-xl sticky top-0 z-50 border-b border-gray-100/20 order-gray-700 transition-colors duration-300">
+      <header className="bg-surface shadow-sm sticky top-0 z-50 transition-colors duration-300 font-secondary">
          <div className="container mx-auto px-4 max-w-7xl">
             {/* Top bar with logo and main nav */}
             <div className="flex items-center justify-between py-3 min-h-[60px]">
@@ -30,43 +35,37 @@ const Header = () => {
                   <img src="/logo.png" className="w-20" />
 
                   <div className="flex flex-col">
-                     <span className="opacity-85 text-xl font-bold text-gray-900 dark:text-white tracking-tight transition-colors duration-300">
-                        NANS-ZONE-B
+                     <span className="opacity-85 text-title_large font-bold uppercase text-primary-text tracking-tight transition-colors duration-300">
+                        Nans Zone B
                      </span>
-                     <span className="text-xs text-gray-400 -mt-0.5 transition-colors duration-300 hidden sm:block">
-                        South-South
+                     <span className="text-secondary_text uppercase text-label_small -mt-0.5 transition-colors duration-300">
+                        South-South Region
                      </span>
                   </div>
                </Link>
 
                <div className="hidden lg:flex items-center space-x-6 flex-1 justify-end">
-                  <nav className="flex space-x-4 xl:space-x-6">
+                  <nav className="flex items-center space-x-2 xl:space-x-4 font-secondary">
                      {links.map((link) => (
-                        <Link
+                        <NavLink
                            key={link.to}
                            to={link.to}
-                           className="text-gray-300 hover:text-gold-hover dark:hover:text-red-400 transition-all duration-300 font-medium text-sm uppercase tracking-wide relative group"
+                           className={({ isActive }) =>
+                              isActive
+                                 ? "bg-primary_text text-primary rounded-lg px-3 py-1 font-secondary"
+                                 : "text-title_medium text-primary_text font-secondary transition-all duration-300 text-sm tracking-wide transform hover:bg-primary-text hover:text-primary rounded-lg px-3 py-1"
+                           }
                         >
                            {link.label}
                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-hover transition-all duration-300 group-hover:w-full"></span>
-                        </Link>
+                        </NavLink>
                      ))}
                   </nav>
-
-                  <div className="relative flex items-center space-x-3 shrink-0">
-                     <input
-                        type="search"
-                        className="border-white border-2 w-xs bg-white p-1 rounded outline-none"
-                        placeholder="Search..."
-                     />
-                     <Search className="absolute top-1/2 left-[90%] -translate-x-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 cursor-point transition-all" />
-                     {/* <ThemeToggle /> */}
-                  </div>
                </div>
 
                <button
                   onClick={toggleMenu}
-                  className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-all duration-300 shrink-0"
+                  className="lg:hidden p-2 rounded transition-all duration-300 shrink-0"
                >
                   <div className="relative w-6 h-6">
                      <Menu
@@ -96,21 +95,36 @@ const Header = () => {
                <div className="border-t dark:border-gray-700 pt-4">
                   <nav className="flex flex-col space-y-3">
                      {links.map((link, index) => (
-                        <Link
+                        <NavLink
                            key={link.to}
                            to={link.to}
-                           className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 py-2 px-2 text-sm font-medium uppercase tracking-wide transform hover:translate-x-2"
+                           className={({ isActive }) =>
+                              isActive
+                                 ? "bg-primary_text text-primary rounded-lg p-3"
+                                 : "text-title_medium text-primary_text transition-all duration-300 text-sm tracking-wide transform p-3 hover:bg-primary_text hover:text-primary rounded-lg"
+                           }
                            style={{ animationDelay: `${index * 0.1}s` }}
                            onClick={() => setIsMenuOpen(false)}
                         >
-                           {link.label}
-                        </Link>
+                           {({ isActive }) => (
+                              <div className="flex items-center justify-between">
+                                 <div className="flex items-center gap-2">
+                                    {link.icon && (
+                                       <link.icon className="w-5 h-5" />
+                                    )}
+                                    <p className="ml-2">{link.label}</p>
+                                 </div>
+
+                                 {!isActive && (
+                                    <ChevronRightIcon className="w-4 h-4" />
+                                 )}
+                              </div>
+                           )}
+                        </NavLink>
                      ))}
-                     {/* <div className="pt-4 border-t dark:border-gray-700 flex items-center justify-center">
-                        <ThemeToggle />
-                     </div> */}
                   </nav>
                </div>
+               <div></div>
             </div>
          </div>
       </header>
