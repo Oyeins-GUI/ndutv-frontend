@@ -15,7 +15,7 @@ const NewsSection = ({ title }: NewsSectionProps) => {
          excerpt:
             "Students showcase cutting-edge projects in AI, robotics, and sustainable technology. The summit attracts industry leaders and potential employers.",
          image: "photo-1498050108023-c5249f4df085",
-         category: "Faculty",
+         category: "National",
          author: "Engineering Faculty",
          date: "4 hours ago",
       },
@@ -25,7 +25,7 @@ const NewsSection = ({ title }: NewsSectionProps) => {
          excerpt:
             "State-of-the-art facility equipped with high-performance computing resources will support student and faculty research in machine learning and artificial intelligence.",
          image: "photo-1461749280684-dccba630e2f6",
-         category: "Department",
+         category: "Zonal",
          author: "CS Department",
          date: "6 hours ago",
       },
@@ -35,7 +35,7 @@ const NewsSection = ({ title }: NewsSectionProps) => {
          excerpt:
             "The state government announces significant investment in higher education, with funds allocated for infrastructure development and scholarship programs.",
          image: "photo-1466442929976-97f336a657be",
-         category: "State",
+         category: "National",
          author: "State Correspondent",
          date: "8 hours ago",
       },
@@ -45,7 +45,7 @@ const NewsSection = ({ title }: NewsSectionProps) => {
          excerpt:
             "Modern accommodation facility provides comfortable living spaces for 500 students with study areas, recreational facilities, and high-speed internet.",
          image: "photo-1555854877-bab0e564b8d5",
-         category: "Campus",
+         category: "Zonal",
          author: "Campus Reporter",
          date: "12 hours ago",
       },
@@ -55,7 +55,7 @@ const NewsSection = ({ title }: NewsSectionProps) => {
          excerpt:
             "Niger Delta University will participate in various sporting events as part of the annual national university games competition.",
          image: "photo-1571019613454-1cb2f99b2d8b",
-         category: "Sports",
+         category: "Zonal",
          author: "Sports Desk",
          date: "1 day ago",
       },
@@ -65,7 +65,7 @@ const NewsSection = ({ title }: NewsSectionProps) => {
          excerpt:
             "University faculty members receive substantial research grants to support innovative projects in environmental science and renewable energy.",
          image: "photo-1532094349884-543bc11b234d",
-         category: "Research",
+         category: "National",
          author: "Research Office",
          date: "1 day ago",
       },
