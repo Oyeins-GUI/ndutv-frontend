@@ -4,11 +4,11 @@ import { Menu, X, Search } from "lucide-react";
 // import ThemeToggle from "./ThemeToggle";
 
 const links = [
-   { to: "/sug", label: "SUG" },
-   { to: "/faculty", label: "Faculty" },
-   { to: "/department", label: "Department" },
-   { to: "/state", label: "State" },
-   { to: "/national", label: "National" },
+   { to: "/sug", label: "nans-zone-b" },
+   { to: "/faculty", label: "nans national politics" },
+   { to: "/executives", label: "executives" },
+   // { to: "/state", label: "State" },
+   // { to: "/national", label: "National" },
 ];
 
 const Header = () => {
@@ -19,7 +19,7 @@ const Header = () => {
    };
 
    return (
-      <header className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
+      <header className=" bg-dark-green shadow-xl sticky top-0 z-50 border-b border-gray-100/20 order-gray-700 transition-colors duration-300">
          <div className="container mx-auto px-4 max-w-7xl">
             {/* Top bar with logo and main nav */}
             <div className="flex items-center justify-between py-3 min-h-[60px]">
@@ -27,17 +27,14 @@ const Header = () => {
                   to="/"
                   className="flex items-center space-x-2 group shrink-0"
                >
-                  {/* <div className="bg-red-600 p-2 rounded group-hover:bg-red-700 transition-all duration-300 group-hover:scale-105">
-                     <Play className="w-5 h-5 text-white transform group-hover:rotate-12 transition-transform duration-300" />
-                  </div> */}
-                  <img src="/logo.png" className="w-10" />
+                  <img src="/logo.png" className="w-20" />
 
                   <div className="flex flex-col">
-                     <span className="text-xl font-bold text-gray-900 dark:text-white tracking-tight transition-colors duration-300">
-                        NDUtv
+                     <span className="opacity-85 text-xl font-bold text-gray-900 dark:text-white tracking-tight transition-colors duration-300">
+                        NANS-ZONE-B
                      </span>
                      <span className="text-xs text-gray-400 -mt-0.5 transition-colors duration-300 hidden sm:block">
-                        University News
+                        South-South
                      </span>
                   </div>
                </Link>
@@ -48,10 +45,10 @@ const Header = () => {
                         <Link
                            key={link.to}
                            to={link.to}
-                           className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 font-medium text-sm uppercase tracking-wide relative group"
+                           className="text-gray-300 hover:text-gold-hover dark:hover:text-red-400 transition-all duration-300 font-medium text-sm uppercase tracking-wide relative group"
                         >
                            {link.label}
-                           <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+                           <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-hover transition-all duration-300 group-hover:w-full"></span>
                         </Link>
                      ))}
                   </nav>

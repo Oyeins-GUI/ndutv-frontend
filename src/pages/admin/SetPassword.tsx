@@ -43,7 +43,7 @@ export default function SetPassword() {
          data: ApiResponse<{
             token: string;
             password: string;
-         }>
+         }>,
       ) => {
          toast({
             title: "Password set successfully",

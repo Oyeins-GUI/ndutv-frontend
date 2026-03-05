@@ -48,12 +48,12 @@ const HeroSection = () => {
                            className="w-full h-64 md:h-80 object-cover group-hover:scale-105 transition-transform duration-700"
                         />
                         <div className="absolute top-4 left-4">
-                           <span className="bg-red-600 text-white px-3 py-1 text-sm font-medium">
+                           <span className="bg-dark-gold text-white px-3 py-1 text-sm font-medium rounded-full">
                               {featuredNews.category}
                            </span>
                         </div>
                      </div>
-                     <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-red-600 transition-colors">
+                     <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-dark-gold transition-colors">
                         {featuredNews.title}
                      </h1>
                      <p className="text-gray-600 text-lg leading-relaxed mb-4">
@@ -81,12 +81,12 @@ const HeroSection = () => {
                            className="group cursor-pointer"
                         >
                            <div className="flex items-start space-x-3">
-                              <div className="w-2 h-2 bg-red-600 rounded-full mt-2 shrink-0"></div>
+                              <div className="w-2 h-2 bg-bronze rounded-full mt-2 shrink-0"></div>
                               <div>
                                  <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
                                     {story.category}
                                  </span>
-                                 <h3 className="text-sm font-medium text-gray-900 leading-tight mb-1 group-hover:text-red-600 transition-colors">
+                                 <h3 className="text-sm font-medium text-gray-900 leading-tight mb-1 group-hover:text-dark-gold transition-colors">
                                     {story.title}
                                  </h3>
                                  <span className="text-xs text-gray-500">

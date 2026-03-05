@@ -41,7 +41,7 @@ export default function InitPassword() {
       if (!inputValue.startsWith(matricNumberPrefix)) {
          setValue(
             "matric_number",
-            matricNumberPrefix + inputValue.replace(matricNumberPrefix, "")
+            matricNumberPrefix + inputValue.replace(matricNumberPrefix, ""),
          );
       } else {
          setValue("matric_number", inputValue);
@@ -54,7 +54,7 @@ export default function InitPassword() {
          data: ApiResponse<{
             email: string;
             matric_number: string;
-         }>
+         }>,
       ) => {
          toast({
             title: "Password set successfully",

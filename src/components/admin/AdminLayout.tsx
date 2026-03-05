@@ -82,7 +82,7 @@ export function AdminSidebar() {
                   <SidebarMenu>
                      {menuItems
                         .filter(
-                           (item) => user && item.roles.includes(user.role)
+                           (item) => user && item.roles.includes(user.role),
                         )
                         .map((item) => {
                            const isActive = location.pathname === item.url;

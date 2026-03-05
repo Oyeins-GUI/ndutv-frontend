@@ -70,16 +70,16 @@ const NewsSection = ({ title }: NewsSectionProps) => {
    ];
 
    return (
-      <section className="py-12 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <section className="py-12 bg-dark-green transition-colors duration-300">
          <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8 animate-slide-in-right">
                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
                   {title}
-                  <div className="w-12 h-1 bg-red-600 mt-2 transform origin-left transition-transform duration-500 hover:scale-x-150"></div>
+                  <div className="w-12 h-1 bg-dark-gold mt-2 transform origin-left transition-transform duration-500 hover:scale-x-150"></div>
                </h2>
                <a
                   href="#"
-                  className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium text-sm uppercase tracking-wide border-b border-transparent hover:border-red-600 dark:hover:border-red-400 transition-all duration-300 transform hover:scale-105"
+                  className="text-dark-gold hover:text-gold-hover font-medium text-sm uppercase tracking-wide border-b border-transparent hover:border-gold-hover transition-all duration-300 transform hover:scale-105"
                >
                   View all
                </a>

@@ -1,13 +1,5 @@
 import AddExecutive from "@/components/AddExecutiveModal";
-import UpdateExecutiveModal from "@/components/admin/UpdateExecutiveModal";
 import { Button } from "@/components/ui/button";
-import {
-   Card,
-   CardContent,
-   CardDescription,
-   CardHeader,
-   CardTitle,
-} from "@/components/ui/card";
 import {
    Dialog,
    DialogContent,
@@ -15,18 +7,78 @@ import {
    DialogTitle,
    DialogTrigger,
 } from "@/components/ui/dialog";
-import { useAuth } from "@/hooks/use-auth";
+import {
+   DropdownMenu,
+   DropdownMenuContent,
+   DropdownMenuItem,
+   DropdownMenuSeparator,
+   DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+   Table,
+   TableBody,
+   TableCell,
+   TableHead,
+   TableHeader,
+   TableRow,
+} from "@/components/ui/table";
 import { getExecutives } from "@/services/create-executive";
 import { useQuery } from "@tanstack/react-query";
-import { UserPlus } from "lucide-react";
+import { ChevronDown, MoreVertical, Pen, Trash2, UserPlus } from "lucide-react";
+import { useMemo, useState } from "react";
+import { useSearchParams } from "react-router";
 
 export default function Executives() {
-   const { user } = useAuth();
+   const [params, setParams] = useSearchParams();
+   // const { user } = useAuth();
    const { data: executives } = useQuery({
       queryKey: ["executives"],
       queryFn: getExecutives,
       retry: false,
    });
+
+   const [filters, setFilters] = useState({
+      name: "",
+      position: "",
+      faculty: params.get("faculty") ?? "",
+      department: params.get("department") ?? "",
+      session: params.get("session") ?? "2024/2025",
+      scope: params.get("scope") ?? "",
+   });
+
+   const handleFilterChange = (key: string, value: string) => {
+      const updatedParams = new URLSearchParams(params);
+
+      if (value) {
+         updatedParams.set(key, value);
+      } else {
+         updatedParams.delete(key);
+      }
+
+      setParams(updatedParams);
+      setFilters((prev) => ({ ...prev, [key]: value }));
+   };
+
+   const faculties = [...new Set(executives?.data.map((e) => e.faculty))];
+   const departments = [...new Set(executives?.data.map((e) => e.deparment))];
+   const sessions = [...new Set(executives?.data.map((e) => e.session))];
+   const scopes = [...new Set(executives?.data.map((e) => e.scope))];
+
+   const filteredExecutives = useMemo(() => {
+      return executives?.data.filter((exec) => {
+         return (
+            exec.name.toLowerCase().includes(filters.name.toLowerCase()) &&
+            exec.position
+               .toLowerCase()
+               .includes(filters.position.toLowerCase()) &&
+            (filters.faculty === "" || exec.faculty === filters.faculty) &&
+            (filters.department === "" ||
+               exec.deparment === filters.department) &&
+            (filters.session === "" || exec.session === filters.session) &&
+            (filters.scope === "" || exec.scope === filters.scope)
+         );
+      });
+   }, [executives, filters]);
 
    return (
       <div className="p-6 space-y-6">
@@ -55,72 +107,162 @@ export default function Executives() {
             </Dialog>
          </div>
 
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {executives?.data.map((executive) => (
-               <Card key={executive.id} className="hover:shadow-md transition">
-                  <CardHeader className="flex flex-col items-center text-center">
-                     <img
-                        src={executive.image_url}
-                        alt={executive.name}
-                        className="w-20 aspect-square rounded-full object-cover border mb-3"
-                     />
-                     <CardTitle>{executive.name}</CardTitle>
-                     <CardDescription>
-                        {executive.position} ({executive.scope}) •{" "}
-                        {executive.session}
-                     </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2 text-sm text-muted-foreground">
-                     <p>
-                        <span className="font-medium text-foreground">
-                           Matric:
-                        </span>{" "}
-                        {executive.matric_number}
-                     </p>
-                     <p>
-                        <span className="font-medium text-foreground">
-                           Faculty:
-                        </span>{" "}
-                        {executive.faculty}
-                     </p>
-                     <p>
-                        <span className="font-medium text-foreground">
-                           Dept:
-                        </span>{" "}
-                        {executive.deparment}
-                     </p>
+         <div className="text-foreground">
+            <Table>
+               <TableHeader>
+                  <TableRow className="border-b border-border/40">
+                     <TableHead className="text-muted-foreground text-xs uppercase tracking-wider">
+                        Name
+                     </TableHead>
+                     <TableHead className="text-muted-foreground text-xs uppercase tracking-wider">
+                        Position
+                     </TableHead>
 
-                     <p>
-                        <span className="font-medium text-foreground">
-                           Email:
-                        </span>{" "}
-                        {executive.email}
-                     </p>
-                     <p>
-                        <span className="font-medium text-foreground">
-                           Phone:
-                        </span>{" "}
-                        {executive.phone_number}
-                     </p>
+                     {/* Faculty Filter */}
+                     <TableHead className="min-w-[160px]">
+                        <div className="relative group">
+                           <label className="absolute -top-2 left-2 bg-background px-1 text-[10px] text-muted-foreground transition-all group-focus-within:text-foreground">
+                              Faculty
+                           </label>
+                           <select
+                              value={filters.faculty}
+                              onChange={(e) =>
+                                 handleFilterChange("faculty", e.target.value)
+                              }
+                              className="w-full h-9 rounded-lg border border-border/50 bg-muted/30 text-sm text-foreground px-3 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/60 transition-all"
+                           >
+                              <option value="">All Faculties</option>
+                              {faculties.map((faculty) => (
+                                 <option key={faculty} value={faculty}>
+                                    {faculty}
+                                 </option>
+                              ))}
+                           </select>
+                           <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                        </div>
+                     </TableHead>
 
-                     {(user?.role === "super_admin" ||
-                        user?.role === "central_exec") && (
-                        <Dialog>
-                           <DialogTrigger asChild>
-                              <Button size="sm" className="mt-3 w-full">
-                                 Edit
-                              </Button>
-                           </DialogTrigger>
-                           <DialogContent className="text-foreground">
-                              <DialogTitle>Edit Executive</DialogTitle>
-                              <UpdateExecutiveModal executive={executive} />
-                           </DialogContent>
-                        </Dialog>
-                     )}
-                  </CardContent>
-               </Card>
-            ))}
+                     {/* Department Filter */}
+                     <TableHead className="min-w-[160px]">
+                        <div className="relative group">
+                           <label className="absolute -top-2 left-2 bg-background px-1 text-[10px] text-muted-foreground">
+                              Department
+                           </label>
+                           <select
+                              value={filters.department}
+                              onChange={(e) =>
+                                 handleFilterChange(
+                                    "department",
+                                    e.target.value
+                                 )
+                              }
+                              className="w-full h-9 rounded-lg border border-border/50 bg-muted/30 text-sm text-foreground px-3 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/60"
+                           >
+                              <option value="">All Departments</option>
+                              {departments.map((dept) => (
+                                 <option key={dept} value={dept}>
+                                    {dept}
+                                 </option>
+                              ))}
+                           </select>
+                           <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                        </div>
+                     </TableHead>
+
+                     {/* Session Filter */}
+                     <TableHead className="min-w-[130px]">
+                        <div className="relative group">
+                           <label className="absolute -top-2 left-2 bg-background px-1 text-[10px] text-muted-foreground">
+                              Session
+                           </label>
+                           <select
+                              value={filters.session}
+                              onChange={(e) =>
+                                 handleFilterChange("session", e.target.value)
+                              }
+                              className="w-full h-9 rounded-lg border border-border/50 bg-muted/30 text-sm text-foreground px-3 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/60"
+                           >
+                              <option value="">All Sessions</option>
+                              {sessions.map((session) => (
+                                 <option key={session} value={session}>
+                                    {session}
+                                 </option>
+                              ))}
+                           </select>
+                           <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                        </div>
+                     </TableHead>
+
+                     {/* Scope Filter */}
+                     <TableHead className="min-w-[130px]">
+                        <div className="relative group">
+                           <label className="absolute -top-2 left-2 bg-background px-1 text-[10px] text-muted-foreground">
+                              Scope
+                           </label>
+                           <select
+                              value={filters.scope}
+                              onChange={(e) =>
+                                 handleFilterChange("scope", e.target.value)
+                              }
+                              className="w-full h-9 rounded-lg border border-border/50 bg-muted/30 text-sm text-foreground px-3 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/60"
+                           >
+                              <option value="">All Scopes</option>
+                              {scopes.map((scope) => (
+                                 <option key={scope} value={scope}>
+                                    {scope}
+                                 </option>
+                              ))}
+                           </select>
+                           <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                        </div>
+                     </TableHead>
+
+                     <TableHead className="text-muted-foreground text-xs uppercase tracking-wider">
+                        Actions
+                     </TableHead>
+                  </TableRow>
+               </TableHeader>
+
+               <TableBody>
+                  {filteredExecutives?.map((executive) => (
+                     <TableRow key={executive.id}>
+                        <TableCell>{executive.name}</TableCell>
+                        <TableCell>{executive.position}</TableCell>
+                        <TableCell>{executive.faculty}</TableCell>
+                        <TableCell>{executive.deparment}</TableCell>
+                        <TableCell>{executive.session}</TableCell>
+                        <TableCell>{executive.scope}</TableCell>
+                        <TableCell>
+                           <ActionsMenu />
+                        </TableCell>
+                     </TableRow>
+                  ))}
+               </TableBody>
+            </Table>
          </div>
       </div>
+   );
+}
+
+export function ActionsMenu() {
+   return (
+      <DropdownMenu>
+         <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm">
+               <MoreVertical className="w-4 h-4" />
+            </Button>
+         </DropdownMenuTrigger>
+         <DropdownMenuContent align="end">
+            <DropdownMenuItem onSelect={() => console.log("Editing...")}>
+               <Pen className="w-4 h-4 mr-2 text-gray-300" /> Edit
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem onSelect={() => console.log("Delete")}>
+               <Trash2 className="w-4 h-4 mr-2 text-red-500" /> Delete
+            </DropdownMenuItem>
+         </DropdownMenuContent>
+      </DropdownMenu>
    );
 }
