@@ -159,10 +159,10 @@ export default function UpdateExecutiveModal({
                {mutation.isPending ? (
                   <div className="flex items-center space-x-2">
                      <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-                     <span>Adding...</span>
+                     <span>Updating...</span>
                   </div>
                ) : (
-                  <>Add</>
+                  <>Update</>
                )}
             </Button>
          </div>

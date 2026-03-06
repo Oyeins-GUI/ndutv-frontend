@@ -20,40 +20,25 @@ import { toast } from "@/hooks/use-toast";
 
 type FormFields = {
    email: string;
-   matric_number: string;
+   role: string;
 };
 
 export default function InitPassword() {
    const { user } = useAuth();
    const navigate = useNavigate();
-   const { register, handleSubmit, setValue } = useForm<FormFields>({
+   const { register, handleSubmit } = useForm<FormFields>({
       defaultValues: {
          email: "",
-         matric_number: "UG/",
+         role: "",
       },
    });
-   const matricNumberPrefix = "UG/";
-
-   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const inputValue = e.target.value;
-
-      // If user tries to delete prefix, re-add it
-      if (!inputValue.startsWith(matricNumberPrefix)) {
-         setValue(
-            "matric_number",
-            matricNumberPrefix + inputValue.replace(matricNumberPrefix, ""),
-         );
-      } else {
-         setValue("matric_number", inputValue);
-      }
-   };
 
    const mutation = useMutation({
       mutationFn: initAdmin,
       onSuccess: (
          data: ApiResponse<{
             email: string;
-            matric_number: string;
+            role: string;
          }>,
       ) => {
          toast({
@@ -74,11 +59,8 @@ export default function InitPassword() {
       },
    });
 
-   const onSubmit: SubmitHandler<FormFields> = async ({
-      email,
-      matric_number,
-   }) => {
-      mutation.mutate({ email, matric_number });
+   const onSubmit: SubmitHandler<FormFields> = async ({ email, role }) => {
+      mutation.mutate({ email, role });
    };
 
    useEffect(() => {
@@ -148,22 +130,17 @@ export default function InitPassword() {
 
                      <div className="space-y-2">
                         <Label
-                           htmlFor="matric_number"
+                           htmlFor="role"
                            className="text-sm font-medium text-gray-300"
                         >
-                           Matric Number
+                           Role
                         </Label>
                         <Input
                            type="text"
-                           {...register("matric_number", {
-                              required: "Enter your matric number",
-                              minLength: {
-                                 value: 10,
-                                 message: "Invalid matric number",
-                              },
+                           {...register("role", {
+                              required: "Role is required",
                            })}
-                           onChange={handleChange}
-                           placeholder="Enter your matric number"
+                           placeholder="Enter role"
                            required
                            className="h-12 pr-12 text-gray-300 border-gray-600 focus:border-red-400 transition-colors duration-300"
                         />

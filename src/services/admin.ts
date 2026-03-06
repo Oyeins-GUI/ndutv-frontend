@@ -26,8 +26,7 @@ export async function initAdmin(credentials: { email: string; role: string }) {
       throw new Error(error.message);
    }
 
-   const data: ApiResponse<{ email: string; matric_number: string }> =
-      await res.json();
+   const data: ApiResponse<{ email: string; role: string }> = await res.json();
 
    return data;
 }
