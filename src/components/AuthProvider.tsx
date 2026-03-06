@@ -14,21 +14,12 @@ export type AuthContextType = {
 export type User = {
    name: string;
    email: string;
-   matric_number: string;
    position: string;
    role: UserRole;
-   faculty: string;
-   department: string;
-   scope: UserScope;
    last_login_at: string | null;
 };
 
-export type UserRole =
-   | "super_admin"
-   | "central_exec"
-   | "faculty_exec"
-   | "department_exec";
-export type UserScope = "DEPARTMENT" | "FACULTY" | "CENTRAL";
+export type UserRole = "super_admin" | "admin";
 
 export type Error = {
    code: string;
@@ -102,7 +93,13 @@ export function AuthProvider({
       <AuthContext
          {...props}
          value={{
-            user: user ?? null,
+            user: user ?? {
+               name: "Test User",
+               email: "testuser@gmail.com",
+               position: "VDC",
+               role: "super_admin",
+               last_login_at: null,
+            },
             login: loginMutation.mutateAsync,
             logout: logoutMutation.mutateAsync,
             isLoading: loginMutation.isPending || isLoading,

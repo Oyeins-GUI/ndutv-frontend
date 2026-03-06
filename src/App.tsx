@@ -14,7 +14,7 @@ export const BASE_URL =
 const App = () => (
    <QueryClientProvider client={queryClient}>
       <AuthProvider>
-         <ThemeProvider defaultTheme="system" storageKey="ndutv-theme">
+         <ThemeProvider defaultTheme="system" storageKey="nans-theme">
             <TooltipProvider>
                <Toaster />
                <Sonner />

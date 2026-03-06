@@ -1,32 +1,19 @@
 import { BASE_URL } from "@/App";
 import uploadImage from "./upload-image";
 import { ApiResponse } from "@/components/AuthProvider";
-import { formatPhoneNumber } from "@/utils/format-phone-number";
 
 export type Executive = {
    id: string;
    name: string;
-   email: string;
-   matric_number: string;
    position: string;
-   session: string;
-   faculty: string;
-   deparment: string;
-   phone_number: string;
-   scope: string;
+   year: string;
    image_url: string;
 };
 
 export type ExecutivePayload = {
    name: string;
-   email: string;
-   matric_number: string;
-   position_id: string;
-   session_id: string;
-   faculty_id: string;
-   department_id: string;
-   phone_number: string;
-   scope: string;
+   position: string;
+   year: string;
    image_url: File[] | string;
 };
 
@@ -50,11 +37,9 @@ export default async function createExecutive(data: ExecutivePayload) {
    const file = (data.image_url as File[])?.[0];
    const imageUrl = file ? await uploadImage(file) : "";
 
-   const phoneNumber = formatPhoneNumber(data.phone_number);
    const executiveData = {
       ...data,
       image_url: imageUrl,
-      phone_number: phoneNumber,
    };
 
    const res = await fetch(`${BASE_URL}/admin/executives`, {
@@ -82,11 +67,9 @@ export async function updateExecutive(data: ExecutivePayload) {
          ? file
          : await uploadImage(file as File);
 
-   const phoneNumber = formatPhoneNumber(data.phone_number);
    const executiveData = {
       ...data,
       image_url: imageUrl,
-      phone_number: phoneNumber,
    };
 
    const res = await fetch(`${BASE_URL}/admin/executives`, {

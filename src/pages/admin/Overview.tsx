@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, FileText, TrendingUp } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { Users, FileText } from "lucide-react";
 import { Link } from "react-router";
 
 const Overview = () => {
@@ -34,13 +35,16 @@ const Overview = () => {
    //    // },
    // ];
 
+   const { user } = useAuth();
    return (
       <div className="p-6 space-y-6">
          <div>
-            <h1 className="text-3xl font-bold text-foreground">Overview</h1>
-            <p className="text-muted-foreground mt-2">
-               Welcome to the NDUtv admin dashboard. Here's a quick overview of
-               your platform.
+            <h1 className="text-headline_large font-secondary font-bold text-primary_text">
+               Overview
+            </h1>
+            <p className="text-muted-foreground mt-2 font-primary text-secondary_text">
+               Welcome to the NANS South-South Zone B Admin Dashboard. Here's a
+               quick overview of your platform.
             </p>
          </div>
 
@@ -113,40 +117,34 @@ const Overview = () => {
          {/* Quick Actions */}
          <Card>
             <CardHeader>
-               <CardTitle>Quick Actions</CardTitle>
+               <CardTitle className="font-secondary text-primary_text text-title_large font-bold">
+                  Quick Actions
+               </CardTitle>
             </CardHeader>
             <CardContent>
                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Link
                      to="/admin/content"
-                     className="p-4 border rounded-lg hover:bg-accent transition-colors cursor-pointer"
+                     className="p-4 border border-secondary_text rounded-lg bg-background hover:bg-background/50 transition-colors cursor-pointer"
                   >
-                     <FileText className="w-6 h-6 mb-2 text-primary" />
+                     <FileText className="w-6 h-6 mb-2 text-secondary_text" />
                      <h3 className="font-semibold">Create Content</h3>
                      <p className="text-sm text-muted-foreground mt-1">
                         Publish new article
                      </p>
                   </Link>
-                  <Link
-                     to="/admin/users"
-                     className="p-4 border rounded-lg hover:bg-accent transition-colors cursor-pointer"
-                  >
-                     <Users className="w-6 h-6 mb-2 text-primary" />
-                     <h3 className="font-semibold">Manage Users</h3>
-                     <p className="text-sm text-muted-foreground mt-1">
-                        View and edit users
-                     </p>
-                  </Link>
-                  <Link
-                     to="/admin/analytics"
-                     className="p-4 border rounded-lg hover:bg-accent transition-colors cursor-pointer"
-                  >
-                     <TrendingUp className="w-6 h-6 mb-2 text-primary" />
-                     <h3 className="font-semibold">View Analytics</h3>
-                     <p className="text-sm text-muted-foreground mt-1">
-                        Track performance
-                     </p>
-                  </Link>
+                  {user !== null && user.role === "super_admin" && (
+                     <Link
+                        to="/admin/users"
+                        className="p-4 border border-secondary_text rounded-lg bg-background hover:bg-background/50 transition-colors cursor-pointer"
+                     >
+                        <Users className="w-6 h-6 mb-2 text-secondary_text" />
+                        <h3 className="font-semibold">Manage Users</h3>
+                        <p className="text-sm text-muted-foreground mt-1">
+                           View and edit users
+                        </p>
+                     </Link>
+                  )}
                </div>
             </CardContent>
          </Card>

@@ -10,30 +10,29 @@ export default function ProtectedRoute({
 }: {
    children?: React.ReactNode;
 }) {
-   const { user, isLoading } = useAuth();
+   const { user } = useAuth();
    const location = useLocation();
    const matches = useMatches();
 
-   if (isLoading) {
-      return (
-         <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
-            <div className="w-7 aspect-square rounded-full border-2 border-foreground border-t-transparent animate-spin"></div>
-         </div>
-      );
-   }
+   // if (isLoading) {
+   //    return (
+   //       <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+   //          <div className="w-9 aspect-square rounded-full border-4 border-primary_text border-t-transparent animate-spin"></div>
+   //       </div>
+   //    );
+   // }
 
    const currentRoute = matches.find(
-      (match) => (match.handle as RouteHandle)?.allowedRoles
+      (match) => (match.handle as RouteHandle)?.allowedRoles,
    );
-   const allowedRoles = (currentRoute?.handle as RouteHandle)?.allowedRoles as
-      | string[]
-      | undefined;
+   const allowedRoles = (currentRoute?.handle as RouteHandle)
+      ?.allowedRoles as string[];
 
    if (user === null) {
       return <Navigate to="/admin/signin" state={{ from: location }} replace />;
    }
 
-   if (allowedRoles && !allowedRoles.includes(user.role)) {
+   if (allowedRoles && !allowedRoles?.includes(user.role)) {
       return <Navigate to="/admin/content" replace />;
    }
 

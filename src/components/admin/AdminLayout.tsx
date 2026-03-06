@@ -4,10 +4,8 @@ import {
    LogOut,
    LayoutDashboard,
    Settings,
-   Cog,
    Users,
    FileText,
-   // BarChart3,
    ShieldCheck,
 } from "lucide-react";
 import {
@@ -29,43 +27,43 @@ const menuItems = [
       title: "Overview",
       url: "/admin/dashboard",
       icon: LayoutDashboard,
-      roles: ["super_admin", "central_exec", "faculty_exec", "department_exec"],
+      roles: ["super_admin", "admin"],
    },
-   {
-      title: "Platform Management",
-      url: "/admin/platform",
-      icon: Cog,
-      roles: ["super_admin", "central_exec"],
-   },
+   // {
+   //    title: "Platform Management",
+   //    url: "/admin/platform",
+   //    icon: Cog,
+   //    roles: ["super_admin"],
+   // },
    {
       title: "Executives",
       url: "/admin/executives",
       icon: Users,
-      roles: ["super_admin", "central_exec"],
+      roles: ["super_admin"],
    },
    {
       title: "Admins Management",
       url: "/admin/users",
       icon: ShieldCheck,
-      roles: ["super_admin", "central_exec"],
+      roles: ["super_admin"],
    },
    {
       title: "Content Management",
       url: "/admin/content",
       icon: FileText,
-      roles: ["super_admin", "central_exec", "faculty_exec", "department_exec"],
+      roles: ["super_admin", "admin"],
    },
    // {
    //    title: "Analytics",
    //    url: "/admin/analytics",
    //    icon: BarChart3,
-   //    roles: ["super_admin", "central_exec"],
+   //    roles: ["super_admin"],
    // },
    {
       title: "Settings",
       url: "/admin/settings",
       icon: Settings,
-      roles: ["super_admin", "central_exec"],
+      roles: ["super_admin"],
    },
 ];
 
@@ -75,7 +73,7 @@ export function AdminSidebar() {
 
    return (
       <Sidebar>
-         <SidebarContent className="md:mt-16 bg-black md:bg-transparent">
+         <SidebarContent className="md:mt-16 bg-surface text-primary_text border-t border-secondary_text/10">
             <SidebarGroup>
                <SidebarGroupLabel>Menu</SidebarGroupLabel>
                <SidebarGroupContent>
@@ -112,7 +110,7 @@ const AdminLayout = () => {
    const { state } = useSidebar();
 
    return (
-      <div className="min-h-screen w-full flex flex-col bg-background">
+      <div className="min-h-screen w-full flex flex-col bg-background text-primary_text">
          <Header />
 
          <div className="flex flex-1 w-full overflow-hidden">
@@ -136,28 +134,29 @@ function Header() {
    const { logout } = useAuth();
 
    return (
-      <header className="sticky top-0 z-50 border-b border-gray-900 bg-card text-gray-300">
+      <header className="sticky top-0 z-50 bg-surface text-primary_text">
          <div className="flex h-16 items-center gap-4 px-4">
             <SidebarTrigger />
 
             <Link to="/" className="flex items-center gap-2 group">
-               <img src="/logo.png" className="w-10" />
+               <img src="/logo.png" className="w-16" />
 
                <div className="flex flex-col">
-                  <span className="text-lg font-bold">NDUtv</span>
-                  <span className="text-xs text-muted-foreground -mt-1">
+                  <span className="text-title_medium font-secondary uppercase text-primary_text font-bold">
+                     nans zone b
+                  </span>
+                  <span className="text-label_medium font-secondary text-secondary_text -mt-1">
                      Admin Panel
                   </span>
                </div>
             </Link>
 
             <div className="ml-auto flex items-center gap-4">
-               {/* <ThemeToggle /> */}
                <Button
                   onClick={logout}
                   variant="outline"
                   size="sm"
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 bg-transparent border border-secondary_text/40 text-primary_text/80 hover:bg-primary_text/10"
                >
                   <LogOut className="w-4 h-4" />
                   <span>Logout</span>

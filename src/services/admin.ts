@@ -3,14 +3,11 @@ import { ApiResponse, type Error } from "@/components/AuthProvider";
 import { toast } from "@/hooks/use-toast";
 
 export type AdminData = {
-   executive_id: string;
-   role_id: string;
+   email: string;
+   role: string;
 };
 
-export async function initAdmin(credentials: {
-   email: string;
-   matric_number: string;
-}) {
+export async function initAdmin(credentials: { email: string; role: string }) {
    const res = await fetch(`${BASE_URL}/auth/password/set/init`, {
       method: "POST",
       credentials: "include",

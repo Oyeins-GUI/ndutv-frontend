@@ -60,7 +60,7 @@ const PlatformManagement = () => {
       Object.keys(dirtyFields).some(
          (key) =>
             values[key as keyof PlatformConfig] !==
-            defaultValues?.[key as keyof PlatformConfig]
+            defaultValues?.[key as keyof PlatformConfig],
       );
 
    useEffect(() => {
@@ -107,8 +107,18 @@ const PlatformManagement = () => {
 
          <Tabs defaultValue="general" className="w-full">
             <TabsList>
-               <TabsTrigger value="general">General</TabsTrigger>
-               <TabsTrigger value="features">Features</TabsTrigger>
+               <TabsTrigger
+                  value="general"
+                  className="bg-background text-primary_text border border-secondary_text"
+               >
+                  General
+               </TabsTrigger>
+               <TabsTrigger
+                  value="features"
+                  className="border border-secondary_text"
+               >
+                  Features
+               </TabsTrigger>
                {/* <TabsTrigger value="maintenance">Maintenance</TabsTrigger> */}
             </TabsList>
 
@@ -116,7 +126,7 @@ const PlatformManagement = () => {
                <Card>
                   <CardHeader>
                      <div className="flex items-center gap-2">
-                        <CardTitle>Platform Information</CardTitle>
+                        <CardTitle>General</CardTitle>
                         {isPlatformConfigLoading && (
                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                         )}

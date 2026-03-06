@@ -7,11 +7,9 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-// import { Badge } from "@/components/ui/badge";
 import {
    Table,
    TableBody,
-   // TableCell,
    TableHead,
    TableHeader,
    TableRow,
@@ -40,32 +38,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getExecutives } from "@/services/create-executive";
-import { getRoles } from "@/services/get-roles";
-// import { getRoleBadgeVariant } from "@/utils/badge-variant";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import addAdmin, { AdminData } from "@/services/admin";
 import { ApiResponse, type Error } from "@/components/AuthProvider";
 import { toast } from "@/hooks/use-toast";
 
 const UserManagement = () => {
    const queryClient = useQueryClient();
-   const { data: executives, isPending: isExecutivesPending } = useQuery({
-      queryKey: ["executives"],
-      queryFn: getExecutives,
-   });
-   const { data: roles, isPending: isRolesPending } = useQuery({
-      queryKey: ["roles"],
-      queryFn: getRoles,
-   });
 
-   const { handleSubmit, control } = useForm<{
-      executive_id: string;
-      role_id: string;
+   const { handleSubmit, register, control } = useForm<{
+      email: string;
+      role: string;
    }>({
       defaultValues: {
-         executive_id: "",
-         role_id: "",
+         email: "",
+         role: "",
       },
    });
 
@@ -91,10 +78,9 @@ const UserManagement = () => {
    });
 
    const onSubmit: SubmitHandler<{
-      executive_id: string;
-      role_id: string;
+      email: string;
+      role: string;
    }> = (data) => {
-      console.log(data);
       mutation.mutate(data);
    };
 
@@ -120,8 +106,8 @@ const UserManagement = () => {
                <DialogContent className="w-full max-w-3xl">
                   <DialogTitle></DialogTitle>
                   <DialogDescription></DialogDescription>
-                  <div className="bg-gray-900 w-full">
-                     <div className="text-gray-400">
+                  <div className="bg-background w-full">
+                     <div className="text-primary_text">
                         {/* <div className=""> */}
                         <Card className="shadow-lg">
                            <CardHeader>
@@ -138,85 +124,40 @@ const UserManagement = () => {
                               >
                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                       <Label htmlFor="executive">
-                                          Executive *
-                                       </Label>
-                                       <div className="relative">
-                                          <Controller
-                                             name="executive_id"
-                                             control={control}
-                                             render={({
-                                                field: { value, onChange },
-                                             }) => (
-                                                <>
-                                                   <select
-                                                      id="position_id"
-                                                      className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
-                                                      required
-                                                      value={value}
-                                                      onChange={onChange}
-                                                   >
-                                                      <option value="" disabled>
-                                                         {isExecutivesPending
-                                                            ? "Loading..."
-                                                            : "Select Executive"}
-                                                      </option>
-                                                      {executives?.success &&
-                                                         executives.data?.map(
-                                                            (executive) => (
-                                                               <option
-                                                                  key={
-                                                                     executive.id
-                                                                  }
-                                                                  value={
-                                                                     executive.id
-                                                                  }
-                                                               >
-                                                                  {
-                                                                     executive.name
-                                                                  }
-                                                               </option>
-                                                            )
-                                                         )}
-                                                   </select>
-                                                </>
-                                             )}
-                                          />
-                                       </div>
+                                       <Label htmlFor="email">Email *</Label>
+                                       <Input
+                                          id="email"
+                                          {...register("email", {
+                                             required: true,
+                                          })}
+                                          placeholder="Enter email"
+                                          required
+                                          className=""
+                                       />
                                     </div>
 
                                     <div className="space-y-2">
                                        <Label htmlFor="role">Role *</Label>
                                        <div className="relative">
                                           <Controller
-                                             name="role_id"
+                                             name="role"
                                              control={control}
                                              render={({
                                                 field: { value, onChange },
                                              }) => (
                                                 <select
-                                                   id="position_id"
+                                                   id="role"
                                                    className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
                                                    required
                                                    value={value}
                                                    onChange={onChange}
                                                 >
-                                                   <option value="" disabled>
-                                                      {isRolesPending
-                                                         ? "Loading..."
-                                                         : "Select Role"}
+                                                   <option value="super_admin">
+                                                      Super Admin
                                                    </option>
-                                                   {roles &&
-                                                      roles.data?.map(
-                                                         (role) => (
-                                                            <option
-                                                               key={role.id}
-                                                               value={role.id}
-                                                            >
-                                                               {role.role}
-                                                            </option>
-                                                         )
-                                                      )}
+                                                   <option value="admin">
+                                                      Admin
+                                                   </option>
                                                 </select>
                                              )}
                                           />
@@ -260,7 +201,10 @@ const UserManagement = () => {
                <div className="flex items-center gap-4 mb-6">
                   <div className="relative flex-1">
                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                     <Input placeholder="Search users..." className="pl-10" />
+                     <Input
+                        placeholder="Search by name or email"
+                        className="pl-10"
+                     />
                   </div>
                </div>
 
@@ -270,7 +214,6 @@ const UserManagement = () => {
                         <TableHead>Name</TableHead>
                         <TableHead>Email</TableHead>
                         <TableHead>Role</TableHead>
-                        <TableHead>Scope</TableHead>
                         <TableHead>Actions</TableHead>
                      </TableRow>
                   </TableHeader>

@@ -1,13 +1,14 @@
 import { Calendar, User as UserIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
+import { User } from "./AuthProvider";
 
 export default function PublishingInfo({
    category,
-   faculty,
+   user,
 }: {
-   category?: string;
-   faculty: string;
+   category: "zonal" | "national";
+   user: User | null;
 }) {
    return (
       <Card>
@@ -21,10 +22,10 @@ export default function PublishingInfo({
             </div>
             <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
                <UserIcon className="w-4 h-4" />
-               <span>Admin - {faculty}</span>
+               <span>Admin - {user?.name || ""}</span>
             </div>
             {category && (
-               <Badge variant="secondary" className="capitalize">
+               <Badge variant="default" className="capitalize">
                   {category}
                </Badge>
             )}

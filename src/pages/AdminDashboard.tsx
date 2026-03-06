@@ -34,7 +34,7 @@ const categories = [
 type NewsData = {
    title: string;
    content: string;
-   category: string;
+   category: "zonal" | "national";
    author: string;
    coverImage: File[];
    summary: string;
@@ -48,7 +48,7 @@ const AdminDashboard = () => {
    const { register, control, handleSubmit, watch } = useForm<NewsData>({
       defaultValues: {
          title: "",
-         category: "general",
+         category: "zonal",
          author: user?.name || "",
          summary: "",
          content: "",
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
    };
 
    return (
-      <div className="min-h-screen bg-gray-900 transition-colors duration-300">
+      <div className="min-h-screen bg-primary_text transition-colors duration-300">
          <AdminDashboardHeader handleLogout={logout} />
 
          <div className="container mx-auto px-4 py-8">
@@ -271,10 +271,7 @@ const AdminDashboard = () => {
 
                   {/* Sidebar */}
                   <div className="space-y-6">
-                     <PublishingInfo
-                        category={values.category}
-                        faculty={user?.scope || ""}
-                     />
+                     <PublishingInfo category={values.category} user={user} />
                      <NewsGuidelines />
                   </div>
                </div>

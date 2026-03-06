@@ -1,4 +1,4 @@
-import { Save, Tag, Upload, UserIcon } from "lucide-react";
+import { Save, SendHorizontalIcon, Tag, Upload, UserIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -14,7 +14,7 @@ import { useAuth } from "@/hooks/use-auth";
 type NewsData = {
    title: string;
    content: string;
-   category: string;
+   category: "zonal" | "national";
    author: string;
    coverImage: File[];
    summary: string;
@@ -25,31 +25,19 @@ const modules = {
       [{ header: [1, 2, false] }],
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "image"],
+      ["link"],
    ],
 };
 
 export default function Create() {
    const [isLoading] = useState(false);
-
-   const categories = [
-      "general",
-      "sug",
-      "faculty",
-      "department",
-      "state",
-      "national",
-      "sports",
-      "academics",
-      "events",
-   ];
-
+   const categories = ["zonal", "national"];
    const { user } = useAuth();
 
    const { register, control, handleSubmit, watch } = useForm<NewsData>({
       defaultValues: {
          title: "",
-         category: "general",
+         category: "zonal",
          author: user?.name || "",
          summary: "",
          content: "",
@@ -206,12 +194,12 @@ export default function Create() {
                               {isLoading ? (
                                  <div className="flex items-center space-x-2">
                                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                    <span>Publishing...</span>
+                                    <span>Sending...</span>
                                  </div>
                               ) : (
                                  <>
-                                    <Save className="w-4 h-4 mr-2" />
-                                    Publish Article
+                                    <SendHorizontalIcon className="w-4 h-4" />
+                                    Send for Approval
                                  </>
                               )}
                            </Button>
@@ -223,10 +211,7 @@ export default function Create() {
 
             {/* Sidebar */}
             <div className="space-y-6">
-               <PublishingInfo
-                  category={values.category}
-                  faculty={user?.scope || ""}
-               />
+               <PublishingInfo category={values.category} user={user} />
                <NewsGuidelines />
             </div>
          </div>
