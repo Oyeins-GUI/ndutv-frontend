@@ -15,7 +15,7 @@ import { SidebarProvider } from "./components/ui/sidebar";
 import Executives from "./pages/Executives";
 import AdminExecutives from "./pages/admin/Executives";
 import SetPassword from "./pages/admin/SetPassword";
-import InitPassword from "./pages/admin/InitPassword";
+// import InitPassword from "./pages/admin/InitPassword";
 import Zonal from "./pages/Zonal";
 import National from "./pages/National";
 
@@ -45,19 +45,19 @@ export const router = createBrowserRouter([
       element: <Executives />,
    },
    {
-      path: "/admin/signin",
+      path: "/jysq/admin/signin",
       element: <AdminLogin />,
    },
    {
-      path: "/admin/set-password",
+      path: "/jysq/admin/set-password",
       element: <SetPassword />,
    },
+   // {
+   //    path: "/jysq/admin/init",
+   //    element: <InitPassword />,
+   // },
    {
-      path: "/admin/init",
-      element: <InitPassword />,
-   },
-   {
-      path: "/admin",
+      path: "/jysq/admin",
       element: (
          <ProtectedRoute>
             <SidebarProvider>

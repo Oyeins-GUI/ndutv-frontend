@@ -42,25 +42,25 @@ const AdminLogin = () => {
 
    useEffect(() => {
       if (user) {
-         navigate("/admin/dashboard");
+         navigate("/jysq/admin/dashboard");
       }
    }, [user, navigate]);
 
    return (
-      <div className="min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4 transition-colors duration-300">
-         <div className="w-full max-w-md">
+      <div className="min-h-screen bg-surface flex items-center justify-center p-4 transition-colors duration-300">
+         <div className="w-full max-w-[380px]">
             <div className="text-center mb-8 flex items-center justify-between">
                <Link
                   to="/"
-                  className="inline-flex items-center space-x-3 group mb-6"
+                  className="inline-flex items-center space-x-3 group"
                >
                   <img src="/logo.png" className="w-10" />
 
                   <div className="flex flex-col text-left">
-                     <span className="text-3xl font-bold text-white tracking-tight">
-                        NDUtv
+                     <span className="text-title_large uppercase font-secondary font-bold text-white tracking-tight">
+                        nans zone b
                      </span>
-                     <span className="text-sm text-gray-400 -mt-1">
+                     <span className="text-label_medium text-secondary_text -mt-1">
                         Admin Portal
                      </span>
                   </div>
@@ -70,17 +70,17 @@ const AdminLogin = () => {
                   className="inline-flex items-center text-sm text-gray-400 hover:text-red-400 transition-colors duration-300"
                >
                   <ArrowLeft className="w-4 h-4 mr-1" />
-                  Back to Homepage
+                  Back Home
                </Link>
             </div>
 
-            <Card className="shadow-2xl border-0 bg-gray-800/80 backdrop-blur-sm">
+            <Card className="shadow-2xl border-0 bg-surface backdrop-blur-sm">
                <CardHeader className="text-center pb-4">
                   <CardTitle className="text-2xl font-bold text-white">
-                     Admin Login
+                     Sign In
                   </CardTitle>
                   <CardDescription className="text-gray-400">
-                     Sign in to manage NDUtv news platform
+                     Sign in to manage NANS ZONE B news platform
                   </CardDescription>
                </CardHeader>
                <CardContent>
@@ -97,9 +97,9 @@ const AdminLogin = () => {
                            {...register("email", {
                               required: "Email is required",
                            })}
-                           placeholder="admin@ndutv.com"
+                           placeholder="Enter your email"
                            required
-                           className="h-12 text-gray-300 border-px border-gray-600 focus:border-gray-400 transition-colors duration-300"
+                           className="h-12 bg-transparent text-primary_text border-px border-secondary_text/80 focus:border-secondary_text/80 transition-colors duration-300"
                         />
                      </div>
 
@@ -122,8 +122,7 @@ const AdminLogin = () => {
                                  },
                               })}
                               placeholder="Enter your password"
-                              required
-                              className="h-12 pr-12 text-gray-300 border-gray-600 focus:border-red-400 transition-colors duration-300"
+                              className="h-12 bg-transparent text-primary_text border-px border-secondary_text/80 focus:border-secondary_text/80 transition-colors duration-300"
                            />
                            <button
                               type="button"
@@ -161,7 +160,7 @@ const AdminLogin = () => {
                      <Button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full h-12 border bg-gray-300 text-gray-900 font-medium transition-all cursor-pointer"
+                        className="w-full h-12 bg-primary_text text-background font-medium transition-all cursor-pointer"
                      >
                         {isLoading ? (
                            <div className="flex items-center space-x-2">
@@ -173,15 +172,6 @@ const AdminLogin = () => {
                         )}
                      </Button>
                   </form>
-
-                  {/* <div className="mt-6 text-center text-sm text-gray-400">
-                     <p>Demo credentials:</p>
-                     <p className="font-mono bg-gray-700 p-2 rounded mt-2">
-                        Email: admin@ndutv.com
-                        <br />
-                        Password: admin123
-                     </p>
-                  </div> */}
                </CardContent>
             </Card>
          </div>

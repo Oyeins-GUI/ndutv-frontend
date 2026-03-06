@@ -33,6 +33,7 @@ export async function initAdmin(credentials: { email: string; role: string }) {
 
 export async function setPassword(credentials: {
    token: string;
+   username: string;
    password: string;
 }) {
    const res = await fetch(`${BASE_URL}/auth/password/set/confirm`, {
@@ -54,8 +55,11 @@ export async function setPassword(credentials: {
       throw new Error(error.message);
    }
 
-   const data: ApiResponse<{ token: string; password: string }> =
-      await res.json();
+   const data: ApiResponse<{
+      token: string;
+      username: string;
+      password: string;
+   }> = await res.json();
 
    return data;
 }

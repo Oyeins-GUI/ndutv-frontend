@@ -88,10 +88,10 @@ const UserManagement = () => {
       <div className="p-6 space-y-6">
          <div className="flex items-center justify-between">
             <div>
-               <h1 className="text-3xl font-bold text-foreground">
+               <h1 className="text-headline_large font-secondary font-bold text-primary_text">
                   Admins Management
                </h1>
-               <p className="text-muted-foreground mt-2">
+               <p className="font-primary text-secondary_text">
                   Manage admin accounts and permissions.
                </p>
             </div>

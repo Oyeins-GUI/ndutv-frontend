@@ -46,7 +46,7 @@ export default function InitPassword() {
             description: data?.message ?? "Success",
             className: "bg-gray-300 text-gray-900",
          });
-         navigate("/admin/signin");
+         navigate("/jysq/admin/signin");
       },
       onError: (error: ApiResponse<Error>) => {
          toast({
@@ -65,25 +65,25 @@ export default function InitPassword() {
 
    useEffect(() => {
       if (user) {
-         navigate("/admin/dashboard");
+         navigate("/jysq/admin/dashboard");
       }
    }, [user, navigate]);
 
    return (
-      <div className="min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4 transition-colors duration-300">
-         <div className="w-full max-w-md">
+      <div className="min-h-screen bg-surface flex items-center justify-center p-4 transition-colors duration-300">
+         <div className="w-full max-w-[380px]">
             <div className="text-center mb-8 flex items-center justify-between">
                <Link
                   to="/"
-                  className="inline-flex items-center space-x-3 group mb-6"
+                  className="inline-flex items-center space-x-3 group"
                >
-                  <img src="/logo.png" className="w-10" />
+                  <img src="/logo.png" className="w-14" />
 
                   <div className="flex flex-col text-left">
-                     <span className="text-3xl font-bold text-white tracking-tight">
-                        NDUtv
+                     <span className="text-title_large font-secondary font-bold uppercase text-primary_text tracking-tight">
+                        nans zone b
                      </span>
-                     <span className="text-sm text-gray-400 -mt-1">
+                     <span className="text-label_medium font-secondary text-secondary_text -mt-1">
                         Admin Portal
                      </span>
                   </div>
@@ -93,11 +93,11 @@ export default function InitPassword() {
                   className="inline-flex items-center text-sm text-gray-400 hover:text-red-400 transition-colors duration-300"
                >
                   <ArrowLeft className="w-4 h-4 mr-1" />
-                  Back to Homepage
+                  Back Home
                </Link>
             </div>
 
-            <Card className="shadow-2xl border-0 bg-gray-800/80 backdrop-blur-sm">
+            <Card className="shadow-2xl border-0 bg-surface backdrop-blur-sm">
                <CardHeader className="text-center pb-4">
                   <CardTitle className="text-2xl font-bold text-white">
                      Create Account

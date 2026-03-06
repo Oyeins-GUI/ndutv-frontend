@@ -19,6 +19,7 @@ import { setPassword } from "@/services/admin";
 import { toast } from "@/hooks/use-toast";
 
 type FormFields = {
+   username: string;
    password: string;
    confirm_password: string;
 };
@@ -31,6 +32,7 @@ export default function SetPassword() {
    const navigate = useNavigate();
    const { register, handleSubmit } = useForm<FormFields>({
       defaultValues: {
+         username: "",
          password: "",
          confirm_password: "",
       },
@@ -42,6 +44,7 @@ export default function SetPassword() {
       onSuccess: (
          data: ApiResponse<{
             token: string;
+            username: string;
             password: string;
          }>,
       ) => {
@@ -50,7 +53,7 @@ export default function SetPassword() {
             description: data?.message ?? "Success",
             className: "bg-gray-300 text-gray-900",
          });
-         navigate("/admin/signin");
+         navigate("/jysq/admin/signin");
       },
       onError: (error: ApiResponse<Error>) => {
          toast({
@@ -64,11 +67,12 @@ export default function SetPassword() {
    });
 
    const onSubmit: SubmitHandler<FormFields> = async ({
+      username,
       password,
       confirm_password,
    }) => {
       if (password === confirm_password && token) {
-         mutation.mutate({ token, password });
+         mutation.mutate({ token, username, password });
       } else {
          toast({
             title: "Error",
@@ -81,23 +85,23 @@ export default function SetPassword() {
 
    useEffect(() => {
       if (user) {
-         navigate("/admin/dashboard");
+         navigate("/jysq/admin/dashboard");
       }
    }, [user, navigate]);
 
    return (
-      <div className="min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4 transition-colors duration-300">
-         <div className="w-full max-w-md">
+      <div className="min-h-screen bg-surface flex items-center justify-center p-4 transition-colors duration-300">
+         <div className="w-full max-w-[380px]">
             <div className="text-center mb-8 flex items-center justify-between">
                <Link
                   to="/"
-                  className="inline-flex items-center space-x-3 group mb-6"
+                  className="inline-flex items-center space-x-3 group"
                >
-                  <img src="/logo.png" className="w-10" />
+                  <img src="/logo.png" className="w-14" />
 
                   <div className="flex flex-col text-left">
-                     <span className="text-3xl font-bold text-white tracking-tight">
-                        NDUtv
+                     <span className="text-title_large font-bold font-secondary text-white uppercase tracking-tight">
+                        NANS Zone B
                      </span>
                      <span className="text-sm text-gray-400 -mt-1">
                         Admin Portal
@@ -109,21 +113,46 @@ export default function SetPassword() {
                   className="inline-flex items-center text-sm text-gray-400 hover:text-red-400 transition-colors duration-300"
                >
                   <ArrowLeft className="w-4 h-4 mr-1" />
-                  Back to Homepage
+                  Back Home
                </Link>
             </div>
 
-            <Card className="shadow-2xl border-0 bg-gray-800/80 backdrop-blur-sm">
+            <Card className="shadow-2xl border-0 bg-surface backdrop-blur-sm">
                <CardHeader className="text-center pb-4">
                   <CardTitle className="text-2xl font-bold text-white">
-                     Create Account
+                     Set Password
                   </CardTitle>
                   <CardDescription className="text-gray-400">
-                     Set password to manage NDUtv news platform
+                     Set password to manage NANS ZONE B news platform
                   </CardDescription>
                </CardHeader>
                <CardContent>
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                     <div className="space-y-2">
+                        <Label
+                           htmlFor="username"
+                           className="text-sm font-medium text-gray-300"
+                        >
+                           Username
+                        </Label>
+                        <div className="relative">
+                           <Input
+                              type="text"
+                              {...register("username", {
+                                 required: "Username name is required",
+                                 minLength: {
+                                    value: 4,
+                                    message:
+                                       "Username must be at least 4 characters long",
+                                 },
+                              })}
+                              placeholder="Enter username"
+                              required
+                              className="h-12 pr-12 text-gray-300 border-gray-600 focus:border-red-400 transition-colors duration-300"
+                           />
+                        </div>
+                     </div>
+
                      <div className="space-y-2">
                         <Label
                            htmlFor="password"

@@ -42,7 +42,7 @@ const Overview = () => {
             <h1 className="text-headline_large font-secondary font-bold text-primary_text">
                Overview
             </h1>
-            <p className="text-muted-foreground mt-2 font-primary text-secondary_text">
+            <p className="mt-2 font-primary text-secondary_text">
                Welcome to the NANS South-South Zone B Admin Dashboard. Here's a
                quick overview of your platform.
             </p>
@@ -124,7 +124,7 @@ const Overview = () => {
             <CardContent>
                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Link
-                     to="/admin/content"
+                     to="/jysq/admin/content"
                      className="p-4 border border-secondary_text rounded-lg bg-background hover:bg-background/50 transition-colors cursor-pointer"
                   >
                      <FileText className="w-6 h-6 mb-2 text-secondary_text" />
@@ -135,7 +135,7 @@ const Overview = () => {
                   </Link>
                   {user !== null && user.role === "super_admin" && (
                      <Link
-                        to="/admin/users"
+                        to="/jysq/admin/users"
                         className="p-4 border border-secondary_text rounded-lg bg-background hover:bg-background/50 transition-colors cursor-pointer"
                      >
                         <Users className="w-6 h-6 mb-2 text-secondary_text" />

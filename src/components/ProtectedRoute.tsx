@@ -29,11 +29,13 @@ export default function ProtectedRoute({
       ?.allowedRoles as string[];
 
    if (user === null) {
-      return <Navigate to="/admin/signin" state={{ from: location }} replace />;
+      return (
+         <Navigate to="/jysq/admin/signin" state={{ from: location }} replace />
+      );
    }
 
    if (allowedRoles && !allowedRoles?.includes(user.role)) {
-      return <Navigate to="/admin/content" replace />;
+      return <Navigate to="/jysq/admin/content" replace />;
    }
 
    return children;

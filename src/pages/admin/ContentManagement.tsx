@@ -10,10 +10,10 @@ const ContentManagement = () => {
       <div className="p-6">
          <div className="max-w-4xl mx-auto space-y-6">
             <div>
-               <h1 className="text-3xl font-bold text-foreground">
+               <h1 className="text-headline_large font-secondary font-bold text-primary_text">
                   Content Management
                </h1>
-               <p className="text-muted-foreground mt-2">
+               <p className="font-primary text-secondary_text">
                   Create and publish news articles for the NDUtv platform
                </p>
             </div>
