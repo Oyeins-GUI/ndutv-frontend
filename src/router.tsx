@@ -12,9 +12,11 @@ import ContentManagement from "./pages/admin/ContentManagement";
 import Analytics from "./pages/admin/Analytics";
 import Settings from "./pages/admin/Settings";
 import { SidebarProvider } from "./components/ui/sidebar";
-import Executives from "./pages/admin/Executives";
+import Executives from "./pages/Executives";
 import SetPassword from "./pages/admin/SetPassword";
 import InitPassword from "./pages/admin/InitPassword";
+import Zonal from "./pages/Zonal";
+import National from "./pages/National";
 
 export const router = createBrowserRouter([
    {
@@ -23,7 +25,7 @@ export const router = createBrowserRouter([
    },
    {
       path: "/zonal",
-      element: <NewsDetail />,
+      element: <Zonal />,
    },
    {
       path: "/zonal/:id",
@@ -31,7 +33,7 @@ export const router = createBrowserRouter([
    },
    {
       path: "/national",
-      element: <NewsDetail />,
+      element: <National />,
    },
    {
       path: "/national/:id",
@@ -39,7 +41,7 @@ export const router = createBrowserRouter([
    },
    {
       path: "/executives",
-      element: <NewsDetail />,
+      element: <Executives />,
    },
    {
       path: "/admin/signin",

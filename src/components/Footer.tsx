@@ -21,7 +21,7 @@ const Footer = () => {
                         <img src="/logo.png" className="w-20" />
                      </div>
                      <div>
-                        <span className="opacity-85 text-title_medium uppercase font-bold">
+                        <span className="opacity-85 font-secondary text-title_medium uppercase font-bold">
                            NANS ZONE B
                         </span>
                      </div>
