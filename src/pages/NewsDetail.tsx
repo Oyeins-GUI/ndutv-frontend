@@ -40,6 +40,7 @@ const NewsDetail = () => {
       image: "photo-1605810230434-7631ac76ec81",
       category: "Zonal",
       author: "SUG Press Team",
+      excerpt: "",
       date: "2 hours ago",
       readTime: "5 min read",
    };
@@ -60,6 +61,27 @@ const NewsDetail = () => {
       },
    ];
 
+   const handleShare = async () => {
+      if (navigator.share) {
+         try {
+            await navigator.share({
+               title: article.title,
+               text: article.excerpt,
+               url: window.location.href,
+            });
+            console.log("Content shared successfully");
+         } catch (error) {
+            console.error("Error sharing:", error);
+         }
+      } else {
+         alert(
+            "Web Share API is not supported in your browser. You can manually copy the link: " +
+               window.location.href,
+         );
+         navigator.clipboard.writeText(window.location.href);
+      }
+   };
+
    return (
       <div className="min-h-screen bg-white">
          <Header />
@@ -74,7 +96,12 @@ const NewsDetail = () => {
                      </Link>
                      <div className="flex items-center gap-6">
                         <BookmarkIcon className="size-6 text-primary_text" />
-                        <ShareIcon className="size-6 text-primary_text" />
+                        <button
+                           onClick={handleShare}
+                           className="cursor-pointer"
+                        >
+                           <ShareIcon className="size-6 text-primary_text" />
+                        </button>
                         <EllipsisVerticalIcon className="size-6 text-primary_text" />
                      </div>
                   </div>
