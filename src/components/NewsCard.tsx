@@ -25,7 +25,7 @@ const NewsCard = ({ id, title, image, category, date }: NewsCardProps) => {
             </div>
 
             <div className="p-6">
-               <button className="bg-secondary text-label_small text-on_secondary rounded-md px-2 py-1 mb-2 font-medium uppercase tracking-wide">
+               <button className="bg-accent text-label_small text-on_secondary rounded-md px-2 py-1 mb-2 font-medium uppercase tracking-wide">
                   {category}
                </button>
 
