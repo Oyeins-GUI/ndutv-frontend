@@ -25,11 +25,11 @@ const NewsCard = ({ id, title, image, category, date }: NewsCardProps) => {
             </div>
 
             <div className="p-6">
-               <button className="bg-accent text-label_small text-on_secondary rounded-md px-2 py-1 mb-2 font-medium uppercase tracking-wide">
+               <button className="bg-accent text-label_small text-primary_text rounded-md px-2 py-1 mb-2 font-medium uppercase tracking-wide">
                   {category}
                </button>
 
-               <h2 className="text-title_medium font-secondary font-bold text-gray-900 dark:text-white mb-3 leading-tight group-hover:text-primary-gold transition-colors duration-300 line-clamp-2">
+               <h2 className="text-title_medium font-secondary font-bold text-primary_text mb-3 leading-tight group-hover:text-primary-gold transition-colors duration-300 line-clamp-2">
                   {title}
                </h2>
 
