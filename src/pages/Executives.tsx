@@ -8,11 +8,28 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
-export default function Executives() {
-   const [searchParams, setSearchParams] = useSearchParams();
+const executives = [
+   {
+      image: "photo-1605810230434-7631ac76ec81",
+      name: "John Doe",
+      position: "President",
+   },
+   {
+      image: "photo-1605810230434-7631ac76ec81",
+      name: "Jane Smith",
+      position: "VDC",
+   },
+   {
+      image: "photo-1605810230434-7631ac76ec81",
+      name: "Friday Zula",
+      position: "DC",
+   },
+];
 
-   const zone = searchParams.get("zone") || "";
-   const year = searchParams.get("year") || "";
+export default function Executives({ zone }: { zone: "zonal" | "jcc" }) {
+   // send a fetch with the zone
+   const [searchParams, setSearchParams] = useSearchParams();
+   const year = searchParams.get("year") || new Date().getFullYear().toString();
 
    const [isFilterOpen, setIsFilterOpen] = useState(false);
    const dropdownRef = useRef<HTMLDivElement>(null);
@@ -52,7 +69,9 @@ export default function Executives() {
                <div className="flex items-center justify-between">
                   <div className="uppercase text-label_small text-primary_text">
                      <p className="text-label_small text-primary_text">
-                        Executive Directory
+                        {zone === "zonal"
+                           ? "Zonal Executive Directory"
+                           : "JCC Executive Directory"}
                      </p>
                      <p className="text-headline_medium text-primary_text font-medium">
                         NANS Zone B
@@ -90,43 +109,6 @@ export default function Executives() {
 
                      {isFilterOpen && (
                         <div className="absolute right-0 top-[calc(100%+0.25rem)] p-4 rounded-md bg-surface text-primary_text shadow-xl w-56 space-y-4">
-                           {/* Filter by Zone */}
-                           <div>
-                              <p className="text-label_small font-semibold mb-2 uppercase text-secondary_text">
-                                 Filter by Zone
-                              </p>
-
-                              <div className="flex flex-col gap-2">
-                                 <label className="flex items-center gap-2 cursor-pointer">
-                                    <input
-                                       type="radio"
-                                       name="zone"
-                                       value="zonal"
-                                       checked={zone === "zonal"}
-                                       onChange={(e) =>
-                                          updateFilter("zone", e.target.value)
-                                       }
-                                    />
-                                    <span className="text-body_small">
-                                       Zonal Executives
-                                    </span>
-                                 </label>
-
-                                 <label className="flex items-center gap-2 cursor-pointer">
-                                    <input
-                                       type="radio"
-                                       name="zone"
-                                       value="jcc"
-                                       checked={zone === "jcc"}
-                                       onChange={(e) =>
-                                          updateFilter("zone", e.target.value)
-                                       }
-                                    />
-                                    <span className="text-body_small">JCC</span>
-                                 </label>
-                              </div>
-                           </div>
-
                            {/* Filter by Year */}
                            <div>
                               <p className="text-label_small font-semibold mb-2 uppercase text-secondary_text">
@@ -163,23 +145,7 @@ export default function Executives() {
                </div>
 
                <div className="flex items-center flex-col md:flex-row md:flex-wrap gap-6">
-                  {[
-                     {
-                        image: "photo-1605810230434-7631ac76ec81",
-                        name: "John Doe",
-                        position: "President",
-                     },
-                     {
-                        image: "photo-1605810230434-7631ac76ec81",
-                        name: "Jane Smith",
-                        position: "VDC",
-                     },
-                     {
-                        image: "photo-1605810230434-7631ac76ec81",
-                        name: "Friday Zula",
-                        position: "DC",
-                     },
-                  ].map((exec) => (
+                  {executives.map((exec) => (
                      <div className="bg-surface p-4 w-full md:w-44 rounded-md shadow-sm flex flex-col items-center justify-center gap-2">
                         <div className="w-30 aspect-square rounded-full">
                            <img

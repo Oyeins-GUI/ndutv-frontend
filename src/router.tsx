@@ -42,7 +42,17 @@ export const router = createBrowserRouter([
    },
    {
       path: "/executives",
-      element: <Executives />,
+      element: null,
+      children: [
+         {
+            path: "zonal",
+            element: <Executives zone="zonal" />,
+         },
+         {
+            path: "jcc",
+            element: <Executives zone="jcc" />,
+         },
+      ],
    },
    {
       path: "/jysq/admin/signin",
