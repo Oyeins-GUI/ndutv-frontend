@@ -18,109 +18,116 @@ import SetPassword from "./pages/admin/SetPassword";
 // import InitPassword from "./pages/admin/InitPassword";
 import Zonal from "./pages/Zonal";
 import National from "./pages/National";
+import RootLayout from "./root-layout";
 
 export const router = createBrowserRouter([
    {
       path: "/",
-      element: <Home />,
-   },
-   {
-      path: "/zonal",
-      element: <Zonal />,
-   },
-   {
-      path: "/zonal/:id",
-      element: <NewsDetail />,
-   },
-   {
-      path: "/national",
-      element: <National />,
-   },
-   {
-      path: "/national/:id",
-      element: <NewsDetail />,
-   },
-   {
-      path: "/executives",
-      element: null,
+      element: <RootLayout />,
       children: [
+         {
+            index: true,
+            element: <Home />,
+         },
          {
             path: "zonal",
-            element: <Executives zone="zonal" />,
+            element: <Zonal />,
          },
          {
-            path: "jcc",
-            element: <Executives zone="jcc" />,
-         },
-      ],
-   },
-   {
-      path: "/jysq/admin/signin",
-      element: <AdminLogin />,
-   },
-   {
-      path: "/jysq/admin/set-password",
-      element: <SetPassword />,
-   },
-   // {
-   //    path: "/jysq/admin/init",
-   //    element: <InitPassword />,
-   // },
-   {
-      path: "/jysq/admin",
-      element: (
-         <ProtectedRoute>
-            <SidebarProvider>
-               <AdminLayout />
-            </SidebarProvider>
-         </ProtectedRoute>
-      ),
-      children: [
-         {
-            path: "dashboard",
-            element: <Overview />,
-            handle: {
-               allowedRoles: ["super_admin", "admin"],
-            },
+            path: "zonal/:id",
+            element: <NewsDetail />,
          },
          {
-            path: "platform",
-            element: <PlatformManagement />,
-            handle: { allowedRoles: ["super_admin"] },
+            path: "national",
+            element: <National />,
          },
          {
-            path: "users",
-            element: <UserManagement />,
-            handle: { allowedRoles: ["super_admin"] },
-         },
-         {
-            path: "content",
-            element: <ContentManagement />,
-            handle: {
-               allowedRoles: ["super_admin", "admin"],
-            },
+            path: "national/:id",
+            element: <NewsDetail />,
          },
          {
             path: "executives",
-            element: <AdminExecutives />,
-            handle: { allowedRoles: ["super_admin"] },
+            element: null,
+            children: [
+               {
+                  path: "zonal",
+                  element: <Executives zone="zonal" />,
+               },
+               {
+                  path: "jcc",
+                  element: <Executives zone="jcc" />,
+               },
+            ],
          },
          {
-            path: "analytics",
-            element: <Analytics />,
-            handle: { allowedRoles: ["super_admin", "admin"] },
+            path: "jysq/admin/signin",
+            element: <AdminLogin />,
          },
          {
-            path: "settings",
-            element: <Settings />,
-            handle: {
-               allowedRoles: ["super_admin", "admin"],
-            },
+            path: "jysq/admin/set-password",
+            element: <SetPassword />,
+         },
+         // {
+         //    path: "/jysq/admin/init",
+         //    element: <InitPassword />,
+         // },
+         {
+            path: "jysq/admin",
+            element: (
+               <ProtectedRoute>
+                  <SidebarProvider>
+                     <AdminLayout />
+                  </SidebarProvider>
+               </ProtectedRoute>
+            ),
+            children: [
+               {
+                  path: "dashboard",
+                  element: <Overview />,
+                  handle: {
+                     allowedRoles: ["super_admin", "admin"],
+                  },
+               },
+               {
+                  path: "platform",
+                  element: <PlatformManagement />,
+                  handle: { allowedRoles: ["super_admin"] },
+               },
+               {
+                  path: "users",
+                  element: <UserManagement />,
+                  handle: { allowedRoles: ["super_admin"] },
+               },
+               {
+                  path: "content",
+                  element: <ContentManagement />,
+                  handle: {
+                     allowedRoles: ["super_admin", "admin"],
+                  },
+               },
+               {
+                  path: "executives",
+                  element: <AdminExecutives />,
+                  handle: { allowedRoles: ["super_admin"] },
+               },
+               {
+                  path: "analytics",
+                  element: <Analytics />,
+                  handle: { allowedRoles: ["super_admin", "admin"] },
+               },
+               {
+                  path: "settings",
+                  element: <Settings />,
+                  handle: {
+                     allowedRoles: ["super_admin", "admin"],
+                  },
+               },
+            ],
+         },
+         {
+            path: "*",
+            element: <NotFound />,
          },
       ],
-   },
-   {
-      path: "*",
-      element: <NotFound />,
    },
 ]);
