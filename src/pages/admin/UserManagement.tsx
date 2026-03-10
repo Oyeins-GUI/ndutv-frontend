@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import {
    Table,
    TableBody,
+   TableCell,
    TableHead,
    TableHeader,
    TableRow,
@@ -38,20 +39,30 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import addAdmin, { AdminData } from "@/services/admin";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import addAdmin, { AdminData, getAdmins } from "@/services/admin";
 import { ApiResponse, type Error } from "@/components/AuthProvider";
 import { toast } from "@/hooks/use-toast";
+import { getRoleBadgeVariant } from "@/utils/badge-variant";
+import { Badge } from "@/components/ui/badge";
 
 const UserManagement = () => {
    const queryClient = useQueryClient();
 
+   const { data: admins } = useQuery({
+      queryKey: ["admins"],
+      queryFn: getAdmins,
+      retry: false,
+   });
+
    const { handleSubmit, register, control } = useForm<{
       email: string;
+      name: string;
       role: string;
    }>({
       defaultValues: {
          email: "",
+         name: "",
          role: "",
       },
    });
@@ -79,6 +90,7 @@ const UserManagement = () => {
 
    const onSubmit: SubmitHandler<{
       email: string;
+      name: string;
       role: string;
    }> = (data) => {
       mutation.mutate(data);
@@ -122,46 +134,57 @@ const UserManagement = () => {
                                  className="grid grid-cols-1 md:grid-cols-2 gap-6"
                                  noValidate
                               >
-                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                       <Label htmlFor="email">Email *</Label>
-                                       <Input
-                                          id="email"
-                                          {...register("email", {
-                                             required: true,
-                                          })}
-                                          placeholder="Enter email"
-                                          required
-                                          className=""
-                                       />
-                                    </div>
+                                 <div className="space-y-2">
+                                    <Label htmlFor="email">Email *</Label>
+                                    <Input
+                                       id="email"
+                                       {...register("email", {
+                                          required: true,
+                                       })}
+                                       placeholder="Enter email"
+                                       required
+                                       className="w-full"
+                                    />
+                                 </div>
 
-                                    <div className="space-y-2">
-                                       <Label htmlFor="role">Role *</Label>
-                                       <div className="relative">
-                                          <Controller
-                                             name="role"
-                                             control={control}
-                                             render={({
-                                                field: { value, onChange },
-                                             }) => (
-                                                <select
-                                                   id="role"
-                                                   className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
-                                                   required
-                                                   value={value}
-                                                   onChange={onChange}
-                                                >
-                                                   <option value="super_admin">
-                                                      Super Admin
-                                                   </option>
-                                                   <option value="admin">
-                                                      Admin
-                                                   </option>
-                                                </select>
-                                             )}
-                                          />
-                                       </div>
+                                 <div className="space-y-2">
+                                    <Label htmlFor="name">Name *</Label>
+                                    <Input
+                                       id="name"
+                                       {...register("name", {
+                                          required: true,
+                                       })}
+                                       placeholder="Enter name"
+                                       required
+                                       className=""
+                                    />
+                                 </div>
+
+                                 <div className="space-y-2">
+                                    <Label htmlFor="role">Role *</Label>
+                                    <div className="relative">
+                                       <Controller
+                                          name="role"
+                                          control={control}
+                                          render={({
+                                             field: { value, onChange },
+                                          }) => (
+                                             <select
+                                                id="role"
+                                                className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
+                                                required
+                                                value={value}
+                                                onChange={onChange}
+                                             >
+                                                <option value="super_admin">
+                                                   Super Admin
+                                                </option>
+                                                <option value="admin">
+                                                   Admin
+                                                </option>
+                                             </select>
+                                          )}
+                                       />
                                     </div>
                                  </div>
 
@@ -218,33 +241,25 @@ const UserManagement = () => {
                      </TableRow>
                   </TableHeader>
                   <TableBody>
-                     {/* {users.map((user) => (
-                        <TableRow key={user.id}>
-                           <TableCell className="font-medium">
-                              {user.name}
-                           </TableCell>
-                           <TableCell>{user.email}</TableCell>
-                           <TableCell>
-                              <Badge variant={getRoleBadgeVariant(user.scope)}>
-                                 {user.scope}
-                              </Badge>
-                           </TableCell>
-                           <TableCell>
-                              <Badge
-                                 variant={
-                                    user.status === "Active"
-                                       ? "default"
-                                       : "secondary"
-                                 }
-                              >
-                                 {user.status}
-                              </Badge>
-                           </TableCell>
-                           <TableCell className="text-right">
-                              <ActionsMenu />
-                           </TableCell>
-                        </TableRow>
-                     ))} */}
+                     {admins?.success &&
+                        admins.data.map((admin) => (
+                           <TableRow key={admin.name}>
+                              <TableCell className="font-medium">
+                                 {admin.name}
+                              </TableCell>
+                              <TableCell>{admin.email}</TableCell>
+                              <TableCell>
+                                 <Badge
+                                    variant={getRoleBadgeVariant(admin.role)}
+                                 >
+                                    {admin.role}
+                                 </Badge>
+                              </TableCell>
+                              <TableCell className="text-right">
+                                 <ActionsMenu />
+                              </TableCell>
+                           </TableRow>
+                        ))}
                   </TableBody>
                </Table>
             </CardContent>

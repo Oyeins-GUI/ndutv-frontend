@@ -4,10 +4,29 @@ import { toast } from "@/hooks/use-toast";
 
 export type AdminData = {
    email: string;
+   name: string;
    role: string;
+   is_admin_enabled: string;
+   last_login_at: string;
 };
 
-export async function initAdmin(credentials: { email: string; role: string }) {
+export async function getAdmins() {
+   const res = await fetch(`${BASE_URL}/admin`, {
+      credentials: "include",
+   });
+
+   if (!res.ok) {
+      const error: ApiResponse<Error> = await res.json();
+      console.error(error);
+      throw new Error(error.message || "Failed to fetch admins");
+   }
+
+   const data: ApiResponse<AdminData[]> = await res.json();
+
+   return data;
+}
+
+export async function initAdmin(credentials: Pick<AdminData, "email">) {
    const res = await fetch(`${BASE_URL}/auth/password/set/init`, {
       method: "POST",
       credentials: "include",
@@ -33,7 +52,6 @@ export async function initAdmin(credentials: { email: string; role: string }) {
 
 export async function setPassword(credentials: {
    token: string;
-   username: string;
    password: string;
 }) {
    const res = await fetch(`${BASE_URL}/auth/password/set/confirm`, {
@@ -64,7 +82,9 @@ export async function setPassword(credentials: {
    return data;
 }
 
-export default async function addAdmin(adminData: AdminData) {
+export default async function addAdmin(
+   adminData: Pick<AdminData, "email" | "name" | "role">,
+) {
    const res = await fetch(`${BASE_URL}/admin`, {
       method: "POST",
       credentials: "include",

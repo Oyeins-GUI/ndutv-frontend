@@ -15,10 +15,10 @@ import { SidebarProvider } from "./components/ui/sidebar";
 import Executives from "./pages/Executives";
 import AdminExecutives from "./pages/admin/Executives";
 import SetPassword from "./pages/admin/SetPassword";
-// import InitPassword from "./pages/admin/InitPassword";
 import Zonal from "./pages/Zonal";
 import National from "./pages/National";
 import RootLayout from "./root-layout";
+import InitPassword from "./pages/admin/InitPassword";
 
 export const router = createBrowserRouter([
    {
@@ -67,10 +67,10 @@ export const router = createBrowserRouter([
             path: "jysq/admin/set-password",
             element: <SetPassword />,
          },
-         // {
-         //    path: "/jysq/admin/init",
-         //    element: <InitPassword />,
-         // },
+         {
+            path: "/jysq/admin/init",
+            element: <InitPassword />,
+         },
          {
             path: "jysq/admin",
             element: (

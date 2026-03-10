@@ -87,7 +87,14 @@ export default function Executives() {
                   {executives?.success &&
                      executives.data?.map((executive) => (
                         <TableRow key={executive.id}>
-                           <TableCell>{executive.image_url}</TableCell>
+                           {/* <TableCell>{executive.image_url}</TableCell> */}
+                           <TableCell>
+                              <img
+                                 src={executive.image_url}
+                                 alt={executive.name}
+                                 className="w-16 h-16 object-cover rounded-full"
+                              />
+                           </TableCell>
                            <TableCell>{executive.name}</TableCell>
                            <TableCell>{executive.position}</TableCell>
                            <TableCell>{executive.year}</TableCell>

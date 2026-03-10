@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Save } from "lucide-react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import createExecutive, { ExecutivePayload } from "@/services/create-executive";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
@@ -11,10 +11,11 @@ import { ApiResponse, type Error } from "./AuthProvider";
 
 function AddExecutive() {
    const queryClient = useQueryClient();
-   const { register, handleSubmit } = useForm<ExecutivePayload>({
+   const { register, handleSubmit, control } = useForm<ExecutivePayload>({
       defaultValues: {
          name: "",
          position: "",
+         exec_type: "",
          year: "",
          image_url: [],
       },
@@ -93,6 +94,28 @@ function AddExecutive() {
                                  placeholder="Enter year"
                                  required
                                  className=""
+                              />
+                           </div>
+                        </div>
+
+                        <div className="space-y-2">
+                           <Label htmlFor="exec_type">Executive type *</Label>
+                           <div className="relative">
+                              <Controller
+                                 name="exec_type"
+                                 control={control}
+                                 render={({ field: { value, onChange } }) => (
+                                    <select
+                                       id="role"
+                                       className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
+                                       required
+                                       value={value}
+                                       onChange={onChange}
+                                    >
+                                       <option value="zonal">Zonal</option>
+                                       <option value="jcc">JCC</option>
+                                    </select>
+                                 )}
                               />
                            </div>
                         </div>

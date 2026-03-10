@@ -19,7 +19,6 @@ import { setPassword } from "@/services/admin";
 import { toast } from "@/hooks/use-toast";
 
 type FormFields = {
-   username: string;
    password: string;
    confirm_password: string;
 };
@@ -32,7 +31,6 @@ export default function SetPassword() {
    const navigate = useNavigate();
    const { register, handleSubmit } = useForm<FormFields>({
       defaultValues: {
-         username: "",
          password: "",
          confirm_password: "",
       },
@@ -44,7 +42,6 @@ export default function SetPassword() {
       onSuccess: (
          data: ApiResponse<{
             token: string;
-            username: string;
             password: string;
          }>,
       ) => {
@@ -67,12 +64,11 @@ export default function SetPassword() {
    });
 
    const onSubmit: SubmitHandler<FormFields> = async ({
-      username,
       password,
       confirm_password,
    }) => {
       if (password === confirm_password && token) {
-         mutation.mutate({ token, username, password });
+         mutation.mutate({ token, password });
       } else {
          toast({
             title: "Error",
@@ -128,31 +124,6 @@ export default function SetPassword() {
                </CardHeader>
                <CardContent>
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                     <div className="space-y-2">
-                        <Label
-                           htmlFor="username"
-                           className="text-sm font-medium text-gray-300"
-                        >
-                           Username
-                        </Label>
-                        <div className="relative">
-                           <Input
-                              type="text"
-                              {...register("username", {
-                                 required: "Username name is required",
-                                 minLength: {
-                                    value: 4,
-                                    message:
-                                       "Username must be at least 4 characters long",
-                                 },
-                              })}
-                              placeholder="Enter username"
-                              required
-                              className="h-12 pr-12 text-gray-300 border-gray-600 focus:border-red-400 transition-colors duration-300"
-                           />
-                        </div>
-                     </div>
-
                      <div className="space-y-2">
                         <Label
                            htmlFor="password"

@@ -93,13 +93,7 @@ export function AuthProvider({
       <AuthContext
          {...props}
          value={{
-            user: user ?? {
-               name: "Test User",
-               email: "testuser@gmail.com",
-               position: "VDC",
-               role: "super_admin",
-               last_login_at: null,
-            },
+            user: user ?? null,
             login: loginMutation.mutateAsync,
             logout: logoutMutation.mutateAsync,
             isLoading: loginMutation.isPending || isLoading,

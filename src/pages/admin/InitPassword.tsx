@@ -29,7 +29,6 @@ export default function InitPassword() {
    const { register, handleSubmit } = useForm<FormFields>({
       defaultValues: {
          email: "",
-         role: "",
       },
    });
 
@@ -38,15 +37,15 @@ export default function InitPassword() {
       onSuccess: (
          data: ApiResponse<{
             email: string;
-            role: string;
          }>,
       ) => {
          toast({
-            title: "Password set successfully",
-            description: data?.message ?? "Success",
+            title: "Check your email",
+            description:
+               data?.message ??
+               "Set your password through the link provided in the mail",
             className: "bg-gray-300 text-gray-900",
          });
-         navigate("/jysq/admin/signin");
       },
       onError: (error: ApiResponse<Error>) => {
          toast({
@@ -59,8 +58,8 @@ export default function InitPassword() {
       },
    });
 
-   const onSubmit: SubmitHandler<FormFields> = async ({ email, role }) => {
-      mutation.mutate({ email, role });
+   const onSubmit: SubmitHandler<FormFields> = async ({ email }) => {
+      mutation.mutate({ email });
    };
 
    useEffect(() => {

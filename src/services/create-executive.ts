@@ -6,6 +6,7 @@ export type Executive = {
    id: string;
    name: string;
    position: string;
+   exec_type: string;
    year: string;
    image_url: string;
 };
@@ -13,6 +14,7 @@ export type Executive = {
 export type ExecutivePayload = {
    name: string;
    position: string;
+   exec_type: string;
    year: string;
    image_url: File[] | string;
 };

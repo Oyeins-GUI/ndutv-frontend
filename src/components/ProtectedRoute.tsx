@@ -10,17 +10,17 @@ export default function ProtectedRoute({
 }: {
    children?: React.ReactNode;
 }) {
-   const { user } = useAuth();
+   const { user, isLoading } = useAuth();
    const location = useLocation();
    const matches = useMatches();
 
-   // if (isLoading) {
-   //    return (
-   //       <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
-   //          <div className="w-9 aspect-square rounded-full border-4 border-primary_text border-t-transparent animate-spin"></div>
-   //       </div>
-   //    );
-   // }
+   if (isLoading) {
+      return (
+         <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+            <div className="w-9 aspect-square rounded-full border-4 border-primary_text border-t-transparent animate-spin"></div>
+         </div>
+      );
+   }
 
    const currentRoute = matches.find(
       (match) => (match.handle as RouteHandle)?.allowedRoles,
