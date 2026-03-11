@@ -13,16 +13,25 @@ export type Executive = {
 
 export type ExecutivePayload = {
    name: string;
-   position: string;
+   position_id: string;
    exec_type: string;
    year: string;
    image_url: File[] | string;
 };
 
-export async function getExecutives() {
-   const res = await fetch(`${BASE_URL}/admin/executives?page=1&limit=10`, {
-      credentials: "include",
-   });
+export async function getExecutives({
+   type,
+   year,
+}: {
+   type: "zonal" | "jcc";
+   year: string;
+}) {
+   const res = await fetch(
+      `${BASE_URL}/admin/executives?year=${year || ""}&type=${type || ""}&page=1&limit=10`,
+      {
+         credentials: "include",
+      },
+   );
 
    if (!res.ok) {
       const error: ApiResponse<Error> = await res.json();

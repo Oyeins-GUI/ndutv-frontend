@@ -1,3 +1,4 @@
+import AddExecPositionModal from "@/components/AddExecPositionModal";
 import AddExecutive from "@/components/AddExecutiveModal";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +24,7 @@ import {
    TableRow,
 } from "@/components/ui/table";
 import { getExecutives } from "@/services/create-executive";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
 import { MoreVertical, Pen, Trash2, UserPlus } from "lucide-react";
 
@@ -45,19 +47,39 @@ export default function Executives() {
                </p>
             </div>
 
-            <Dialog>
-               <DialogTrigger asChild>
-                  <Button className="gap-2">
-                     <UserPlus className="w-4 h-4" />
-                     Add Executive
-                  </Button>
-               </DialogTrigger>
-               <DialogContent className="w-full max-w-3xl">
-                  <DialogTitle></DialogTitle>
-                  <DialogDescription></DialogDescription>
-                  <AddExecutive />
-               </DialogContent>
-            </Dialog>
+            <div className="flex items-center space-x-2">
+               <Dialog>
+                  <DialogTrigger asChild>
+                     <Button className="gap-2 text-label_small">
+                        <PlusIcon className="w-2 h-2" />
+                        Executive Position
+                     </Button>
+                  </DialogTrigger>
+                  <DialogContent className="w-full max-w-3xl">
+                     <DialogTitle>Add Executive Position</DialogTitle>
+                     <DialogDescription>
+                        Fill in the details to add a new executive position.
+                     </DialogDescription>
+                     <AddExecPositionModal />
+                  </DialogContent>
+               </Dialog>
+
+               <Dialog>
+                  <DialogTrigger asChild>
+                     <Button className="gap-2 text-label_small">
+                        <UserPlus className="w-2 h-2" />
+                        Add Executive
+                     </Button>
+                  </DialogTrigger>
+                  <DialogContent className="w-full max-w-3xl">
+                     <DialogTitle>Add Executive</DialogTitle>
+                     <DialogDescription>
+                        Fill in the details to add a new executive.
+                     </DialogDescription>
+                     <AddExecutive />
+                  </DialogContent>
+               </Dialog>
+            </div>
          </div>
 
          <div className="text-foreground">
@@ -92,7 +114,7 @@ export default function Executives() {
                               <img
                                  src={executive.image_url}
                                  alt={executive.name}
-                                 className="w-16 h-16 object-cover rounded-full"
+                                 className="w-8 h-8 object-cover rounded-full"
                               />
                            </TableCell>
                            <TableCell>{executive.name}</TableCell>

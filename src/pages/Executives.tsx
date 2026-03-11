@@ -1,38 +1,28 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import { getExecutives } from "@/services/create-executive";
 import {
    AdjustmentsHorizontalIcon,
    MagnifyingGlassIcon,
    UserGroupIcon,
 } from "@heroicons/react/24/solid";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
-const executives = [
-   {
-      image: "photo-1605810230434-7631ac76ec81",
-      name: "John Doe",
-      position: "President",
-   },
-   {
-      image: "photo-1605810230434-7631ac76ec81",
-      name: "Jane Smith",
-      position: "VDC",
-   },
-   {
-      image: "photo-1605810230434-7631ac76ec81",
-      name: "Friday Zula",
-      position: "DC",
-   },
-];
-
-export default function Executives({ zone }: { zone: "zonal" | "jcc" }) {
+export default function Executives({ type }: { type: "zonal" | "jcc" }) {
    // send a fetch with the zone
    const [searchParams, setSearchParams] = useSearchParams();
    const year = searchParams.get("year") || new Date().getFullYear().toString();
 
    const [isFilterOpen, setIsFilterOpen] = useState(false);
    const dropdownRef = useRef<HTMLDivElement>(null);
+
+   const { data: executives } = useQuery({
+      queryKey: ["executives", type, year],
+      queryFn: () => getExecutives({ type, year }),
+      retry: false,
+   });
 
    useEffect(() => {
       function handleClickOutside(e: MouseEvent) {
@@ -69,7 +59,7 @@ export default function Executives({ zone }: { zone: "zonal" | "jcc" }) {
                <div className="flex items-center justify-between">
                   <div className="uppercase text-label_small text-primary_text">
                      <p className="text-label_small text-primary_text">
-                        {zone === "zonal"
+                        {type === "zonal"
                            ? "Zonal Executive Directory"
                            : "JCC Executive Directory"}
                      </p>
@@ -145,25 +135,26 @@ export default function Executives({ zone }: { zone: "zonal" | "jcc" }) {
                </div>
 
                <div className="flex items-center flex-col md:flex-row md:flex-wrap gap-6">
-                  {executives.map((exec) => (
-                     <div className="bg-surface p-4 w-full md:w-44 rounded-md shadow-sm flex flex-col items-center justify-center gap-2">
-                        <div className="w-30 aspect-square rounded-full">
-                           <img
-                              src={`https://images.unsplash.com/${exec.image}?w=1200&q=80`}
-                              className="w-30 aspect-square rounded-full object-cover"
-                              alt="executive_image"
-                           />
+                  {executives?.success &&
+                     executives.data.map((exec) => (
+                        <div className="bg-surface p-4 w-full md:w-44 rounded-md shadow-sm flex flex-col items-center justify-center gap-2">
+                           <div className="w-30 aspect-square rounded-full">
+                              <img
+                                 src={exec.image_url}
+                                 className="w-30 aspect-square rounded-full object-cover"
+                                 alt="executive_image"
+                              />
+                           </div>
+                           <div className="text-center mt-2">
+                              <p className="text-label_medium text-primary_text font-primary overflow-hidden overflow-ellipsis">
+                                 {exec.name}
+                              </p>
+                              <p className="text-secondary_text bg-background px-1 py-1 mt-1 border border-secondary_text/50 font-bold font-secondary text-label_small">
+                                 {exec.position}
+                              </p>
+                           </div>
                         </div>
-                        <div className="text-center">
-                           <p className="text-title_small text-primary_text font-primary font-bold">
-                              {exec.name}
-                           </p>
-                           <p className="text-secondary_text bg-background px-1 py-1 mt-1 border border-secondary_text/50 font-bold font-secondary text-label_small">
-                              {exec.position}
-                           </p>
-                        </div>
-                     </div>
-                  ))}
+                     ))}
                </div>
             </div>
          </section>

@@ -51,11 +51,11 @@ export const router = createBrowserRouter([
             children: [
                {
                   path: "zonal",
-                  element: <Executives zone="zonal" />,
+                  element: <Executives type="zonal" />,
                },
                {
                   path: "jcc",
-                  element: <Executives zone="jcc" />,
+                  element: <Executives type="jcc" />,
                },
             ],
          },

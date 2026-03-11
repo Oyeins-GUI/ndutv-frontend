@@ -5,31 +5,38 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Save } from "lucide-react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import createExecutive, { ExecutivePayload } from "@/services/create-executive";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { ApiResponse, type Error } from "./AuthProvider";
+import { getPositions } from "@/services/positions";
 
 function AddExecutive() {
    const queryClient = useQueryClient();
    const { register, handleSubmit, control } = useForm<ExecutivePayload>({
       defaultValues: {
          name: "",
-         position: "",
+         position_id: "",
          exec_type: "",
          year: "",
          image_url: [],
       },
    });
 
+   const { data: execPositions } = useQuery({
+      queryKey: ["exec_positions"],
+      queryFn: getPositions,
+      retry: false,
+   });
+
    const mutation = useMutation({
       mutationFn: createExecutive,
       onSuccess: (data: ApiResponse<ExecutivePayload>) => {
+         queryClient.invalidateQueries({ queryKey: ["executives"] });
          toast({
             title: "Executive added!",
             description: data?.message ?? "Success",
             className: "bg-gray-300 text-gray-900",
          });
-         queryClient.invalidateQueries({ queryKey: ["executives"] });
       },
       onError: (error: ApiResponse<Error>) => {
          toast({
@@ -43,6 +50,7 @@ function AddExecutive() {
    });
 
    const onSubmit: SubmitHandler<ExecutivePayload> = async (data) => {
+      // console.log("data: ", data);
       mutation.mutate(data);
    };
 
@@ -76,14 +84,39 @@ function AddExecutive() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                            <div className="space-y-2">
-                              <Label htmlFor="position">Position *</Label>
-                              <Input
-                                 id="position"
-                                 {...register("position", { required: true })}
-                                 placeholder="Enter position"
-                                 required
-                                 className=""
-                              />
+                              <Label htmlFor="position_id">Position *</Label>
+                              <div className="relative">
+                                 <Controller
+                                    name="position_id"
+                                    control={control}
+                                    render={({
+                                       field: { value, onChange },
+                                    }) => (
+                                       <select
+                                          id="position_id"
+                                          className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
+                                          required
+                                          value={value}
+                                          onChange={onChange}
+                                       >
+                                          <option value="" disabled>
+                                             Select a position
+                                          </option>
+                                          {execPositions?.success &&
+                                             execPositions.data.map(
+                                                (position) => (
+                                                   <option
+                                                      key={position.id}
+                                                      value={position.id}
+                                                   >
+                                                      {position.title}
+                                                   </option>
+                                                ),
+                                             )}
+                                       </select>
+                                    )}
+                                 />
+                              </div>
                            </div>
 
                            <div className="space-y-2">
@@ -106,12 +139,15 @@ function AddExecutive() {
                                  control={control}
                                  render={({ field: { value, onChange } }) => (
                                     <select
-                                       id="role"
+                                       id="exec_type"
                                        className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
                                        required
                                        value={value}
                                        onChange={onChange}
                                     >
+                                       <option value="" disabled>
+                                          Select executive type
+                                       </option>
                                        <option value="zonal">Zonal</option>
                                        <option value="jcc">JCC</option>
                                     </select>
