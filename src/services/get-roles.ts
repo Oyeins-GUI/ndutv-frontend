@@ -1,7 +1,7 @@
 import { BASE_URL } from "@/App";
 import { ApiResponse, type Error } from "@/components/AuthProvider";
 
-type Role = {
+type AdminRole = {
    id: string;
    role: string;
    description: string;
@@ -18,7 +18,7 @@ export async function getRoles() {
       throw new Error(error.message || "Failed to fetch executives");
    }
 
-   const data: ApiResponse<Role[]> = await res.json();
+   const data: ApiResponse<AdminRole[]> = await res.json();
 
    return data;
 }

@@ -45,6 +45,7 @@ import { ApiResponse, type Error } from "@/components/AuthProvider";
 import { toast } from "@/hooks/use-toast";
 import { getRoleBadgeVariant } from "@/utils/badge-variant";
 import { Badge } from "@/components/ui/badge";
+import { getRoles } from "@/services/get-roles";
 
 const UserManagement = () => {
    const queryClient = useQueryClient();
@@ -55,15 +56,21 @@ const UserManagement = () => {
       retry: false,
    });
 
+   const { data: adminRoles } = useQuery({
+      queryKey: ["admin_roles"],
+      queryFn: getRoles,
+      retry: false,
+   });
+
    const { handleSubmit, register, control } = useForm<{
       email: string;
       name: string;
-      role: string;
+      role_id: string;
    }>({
       defaultValues: {
          email: "",
          name: "",
-         role: "",
+         role_id: "",
       },
    });
 
@@ -91,7 +98,7 @@ const UserManagement = () => {
    const onSubmit: SubmitHandler<{
       email: string;
       name: string;
-      role: string;
+      role_id: string;
    }> = (data) => {
       mutation.mutate(data);
    };
@@ -161,27 +168,38 @@ const UserManagement = () => {
                                  </div>
 
                                  <div className="space-y-2">
-                                    <Label htmlFor="role">Role *</Label>
+                                    <Label htmlFor="role_id">Role *</Label>
                                     <div className="relative">
                                        <Controller
-                                          name="role"
+                                          name="role_id"
                                           control={control}
                                           render={({
                                              field: { value, onChange },
                                           }) => (
                                              <select
-                                                id="role"
+                                                id="role_id"
                                                 className="w-full h-10 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-1"
                                                 required
                                                 value={value}
                                                 onChange={onChange}
                                              >
-                                                <option value="super_admin">
-                                                   Super Admin
+                                                <option value="" disabled>
+                                                   Select a role
                                                 </option>
-                                                <option value="admin">
+                                                {adminRoles?.success &&
+                                                   adminRoles.data.map(
+                                                      (role) => (
+                                                         <option
+                                                            key={role.id}
+                                                            value={role.id}
+                                                         >
+                                                            {role.role}
+                                                         </option>
+                                                      ),
+                                                   )}
+                                                {/* <option value="basic_admin">
                                                    Admin
-                                                </option>
+                                                </option> */}
                                              </select>
                                           )}
                                        />

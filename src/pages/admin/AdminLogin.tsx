@@ -37,7 +37,6 @@ const AdminLogin = () => {
       password,
       remember_me,
    }) => {
-      console.log({ email, password, remember_me });
       await login({ email, password, remember_me });
    };
 

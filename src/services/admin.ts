@@ -10,6 +10,12 @@ export type AdminData = {
    last_login_at: string;
 };
 
+export type AdminPayload = {
+   email: string;
+   name: string;
+   role_id: string;
+};
+
 export async function getAdmins() {
    const res = await fetch(`${BASE_URL}/admin`, {
       credentials: "include",
@@ -82,9 +88,7 @@ export async function setPassword(credentials: {
    return data;
 }
 
-export default async function addAdmin(
-   adminData: Pick<AdminData, "email" | "name" | "role">,
-) {
+export default async function addAdmin(adminData: AdminPayload) {
    const res = await fetch(`${BASE_URL}/admin`, {
       method: "POST",
       credentials: "include",

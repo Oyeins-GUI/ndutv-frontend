@@ -64,7 +64,7 @@ export const router = createBrowserRouter([
             element: <AdminLogin />,
          },
          {
-            path: "jysq/admin/set-password",
+            path: "jysq/admin/new",
             element: <SetPassword />,
          },
          {
