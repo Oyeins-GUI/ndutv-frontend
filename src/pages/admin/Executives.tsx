@@ -1,5 +1,6 @@
 import AddExecPositionModal from "@/components/AddExecPositionModal";
 import AddExecutive from "@/components/AddExecutiveModal";
+import { ApiResponse } from "@/components/AuthProvider";
 import { Button } from "@/components/ui/button";
 import {
    Dialog,
@@ -23,15 +24,16 @@ import {
    TableHeader,
    TableRow,
 } from "@/components/ui/table";
-import { getExecutives } from "@/services/create-executive";
+import { toast } from "@/hooks/use-toast";
+import { deleteExecutive, getExecutives } from "@/services/create-executive";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MoreVertical, Pen, Trash2, UserPlus } from "lucide-react";
 
 export default function Executives() {
    const { data: executives } = useQuery({
       queryKey: ["executives"],
-      queryFn: getExecutives,
+      queryFn: () => getExecutives({ type: "", year: "" }),
       retry: false,
    });
 
@@ -121,7 +123,7 @@ export default function Executives() {
                            <TableCell>{executive.position}</TableCell>
                            <TableCell>{executive.year}</TableCell>
                            <TableCell>
-                              <ActionsMenu />
+                              <ActionsMenu id={executive.id} />
                            </TableCell>
                         </TableRow>
                      ))}
@@ -132,23 +134,57 @@ export default function Executives() {
    );
 }
 
-export function ActionsMenu() {
+export function ActionsMenu({ id }: { id: string }) {
+   const queryClient = useQueryClient();
+
+   const mutation = useMutation({
+      mutationFn: () => deleteExecutive(id),
+      onSuccess: (data: ApiResponse<unknown>) => {
+         queryClient.invalidateQueries({ queryKey: ["executives"] });
+         toast({
+            title: "Executive deleted!",
+            description: data?.message ?? "Success",
+            className: "bg-gray-300 text-gray-900",
+         });
+      },
+      onError: (error: ApiResponse<Error>) => {
+         toast({
+            title: "Error",
+            description:
+               error.message || "Something went wrong. Please try again.",
+            variant: "error",
+            className: "bg-red-500 text-gray-300 border-none",
+         });
+      },
+   });
+
    return (
       <DropdownMenu>
          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm">
+            <Button
+               className="hover:bg-primary_text hover:text-surface"
+               variant="ghost"
+               size="sm"
+            >
                <MoreVertical className="w-4 h-4" />
             </Button>
          </DropdownMenuTrigger>
-         <DropdownMenuContent align="end">
-            <DropdownMenuItem onSelect={() => console.log("Editing...")}>
-               <Pen className="w-4 h-4 mr-2 text-gray-300" /> Edit
+         <DropdownMenuContent
+            align="end"
+            className="bg-primary_text text-background"
+         >
+            <DropdownMenuItem onSelect={() => console.log(`Editing... ${id}`)}>
+               <Pen className="w-4 h-4 mr-2 text-background" /> Edit
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem onSelect={() => console.log("Delete")}>
-               <Trash2 className="w-4 h-4 mr-2 text-red-500" /> Delete
+            <DropdownMenuItem
+               className="bg-error/80 text-on_error hover:bg-error"
+               onSelect={() => mutation.mutate()}
+            >
+               <Trash2 className="w-4 h-4 mr-2 text-background" />{" "}
+               {mutation.isPending ? "Deleting..." : "Delete"}
             </DropdownMenuItem>
          </DropdownMenuContent>
       </DropdownMenu>

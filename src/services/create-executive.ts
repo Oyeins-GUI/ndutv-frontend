@@ -23,7 +23,7 @@ export async function getExecutives({
    type,
    year,
 }: {
-   type: "zonal" | "jcc";
+   type: "zonal" | "jcc" | "";
    year: string;
 }) {
    const res = await fetch(
@@ -88,6 +88,22 @@ export async function updateExecutive(data: ExecutivePayload) {
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(executiveData),
+   });
+
+   if (!res.ok) {
+      const error: ApiResponse<Error> = await res.json();
+      console.error(error);
+      throw new Error(error.message);
+   }
+
+   return res.json();
+}
+
+export async function deleteExecutive(id: string) {
+   const res = await fetch(`${BASE_URL}/admin/executives/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
    });
 
    if (!res.ok) {
