@@ -3,8 +3,11 @@ import { ApiResponse, LoginPayload, User } from "@/components/AuthProvider";
 import { fetcher } from "@/lib/fetcher";
 
 export async function refreshSession() {
-   const res = await fetch("/auth/refresh", {
+   const res = await fetch(`${BASE_URL}/auth/refresh`, {
       method: "POST",
+      headers: {
+         "Content-Type": "application/json",
+      },
       credentials: "include",
    });
 
@@ -33,17 +36,18 @@ export async function getUser(): Promise<User | null> {
 }
 
 export async function login(loginData: LoginPayload) {
-   const res = await fetcher(`${BASE_URL}/auth/login`, {
+   const res = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
       headers: {
          "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(loginData),
    });
 
    if (!res.ok) {
-      const error: ApiResponse<Error> = await res.json();
-      throw new Error(error.message || "Failed to fetch user data");
+      const error = await res.text();
+      throw new Error(error || "Failed to login user");
    }
 
    const data: ApiResponse<User> = await res.json();
@@ -51,8 +55,9 @@ export async function login(loginData: LoginPayload) {
 }
 
 export async function logout() {
-   const res = await fetcher(`${BASE_URL}/auth/logout`, {
+   const res = await fetch(`${BASE_URL}/auth/logout`, {
       method: "POST",
+      credentials: "include",
    });
 
    if (!res.ok) {

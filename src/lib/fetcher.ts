@@ -1,9 +1,11 @@
-import { ApiResponse } from "@/components/AuthProvider";
 import { refreshSession } from "@/services/auth";
 
 export async function fetcher(input: RequestInfo, init?: RequestInit) {
    let res = await fetch(input, {
       ...init,
+      headers: {
+         "Content-Type": "application/json",
+      },
       credentials: "include",
    });
 
@@ -22,19 +24,4 @@ export async function fetcher(input: RequestInfo, init?: RequestInit) {
    }
 
    return res;
-}
-
-export async function fetcherWithAuth(input: RequestInfo, init?: RequestInit) {
-   const res = await fetch(input, {
-      ...init,
-      credentials: "include",
-   });
-
-   if (!res.ok) {
-      const error: ApiResponse<Error> = await res.json();
-      console.error(error.message || "An error occurred while fetching data");
-      throw new Error(error.message || "An error occurred while fetching data");
-   }
-
-   return res.json();
 }
