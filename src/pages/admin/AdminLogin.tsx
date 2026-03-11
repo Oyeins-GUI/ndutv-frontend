@@ -37,7 +37,7 @@ const AdminLogin = () => {
       password,
       remember_me,
    }) => {
-      await login({ identifier: email, password, remember_me });
+      await login({ email, password, remember_me });
    };
 
    useEffect(() => {

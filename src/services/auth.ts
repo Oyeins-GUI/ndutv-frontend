@@ -1,10 +1,25 @@
 import { BASE_URL } from "@/App";
 import { ApiResponse, LoginPayload, User } from "@/components/AuthProvider";
+import { fetcher } from "@/lib/fetcher";
 
-export async function getUser(): Promise<User | null> {
-   const res = await fetch(`${BASE_URL}/auth/me`, {
+export async function refreshSession() {
+   const res = await fetch("/auth/refresh", {
       method: "POST",
       credentials: "include",
+   });
+
+   if (!res.ok) {
+      const error: ApiResponse<Error> = await res.json();
+      console.error(error.message || "Failed to refresh session");
+      throw new Error("Failed to refresh session");
+   }
+
+   return res.json();
+}
+
+export async function getUser(): Promise<User | null> {
+   const res = await fetcher(`${BASE_URL}/auth/me`, {
+      method: "POST",
    });
 
    if (!res.ok) {
@@ -18,9 +33,8 @@ export async function getUser(): Promise<User | null> {
 }
 
 export async function login(loginData: LoginPayload) {
-   const res = await fetch(`${BASE_URL}/auth/login`, {
+   const res = await fetcher(`${BASE_URL}/auth/login`, {
       method: "POST",
-      credentials: "include",
       headers: {
          "Content-Type": "application/json",
       },
@@ -37,9 +51,8 @@ export async function login(loginData: LoginPayload) {
 }
 
 export async function logout() {
-   const res = await fetch(`${BASE_URL}/auth/logout`, {
+   const res = await fetcher(`${BASE_URL}/auth/logout`, {
       method: "POST",
-      credentials: "include",
    });
 
    if (!res.ok) {
