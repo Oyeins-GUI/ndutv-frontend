@@ -19,6 +19,7 @@ import Zonal from "./pages/Zonal";
 import National from "./pages/National";
 import RootLayout from "./root-layout";
 import InitPassword from "./pages/admin/InitPassword";
+import AllArticles from "./pages/AllArticles";
 
 export const router = createBrowserRouter([
    {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
          {
             index: true,
             element: <Home />,
+         },
+         {
+            path: "news",
+            element: <AllArticles />,
          },
          {
             path: "zonal",
