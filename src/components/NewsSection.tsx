@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import NewsCard from "./NewsCard";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import { useArticle } from "@/hooks/use-article";
 
 interface NewsSectionProps {
    title: string;
@@ -8,68 +9,7 @@ interface NewsSectionProps {
 }
 
 const NewsSection = ({ title }: NewsSectionProps) => {
-   const sampleNews = [
-      {
-         id: "2",
-         title: "Faculty of Engineering Hosts Annual Tech Innovation Summit",
-         excerpt:
-            "Students showcase cutting-edge projects in AI, robotics, and sustainable technology. The summit attracts industry leaders and potential employers.",
-         image: "photo-1498050108023-c5249f4df085",
-         category: "National",
-         author: "Engineering Faculty",
-         date: "4 hours ago",
-      },
-      {
-         id: "3",
-         title: "Computer Science Department Launches New AI Research Lab",
-         excerpt:
-            "State-of-the-art facility equipped with high-performance computing resources will support student and faculty research in machine learning and artificial intelligence.",
-         image: "photo-1461749280684-dccba630e2f6",
-         category: "Zonal",
-         author: "CS Department",
-         date: "6 hours ago",
-      },
-      {
-         id: "4",
-         title: "State Government Increases Education Budget by 15%",
-         excerpt:
-            "The state government announces significant investment in higher education, with funds allocated for infrastructure development and scholarship programs.",
-         image: "photo-1466442929976-97f336a657be",
-         category: "National",
-         author: "State Correspondent",
-         date: "8 hours ago",
-      },
-      {
-         id: "5",
-         title: "New Student Housing Complex Opens on Campus",
-         excerpt:
-            "Modern accommodation facility provides comfortable living spaces for 500 students with study areas, recreational facilities, and high-speed internet.",
-         image: "photo-1555854877-bab0e564b8d5",
-         category: "Zonal",
-         author: "Campus Reporter",
-         date: "12 hours ago",
-      },
-      {
-         id: "6",
-         title: "National University Games Set to Begin Next Month",
-         excerpt:
-            "Niger Delta University will participate in various sporting events as part of the annual national university games competition.",
-         image: "photo-1571019613454-1cb2f99b2d8b",
-         category: "Zonal",
-         author: "Sports Desk",
-         date: "1 day ago",
-      },
-      {
-         id: "7",
-         title: "Research Grant Awards Announced for Faculty Members",
-         excerpt:
-            "University faculty members receive substantial research grants to support innovative projects in environmental science and renewable energy.",
-         image: "photo-1532094349884-543bc11b234d",
-         category: "National",
-         author: "Research Office",
-         date: "1 day ago",
-      },
-   ];
+   const { articles, isLoading } = useArticle();
 
    return (
       <section className="py-12 bg-surface transition-colors duration-300">
@@ -92,16 +32,28 @@ const NewsSection = ({ title }: NewsSectionProps) => {
                </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-               {sampleNews.map((news, index) => (
-                  <div
-                     key={news.id}
-                     className="animate-fade-in"
-                     style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                     <NewsCard {...news} />
+            <div className="container mx-auto px-4 py-8">
+               {isLoading ? (
+                  <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+                     <div className="w-9 aspect-square rounded-full border-4 border-primary_text border-t-transparent animate-spin"></div>
                   </div>
-               ))}
+               ) : articles.length === 0 ? (
+                  <div className="min-h-screen flex items-center justify-center text-center py-10 text-primary_text bg-background">
+                     No national article available
+                  </div>
+               ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                     {articles.map((article, index) => (
+                        <div
+                           key={article.admin_id}
+                           className="animate-fade-in"
+                           style={{ animationDelay: `${index * 0.1}s` }}
+                        >
+                           <NewsCard {...article} />
+                        </div>
+                     ))}
+                  </div>
+               )}
             </div>
          </div>
       </section>
