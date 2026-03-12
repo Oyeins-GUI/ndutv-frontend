@@ -9,8 +9,7 @@ import { AuthProvider } from "./components/AuthProvider";
 import { ArticleProvider } from "./components/ArticleProvider";
 
 const queryClient = new QueryClient();
-export const BASE_URL =
-   "https://ndu-tv-backend-production-ecd7.up.railway.app/v1";
+export const BASE_URL = "https://api.nanszoneb.org/v1";
 
 const App = () => (
    <QueryClientProvider client={queryClient}>
