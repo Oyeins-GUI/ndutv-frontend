@@ -27,7 +27,7 @@ const menuItems = [
       title: "Overview",
       url: "/jysq/admin/dashboard",
       icon: LayoutDashboard,
-      roles: ["super_admin", "admin"],
+      roles: ["super_admin", "basic_admin"],
    },
    // {
    //    title: "Platform Management",
@@ -51,7 +51,7 @@ const menuItems = [
       title: "Content Management",
       url: "/jysq/admin/content",
       icon: FileText,
-      roles: ["super_admin", "admin"],
+      roles: ["super_admin", "basic_admin"],
    },
    // {
    //    title: "Analytics",
@@ -63,7 +63,7 @@ const menuItems = [
       title: "Settings",
       url: "/jysq/admin/settings",
       icon: Settings,
-      roles: ["super_admin"],
+      roles: ["super_admin", "basic_admin"],
    },
 ];
 

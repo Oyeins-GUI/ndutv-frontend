@@ -85,7 +85,7 @@ export const router = createBrowserRouter([
                   path: "dashboard",
                   element: <Overview />,
                   handle: {
-                     allowedRoles: ["super_admin", "admin"],
+                     allowedRoles: ["super_admin", "basic_admin"],
                   },
                },
                {
@@ -102,7 +102,7 @@ export const router = createBrowserRouter([
                   path: "content",
                   element: <ContentManagement />,
                   handle: {
-                     allowedRoles: ["super_admin", "admin"],
+                     allowedRoles: ["super_admin", "basic_admin"],
                   },
                },
                {
@@ -113,13 +113,13 @@ export const router = createBrowserRouter([
                {
                   path: "analytics",
                   element: <Analytics />,
-                  handle: { allowedRoles: ["super_admin", "admin"] },
+                  handle: { allowedRoles: ["super_admin", "basic_admin"] },
                },
                {
                   path: "settings",
                   element: <Settings />,
                   handle: {
-                     allowedRoles: ["super_admin", "admin"],
+                     allowedRoles: ["super_admin", "basic_admin"],
                   },
                },
             ],

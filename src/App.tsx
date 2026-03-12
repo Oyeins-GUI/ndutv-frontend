@@ -6,6 +6,7 @@ import { RouterProvider } from "react-router";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { router } from "./router";
 import { AuthProvider } from "./components/AuthProvider";
+import { ArticleProvider } from "./components/ArticleProvider";
 
 const queryClient = new QueryClient();
 export const BASE_URL =
@@ -14,13 +15,15 @@ export const BASE_URL =
 const App = () => (
    <QueryClientProvider client={queryClient}>
       <AuthProvider>
-         <ThemeProvider defaultTheme="system" storageKey="nans-theme">
-            <TooltipProvider>
-               <Toaster />
-               <Sonner />
-               <RouterProvider router={router} />
-            </TooltipProvider>
-         </ThemeProvider>
+         <ArticleProvider>
+            <ThemeProvider defaultTheme="system" storageKey="nans-theme">
+               <TooltipProvider>
+                  <Toaster />
+                  <Sonner />
+                  <RouterProvider router={router} />
+               </TooltipProvider>
+            </ThemeProvider>
+         </ArticleProvider>
       </AuthProvider>
    </QueryClientProvider>
 );

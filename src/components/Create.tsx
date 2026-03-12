@@ -8,16 +8,22 @@ import ReactQuill from "react-quill-new";
 import { Button } from "./ui/button";
 import PublishingInfo from "./PublishingInfo";
 import NewsGuidelines from "./NewsGuidelines";
-import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ApiResponse } from "./AuthProvider";
+import { Article } from "./ArticleProvider";
+import { useToast } from "@/hooks/use-toast";
+import { createArticle } from "@/services/articles";
+import { useArticle } from "@/hooks/use-article";
 
-type NewsData = {
-   title: string;
+export type NewsData = {
+   author_name: string;
    content: string;
-   category: "zonal" | "national";
-   author: string;
-   coverImage: File[];
    summary: string;
+   title: string;
+   category: "ZONAL" | "NATIONAL";
+   is_featured: boolean;
+   image_url: File[] | "";
 };
 
 const modules = {
@@ -30,24 +36,53 @@ const modules = {
 };
 
 export default function Create() {
-   const [isLoading] = useState(false);
    const categories = ["zonal", "national"];
    const { user } = useAuth();
+   const { isLoading } = useArticle();
+   const queryClient = useQueryClient();
+   const { toast } = useToast();
 
-   const { register, control, handleSubmit, watch } = useForm<NewsData>({
+   const { register, control, handleSubmit, watch } = useForm<
+      Omit<NewsData, "is_featured">
+   >({
       defaultValues: {
          title: "",
-         category: "zonal",
-         author: user?.name || "",
+         category: "ZONAL",
+         author_name: user?.name || "",
          summary: "",
          content: "",
-         coverImage: undefined,
+         // is_featured: false,
+         image_url: [],
       },
    });
    const values = watch();
 
-   const onSubmit: SubmitHandler<NewsData> = async (data) => {
-      console.log(data);
+   const createArticleMutation = useMutation({
+      mutationFn: createArticle,
+      onSuccess: (data: ApiResponse<Article[]>) => {
+         queryClient.setQueryData<Article[]>(["articles"], (old) =>
+            old ? [...data.data, ...old] : [...data.data],
+         );
+         queryClient.invalidateQueries({ queryKey: ["articles"] });
+         toast({
+            title: "Successfully sent for approval",
+            description: data.message,
+         });
+      },
+      onError: (error: ApiResponse<Error>) => {
+         toast({
+            title: "Failed to send for approval",
+            description: error.message || "Something went wrong",
+            variant: "error",
+         });
+      },
+   });
+
+   const onSubmit: SubmitHandler<Omit<NewsData, "is_featured">> = async (
+      data,
+   ) => {
+      // console.log(data);
+      createArticleMutation.mutate(data);
    };
 
    return (
@@ -82,12 +117,12 @@ export default function Create() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                            <div className="space-y-2">
-                              <Label htmlFor="author">Author *</Label>
+                              <Label htmlFor="author_name">Author *</Label>
                               <div className="relative">
                                  <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                                  <Input
-                                    id="author"
-                                    {...register("author")}
+                                    id="author_name"
+                                    {...register("author_name")}
                                     disabled
                                     className="pl-10"
                                  />
@@ -126,20 +161,38 @@ export default function Create() {
                            </div>
                         </div>
 
-                        <div className="space-y-2">
-                           <Label htmlFor="imageUrl">Featured Image URL</Label>
-                           <div className="relative">
-                              <Upload className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                              <Input
-                                 type="file"
-                                 accept="image/*"
-                                 {...register("coverImage", {
-                                    required: true,
-                                 })}
-                                 className="pl-10"
-                              />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                           <div className="space-y-2">
+                              <Label htmlFor="imageUrl">
+                                 Featured Image URL
+                              </Label>
+                              <div className="relative">
+                                 <Upload className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                 <Input
+                                    type="file"
+                                    accept="image/*"
+                                    {...register("image_url", {
+                                       required: true,
+                                    })}
+                                    className="pl-10"
+                                 />
+                              </div>
                            </div>
                         </div>
+
+                        {/* <div className="space-y-2">
+                           <label className="flex items-center">
+                              <input
+                                 type="checkbox"
+                                 {...register("is_featured")}
+                                 className="rounded border-gray-300 text-red-600 focus:ring-red-500"
+                              />
+                              <span className="ml-2 text-gray-400">
+                                 Is Featured? If checked appears as the first
+                                 new on the home page
+                              </span>
+                           </label>
+                        </div> */}
 
                         <div className="space-y-2">
                            <Label htmlFor="summary">Article Summary *</Label>

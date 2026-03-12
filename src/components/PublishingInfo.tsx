@@ -7,7 +7,7 @@ export default function PublishingInfo({
    category,
    user,
 }: {
-   category: "zonal" | "national";
+   category: "ZONAL" | "NATIONAL";
    user: User | null;
 }) {
    return (

@@ -19,7 +19,7 @@ export type User = {
    last_login_at: string | null;
 };
 
-export type UserRole = "super_admin" | "admin";
+export type UserRole = "super_admin" | "basic_admin";
 
 export type Error = {
    code: string;
