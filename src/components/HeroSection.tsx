@@ -1,38 +1,25 @@
+import { useArticle } from "@/hooks/use-article";
 import { ArrowRightIcon, BellAlertIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router";
 
 const HeroSection = () => {
-   const featuredNews = {
-      id: "1",
-      title: "Website Launch/Webinar: NANS South-South Zone Unveils New Digital Platform",
-      excerpt:
-         "The National Association of Nigerian Students (NANS) South-South Zone is proud to announce the launch of its new website, designed to enhance communication and engagement with students across the region. The website features a modern design, user-friendly interface, and a wealth of resources for students. To celebrate the launch, NANS South-South Zone will be hosting a webinar on [Date] at [Time], where members can learn about the new features and how to navigate the platform effectively.",
-      image: "photo-1605810230434-7631ac76ec81",
-      category: "ZONAL",
-      author: "NANS Press Team",
-      date: "2 hours ago",
-   };
+   const { articles } = useArticle();
+   const featuredArticle =
+      articles
+         .filter((article) => article.is_featured)
+         .sort(
+            (a, b) =>
+               new Date(b.created_at).getTime() -
+               new Date(a.created_at).getTime(),
+         ) ?? null;
 
-   const sideStories = [
-      {
-         id: "2",
-         title: "Faculty of Engineering Hosts Annual Tech Innovation Summit",
-         category: "Zonal",
-         date: "4 hours ago",
-      },
-      {
-         id: "3",
-         title: "Computer Science Department Launches New AI Research Lab",
-         category: "National",
-         date: "6 hours ago",
-      },
-      {
-         id: "4",
-         title: "State Government Increases Education Budget by 15%",
-         category: "Zonal",
-         date: "8 hours ago",
-      },
-   ];
+   if (!articles || articles.length === 0) {
+      return (
+         <div className="min-h-screen flex items-center justify-center text-center py-10 text-primary_text bg-background">
+            No articles available
+         </div>
+      );
+   }
 
    return (
       <section className="bg-background py-8">
@@ -42,35 +29,35 @@ const HeroSection = () => {
                {/* Link to view news here */}
                <div className="lg:col-span-2">
                   <Link
-                     to={`/${featuredNews.category.toLowerCase()}/${featuredNews.id}`}
+                     to={`/${featuredArticle[0]?.category.toLowerCase()}/${featuredArticle[0]?.admin_id}`}
                      className="group cursor-pointer"
                   >
                      <div className="relative overflow-hidden mb-4">
                         <img
-                           src={`https://images.unsplash.com/${featuredNews.image}?w=800&q=80`}
-                           alt={featuredNews.title}
+                           src={featuredArticle[0]?.image_url}
+                           alt={featuredArticle[0]?.title}
                            className="w-full h-64 md:h-80 object-cover group-hover:scale-105 transition-transform duration-700 rounded-lg"
                         />
                         <div className="absolute top-4 left-4">
                            <p className="bg-accent text-primary_text px-3 py-1 text-label_medium font-secondary font-medium">
-                              {featuredNews.category}
+                              {featuredArticle[0]?.category}
                            </p>
                         </div>
                      </div>
                      <h1 className="text-headline_medium md:text-headline_large font-primary font-bold text-primary_text mb-4 leading-tight group-hover:text-dark-gold transition-colors">
-                        {featuredNews.title}
+                        {featuredArticle[0]?.title}
                      </h1>
                      <p className="text-secondary_text font-primary text-body_large leading-relaxed mb-4">
-                        {featuredNews.excerpt}
+                        {featuredArticle[0]?.summary}
                      </p>
                      <div className="flex items-center justify-between text-label_large text-primary_text font-secondary">
                         <div className="flex flex-col">
                            <span className="font-medium">
-                              {featuredNews.author}
+                              {featuredArticle[0]?.author_name}
                            </span>
                            {/* <span className="mx-2">•</span> */}
                            <span className="uppercase text-label_small">
-                              {featuredNews.date}
+                              {featuredArticle[0]?.created_at}
                            </span>
                         </div>
 
@@ -96,13 +83,13 @@ const HeroSection = () => {
                      <BellAlertIcon className="size-5 text-accent" />
                   </div>
                   <div>
-                     {sideStories.map((story) => (
+                     {articles.slice(1, 5).map((article) => (
                         <Link
-                           to={`/${story.category.toLowerCase()}/${story.id}`}
-                           key={story.id}
+                           to={`/${article.category.toLowerCase()}/${article.admin_id}`}
+                           key={article.admin_id}
                         >
                            <article
-                              key={story.id}
+                              key={article.admin_id}
                               className="group cursor-pointer mb-2"
                            >
                               <div className="flex items-start space-x-3">
@@ -110,13 +97,13 @@ const HeroSection = () => {
                                  <div>
                                     <p className="flex items-center gap-1 text-label_small text-accent uppercase tracking-wide mb-1 font-secondary font-medium">
                                        <span>•</span>
-                                       <span>{story.category}</span>
+                                       <span>{article.category}</span>
                                     </p>
                                     <h3 className="text-title_medium font-secondary font-medium text-primary_text leading-tight transition-colors">
-                                       {story.title}
+                                       {article.title}
                                     </h3>
                                     <span className="text-body_small text-secondary_text">
-                                       {story.date}
+                                       {article.created_at}
                                     </span>
                                  </div>
                               </div>

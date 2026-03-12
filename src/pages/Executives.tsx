@@ -11,14 +11,13 @@ import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
 export default function Executives({ type }: { type: "zonal" | "jcc" }) {
-   // send a fetch with the zone
    const [searchParams, setSearchParams] = useSearchParams();
    const year = searchParams.get("year") || new Date().getFullYear().toString();
 
    const [isFilterOpen, setIsFilterOpen] = useState(false);
    const dropdownRef = useRef<HTMLDivElement>(null);
 
-   const { data: executives } = useQuery({
+   const { data: executives, isLoading } = useQuery({
       queryKey: ["executives", type, year],
       queryFn: () => getExecutives({ type, year }),
       retry: false,
@@ -35,20 +34,17 @@ export default function Executives({ type }: { type: "zonal" | "jcc" }) {
       }
 
       document.addEventListener("click", handleClickOutside);
-
-      return () => {
-         document.removeEventListener("click", handleClickOutside);
-      };
+      return () => document.removeEventListener("click", handleClickOutside);
    }, []);
 
    function updateFilter(key: string, value: string) {
       const params = new URLSearchParams(searchParams);
-
       if (value) params.set(key, value);
       else params.delete(key);
-
       setSearchParams(params);
    }
+
+   const execList = executives?.success ? executives.data : [];
 
    return (
       <div className="min-h-screen">
@@ -99,7 +95,6 @@ export default function Executives({ type }: { type: "zonal" | "jcc" }) {
 
                      {isFilterOpen && (
                         <div className="absolute right-0 top-[calc(100%+0.25rem)] p-4 rounded-md bg-surface text-primary_text shadow-xl w-56 space-y-4">
-                           {/* Filter by Year */}
                            <div>
                               <p className="text-label_small font-semibold mb-2 uppercase text-secondary_text">
                                  Filter by Year
@@ -135,14 +130,25 @@ export default function Executives({ type }: { type: "zonal" | "jcc" }) {
                </div>
 
                <div className="flex items-center flex-col md:flex-row md:flex-wrap gap-6">
-                  {executives?.success &&
-                     executives.data.map((exec) => (
-                        <div className="bg-surface p-4 w-full md:w-44 rounded-md shadow-sm flex flex-col items-center justify-center gap-2">
+                  {isLoading ? (
+                     <div className="min-h-1/2 bg-background text-foreground flex items-center justify-center">
+                        <div className="w-9 aspect-square rounded-full border-4 border-primary_text border-t-transparent animate-spin"></div>
+                     </div>
+                  ) : execList.length === 0 ? (
+                     <div className="min-h-1/2 flex items-center justify-center text-center py-10 text-primary_text bg-background">
+                        No executives available
+                     </div>
+                  ) : (
+                     execList.map((exec) => (
+                        <div
+                           key={exec.id}
+                           className="bg-surface p-4 w-full md:w-44 rounded-md shadow-sm flex flex-col items-center justify-center gap-2"
+                        >
                            <div className="w-30 aspect-square rounded-full">
                               <img
                                  src={exec.image_url}
                                  className="w-30 aspect-square rounded-full object-cover"
-                                 alt="executive_image"
+                                 alt={exec.name}
                               />
                            </div>
                            <div className="text-center mt-2">
@@ -154,7 +160,8 @@ export default function Executives({ type }: { type: "zonal" | "jcc" }) {
                               </p>
                            </div>
                         </div>
-                     ))}
+                     ))
+                  )}
                </div>
             </div>
          </section>
