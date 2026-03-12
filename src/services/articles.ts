@@ -1,6 +1,6 @@
 import { BASE_URL } from "@/App";
 import { Article } from "@/components/ArticleProvider";
-import { ApiResponse } from "@/components/AuthProvider";
+import { ApiResponse, UserRole } from "@/components/AuthProvider";
 import { NewsData } from "@/components/Create";
 import uploadImage from "./upload-image";
 
@@ -54,6 +54,58 @@ export async function createArticle(article: Omit<NewsData, "is_featured">) {
    }
 
    const data: ApiResponse<Article[]> = await res.json();
+
+   return data;
+}
+
+export async function getAllAdminArticles(role?: UserRole) {
+   const res = await fetch(
+      `${BASE_URL}/articles/${role && role === "super_admin" ? "super-admin" : "my-articles"}`,
+      {
+         credentials: "include",
+      },
+   );
+
+   if (!res.ok) {
+      const error: ApiResponse<Error> = await res.json();
+      console.log("article error", error);
+      throw new Error(error.message || "Failed to fetch articles");
+   }
+
+   const data: ApiResponse<Article[]> = await res.json();
+
+   return data;
+}
+
+export async function getArticleById(id: string) {
+   const res = await fetch(`${BASE_URL}/articles/${id}`, {
+      credentials: "include",
+   });
+
+   if (!res.ok) {
+      const error: ApiResponse<Error> = await res.json();
+      console.log("article error", error);
+      throw new Error(error.message || "Failed to fetch articles");
+   }
+
+   const data: ApiResponse<Article> = await res.json();
+
+   return data;
+}
+
+export async function updateArticle(id: string) {
+   const res = await fetch(`${BASE_URL}/articles/${id}`, {
+      method: "PATCH",
+      credentials: "include",
+   });
+
+   if (!res.ok) {
+      const error: ApiResponse<Error> = await res.json();
+      console.log("article error", error);
+      throw new Error(error.message || "Failed to fetch articles");
+   }
+
+   const data: ApiResponse<Article> = await res.json();
 
    return data;
 }

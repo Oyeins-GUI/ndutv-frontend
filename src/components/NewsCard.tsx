@@ -6,7 +6,7 @@ const NewsCard = (article: Article) => {
    return (
       <article className="group border border-divider rounded-lg hover:shadow-xl dark:hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] animate-fade-in">
          <Link
-            to={`/${article.category.toLowerCase()}/${article.admin_id}`}
+            to={`/${article.category.toLowerCase()}/${article.id}`}
             className="block"
          >
             <div className="relative overflow-hidden rounded-t-lg">

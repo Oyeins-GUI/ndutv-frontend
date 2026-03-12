@@ -112,5 +112,5 @@ export async function deleteExecutive(id: string) {
       throw new Error(error.message);
    }
 
-   return res.json();
+   return;
 }

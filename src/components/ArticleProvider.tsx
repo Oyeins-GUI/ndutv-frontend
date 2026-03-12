@@ -11,6 +11,7 @@ export type ArticleContextType = {
 };
 
 export type Article = {
+   id: string;
    admin_id: string;
    author_name: string;
    title: string;
@@ -39,7 +40,7 @@ export function ArticleProvider({
    } = useQuery({
       queryKey: ["articles"],
       queryFn: () => getArticles({}),
-      staleTime: 5 * 60 * 1000,
+      // staleTime: 5 * 60 * 1000,
    });
 
    useEffect(() => {

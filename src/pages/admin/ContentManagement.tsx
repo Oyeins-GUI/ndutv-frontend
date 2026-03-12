@@ -2,28 +2,41 @@ import "react-quill-new/dist/quill.snow.css";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Create from "@/components/Create";
 import { useAuth } from "@/hooks/use-auth";
-import { useArticle } from "@/hooks/use-article";
 import { Article } from "@/components/ArticleProvider";
+import { useQuery } from "@tanstack/react-query";
+import { getAllAdminArticles } from "@/services/articles";
+import { useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const ContentManagement = () => {
    const { user } = useAuth();
-   const { articles } = useArticle();
+   const { toast } = useToast();
 
-   const approvedArticles = articles.filter(
-      (article) => article.is_approved === true,
-   );
-   const unApprovedArticles = articles.filter(
-      (article) => article.is_approved === false,
-   );
-   const userArticles = articles.filter(
-      (article) => article.author_name === user?.name,
-   );
-   const approvedArticleForUser = userArticles.filter(
-      (article) => article.is_approved === true,
-   );
-   const unApprovedArticleForUser = userArticles.filter(
-      (article) => article.is_approved === false,
-   );
+   const {
+      data: articles,
+      isLoading,
+      error,
+   } = useQuery({
+      queryKey: ["articles"],
+      queryFn: () => getAllAdminArticles(user?.role),
+      // staleTime: 5 * 60 * 1000,
+   });
+
+   useEffect(() => {
+      if (error) {
+         toast({
+            title: "Failed to fetch articles",
+            description: "Something went wrong",
+            variant: "error",
+         });
+      }
+   }, [error, toast]);
+
+   const unapprovedArticles =
+      articles?.data.filter((article) => !article.is_approved) || [];
+
+   const approvedArticles =
+      articles?.data.filter((article) => article.is_approved) || [];
 
    return (
       <div className="p-6">
@@ -50,49 +63,63 @@ const ContentManagement = () => {
                <TabsContent value="create" className="space-y-6">
                   <Create />
                </TabsContent>
-               <TabsContent value="for_review" className="space-y-6">
-                  {unApprovedArticles.length > 0 ? (
-                     unApprovedArticles.map((article) => (
-                        <ArticleCard article={article} />
-                     ))
-                  ) : (
-                     <p className="text-gray-500">No articles for review</p>
-                  )}
-               </TabsContent>
-               <TabsContent value="unapproved" className="space-y-6">
-                  {user?.role === "super_admin" ? (
-                     unApprovedArticles.length > 0 ? (
-                        unApprovedArticles.map((article) => (
-                           <ArticleCard article={article} />
-                        ))
-                     ) : (
-                        <p className="text-gray-500">No unapproved article</p>
-                     )
-                  ) : unApprovedArticleForUser.length > 0 ? (
-                     unApprovedArticleForUser.map((article) => (
-                        <ArticleCard article={article} />
-                     ))
-                  ) : (
-                     <p className="text-gray-500">No unapproved article</p>
-                  )}
-               </TabsContent>
-               <TabsContent value="approved" className="space-y-6">
-                  {user?.role === "super_admin" ? (
-                     approvedArticles.length > 0 ? (
-                        approvedArticles.map((article) => (
-                           <ArticleCard article={article} />
-                        ))
-                     ) : (
-                        <p className="text-gray-500">No approved article</p>
-                     )
-                  ) : approvedArticles.length > 0 ? (
-                     approvedArticleForUser.map((article) => (
-                        <ArticleCard article={article} />
-                     ))
-                  ) : (
-                     <p className="text-gray-500">No approved article</p>
-                  )}
-               </TabsContent>
+               {!isLoading ? (
+                  <>
+                     <TabsContent value="for_review" className="space-y-6">
+                        {user?.role === "super_admin" &&
+                           (unapprovedArticles.length > 0 ? (
+                              unapprovedArticles.map((article) => (
+                                 <ArticleCard
+                                    key={article.admin_id}
+                                    article={article}
+                                 />
+                              ))
+                           ) : (
+                              <p className="text-gray-500">
+                                 No unapproved article
+                              </p>
+                           ))}
+                     </TabsContent>
+                     <TabsContent value="unapproved" className="space-y-6">
+                        {user?.role === "super_admin" &&
+                           (unapprovedArticles.length > 0 ? (
+                              unapprovedArticles.map((article) => (
+                                 <ArticleCard
+                                    key={article.admin_id}
+                                    article={article}
+                                 />
+                              ))
+                           ) : (
+                              <p className="text-gray-500">
+                                 No unapproved article
+                              </p>
+                           ))}
+                     </TabsContent>
+                     <TabsContent value="approved" className="space-y-6">
+                        {user?.role === "super_admin" ? (
+                           approvedArticles.length > 0 ? (
+                              approvedArticles.map((article) => (
+                                 <ArticleCard article={article} />
+                              ))
+                           ) : (
+                              <p className="text-gray-500">
+                                 No approved article
+                              </p>
+                           )
+                        ) : approvedArticles.length > 0 ? (
+                           approvedArticles.map((article) => (
+                              <ArticleCard article={article} />
+                           ))
+                        ) : (
+                           <p className="text-gray-500">No approved article</p>
+                        )}
+                     </TabsContent>
+                  </>
+               ) : (
+                  <div className="min-h-1/2 bg-background text-foreground flex items-center justify-center">
+                     <div className="w-9 aspect-square rounded-full border-4 border-primary_text border-t-transparent animate-spin"></div>
+                  </div>
+               )}
             </Tabs>
          </div>
       </div>

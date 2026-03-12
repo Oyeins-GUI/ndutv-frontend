@@ -39,7 +39,7 @@ export default function AllArticles() {
                   </div>
                ) : articles.length === 0 ? (
                   <div className="min-h-screen flex items-center justify-center text-center py-10 text-primary_text bg-background">
-                     No zonal article available
+                     No article available
                   </div>
                ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

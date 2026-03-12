@@ -139,11 +139,11 @@ export function ActionsMenu({ id }: { id: string }) {
 
    const mutation = useMutation({
       mutationFn: () => deleteExecutive(id),
-      onSuccess: (data: ApiResponse<unknown>) => {
+      onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: ["executives"] });
          toast({
             title: "Executive deleted!",
-            description: data?.message ?? "Success",
+            description: "Deleted successfully",
             className: "bg-gray-300 text-gray-900",
          });
       },
