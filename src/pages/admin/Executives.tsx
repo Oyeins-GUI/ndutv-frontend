@@ -52,7 +52,7 @@ export default function Executives() {
             <div className="flex items-center space-x-2">
                <Dialog>
                   <DialogTrigger asChild>
-                     <Button className="gap-2 text-label_small">
+                     <Button className="gap-2 text-label_small bg-background border">
                         <PlusIcon className="w-2 h-2" />
                         Executive Position
                      </Button>
@@ -68,7 +68,7 @@ export default function Executives() {
 
                <Dialog>
                   <DialogTrigger asChild>
-                     <Button className="gap-2 text-label_small">
+                     <Button className="gap-2 text-label_small bg-background border">
                         <UserPlus className="w-2 h-2" />
                         Add Executive
                      </Button>

@@ -21,6 +21,7 @@ import {
    useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/use-auth";
+import ThemeToggle from "../ThemeToggle";
 
 const menuItems = [
    {
@@ -152,6 +153,7 @@ function Header() {
             </Link>
 
             <div className="ml-auto flex items-center gap-4">
+               <ThemeToggle />
                <Button
                   onClick={logout}
                   variant="outline"
