@@ -81,7 +81,7 @@ const Header = () => {
                                  className={({ isActive }) =>
                                     `text-sm font-medium transition ${
                                        isActive
-                                          ? "text-primary_text"
+                                          ? "text-primary_text "
                                           : "text-primary_text hover:text-secondary_text"
                                     }`
                                  }
@@ -176,9 +176,9 @@ const Header = () => {
                               {link.children ? (
                                  <button
                                     onClick={() => toggleNavDropdown(link.to)}
-                                    className="text-title_medium text-primary_text transition-all duration-300 text-sm tracking-wide transform p-3 hover:bg-primary_text hover:text-primary rounded-lg flex items-center justify-between"
+                                    className="text-title_medium text-primary_text transition-all duration-300 text-sm tracking-wide transform p-3 hover:bg-background hover:text-primary rounded-lg flex items-center justify-between"
                                  >
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2 ">
                                        {link.icon && (
                                           <link.icon className="w-5 h-5" />
                                        )}
@@ -199,7 +199,7 @@ const Header = () => {
                                     className={({ isActive }) =>
                                        `flex items-center gap-2 p-3 rounded-lg text-sm transition-all duration-300 ${
                                           isActive
-                                             ? "bg-primary_text text-primary"
+                                             ? "bg-primary_text text-background"
                                              : "text-primary_text hover:bg-primary_text hover:text-primary"
                                        }`
                                     }
@@ -231,7 +231,7 @@ const Header = () => {
                                              className={({ isActive }) =>
                                                 `text-sm rounded-md px-2 py-1 ${
                                                    isActive
-                                                      ? "bg-primary_text text-primary"
+                                                      ? "bg-primary_text text-background"
                                                       : "text-secondary_text hover:text-primary_text"
                                                 }`
                                              }
