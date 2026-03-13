@@ -39,7 +39,7 @@ const Header = () => {
    };
 
    return (
-      <header className="bg-surface shadow-sm z-50 transition-colors duration-300 font-secondary">
+      <header className="bg-background shadow-sm z-50 transition-colors duration-300 font-secondary">
          <div className="container mx-auto px-4 max-w-7xl">
             {/* Top bar with logo and main nav */}
             <div className="flex items-center justify-between py-3 min-h-[60px]">
@@ -50,7 +50,7 @@ const Header = () => {
                   <img src="/logo.png" className="w-20" />
 
                   <div className="flex flex-col">
-                     <span className="opacity-85 text-title_large font-bold uppercase text-primary-text tracking-tight transition-colors duration-300">
+                     <span className="opacity-85 text-title_large font-bold uppercase text-primary_text tracking-tight transition-colors duration-300">
                         Nans Zone B
                      </span>
                      <span className="text-secondary_text uppercase text-label_small -mt-0.5 transition-colors duration-300">

@@ -13,10 +13,9 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSearchParams } from "react-router";
 import { ApiResponse, UserRole } from "@/components/AuthProvider";
-import { formatDistanceToNow } from "date-fns";
 
 import { X } from "lucide-react";
-// import { Article } from "@/components/ArticleProvider";
+import { timeAgo } from "@/utils/time";
 
 const ContentManagement = () => {
    const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
@@ -314,9 +313,6 @@ export function ArticleCard({
    );
 }
 
-function timeAgo(date: string) {
-   return formatDistanceToNow(new Date(date), { addSuffix: true });
-}
 interface ArticleDialogProps {
    article: Article | null;
    open: boolean;

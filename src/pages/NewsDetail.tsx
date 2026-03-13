@@ -11,6 +11,7 @@ import { getArticleById } from "@/services/articles";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { timeAgo } from "@/utils/time";
 
 const NewsDetail = () => {
    const { id } = useParams();
@@ -21,9 +22,10 @@ const NewsDetail = () => {
       isLoading,
       error,
    } = useQuery({
-      queryKey: ["articles"],
+      queryKey: ["article", id],
       queryFn: () => getArticleById(id || ""),
       staleTime: 5 * 60 * 1000,
+      enabled: !!id,
    });
 
    useEffect(() => {
@@ -101,7 +103,10 @@ const NewsDetail = () => {
                                     {article?.data.author_name}
                                  </p>
                                  <p className="text-body_small text-secondary_text">
-                                    Published {article?.data.created_at} •
+                                    Published •{" "}
+                                    {timeAgo(
+                                       article?.data.created_at as string,
+                                    )}
                                  </p>
                               </div>
                            </div>
@@ -120,7 +125,7 @@ const NewsDetail = () => {
                      {/* Article Content */}
                      <div className="bg-white mb-12">
                         <div
-                           className="prose prose-lg max-w-none bg-background text-primary_text leading-relaxed"
+                           className="prose prose-lg max-w-full break-words bg-background text-primary_text leading-relaxed"
                            dangerouslySetInnerHTML={{
                               __html: article?.data.content as string,
                            }}
