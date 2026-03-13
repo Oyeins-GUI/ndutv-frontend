@@ -112,6 +112,18 @@ export default async function addAdmin(adminData: AdminPayload) {
    return data;
 }
 
-export function deleteAdmin(adminId: string) {
-   return adminId;
+export async function deleteAdmin(id: string) {
+   const res = await fetch(`${BASE_URL}/admin/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+   });
+
+   if (!res.ok) {
+      const error: ApiResponse<Error> = await res.json();
+      console.error(error);
+      throw new Error(error.message);
+   }
+
+   return;
 }

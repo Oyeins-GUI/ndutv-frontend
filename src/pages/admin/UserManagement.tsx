@@ -40,7 +40,7 @@ import {
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import addAdmin, { AdminData, getAdmins } from "@/services/admin";
+import addAdmin, { AdminData, deleteAdmin, getAdmins } from "@/services/admin";
 import { ApiResponse, type Error } from "@/components/AuthProvider";
 import { toast } from "@/hooks/use-toast";
 import { getRoleBadgeVariant } from "@/utils/badge-variant";
@@ -274,7 +274,7 @@ const UserManagement = () => {
                                  </Badge>
                               </TableCell>
                               <TableCell className="text-right">
-                                 <ActionsMenu />
+                                 <ActionsMenu id="{admin.id}" />
                               </TableCell>
                            </TableRow>
                         ))}
@@ -326,26 +326,54 @@ const UserManagement = () => {
 
 export default UserManagement;
 
-export function ActionsMenu() {
+export function ActionsMenu({ id }: { id: string }) {
+   const queryClient = useQueryClient();
+
+   const mutation = useMutation({
+      mutationFn: () => deleteAdmin(id),
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: ["admins"] });
+         toast({
+            title: "Admin deleted!",
+            description: "Deleted successfully",
+            className: "bg-gray-300 text-gray-900",
+         });
+      },
+      onError: (error: ApiResponse<Error>) => {
+         toast({
+            title: "Error",
+            description:
+               error.message || "Something went wrong. Please try again.",
+            variant: "error",
+            className: "bg-red-500 text-gray-300 border-none",
+         });
+      },
+   });
+
    return (
       <DropdownMenu>
          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm">
+            <Button className="hover:bg-surface" variant="ghost" size="sm">
                <MoreVertical className="w-4 h-4" />
             </Button>
          </DropdownMenuTrigger>
-         <DropdownMenuContent align="end">
-            <DropdownMenuItem onSelect={() => console.log("Delete")}>
-               <Trash2 className="w-4 h-4 mr-2 text-red-500" /> Delete
+         <DropdownMenuContent
+            align="end"
+            className="bg-background text-primary_text"
+         >
+            <DropdownMenuItem onSelect={() => console.log(`Editing... ${id}`)}>
+               <Ban className="w-4 h-4 mr-2 text-background" /> Suspend
             </DropdownMenuItem>
 
-            <DropdownMenuItem onSelect={() => console.log("Suspend")}>
-               <Ban className="w-4 h-4 mr-2 text-yellow-500" /> Suspend
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            {/* <DropdownMenuItem onSelect={() => console.log("Other Action")}>
-               Another action
-            </DropdownMenuItem> */}
+
+            <DropdownMenuItem
+               className="bg-error/80 text-on_error hover:bg-error"
+               onSelect={() => mutation.mutate()}
+            >
+               <Trash2 className="w-4 h-4 mr-2 text-background" />{" "}
+               {mutation.isPending ? "Deleting..." : "Delete"}
+            </DropdownMenuItem>
          </DropdownMenuContent>
       </DropdownMenu>
    );
