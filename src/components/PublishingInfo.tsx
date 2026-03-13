@@ -16,16 +16,19 @@ export default function PublishingInfo({
             <CardTitle className="text-lg">Publishing Info</CardTitle>
          </CardHeader>
          <CardContent className="space-y-4">
-            <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center space-x-2 text-sm text-secondary_text">
                <Calendar className="w-4 h-4" />
                <span>{new Date().toLocaleDateString()}</span>
             </div>
-            <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center space-x-2 text-sm text-secondary_text">
                <UserIcon className="w-4 h-4" />
                <span>Admin - {user?.name || ""}</span>
             </div>
             {category && (
-               <Badge variant="default" className="capitalize">
+               <Badge
+                  variant="default"
+                  className="capitalize border border-primary_text bg-background text-primary_text"
+               >
                   {category}
                </Badge>
             )}

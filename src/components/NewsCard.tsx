@@ -22,8 +22,12 @@ const NewsCard = (article: Article) => {
                   {article.category}
                </button>
 
-               <h2 className="text-title_medium font-secondary font-bold text-primary_text mb-3 leading-tight group-hover:text-primary-gold transition-colors duration-300 line-clamp-2">
+               <h2 className="text-title_medium font-secondary font-bold text-primary_text mb-3 leading-tight group-hover:text-primary-gold transition-colors duration-300 truncate">
                   {article.title}
+               </h2>
+
+               <h2 className="text-body_medium font-primary text-primary_text h-12 mb-3 leading-tight group-hover:text-primary-gold transition-colors duration-300 truncate">
+                  {article.summary}
                </h2>
 
                <div className="flex items-center justify-between">

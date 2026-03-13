@@ -271,13 +271,13 @@ export function ArticleCard({
                   {article.title}
                </h3>
 
-               <p className="text-body_medium text-secondary_text mt-1 truncate">
+               <p className="text-body_medium text-primary_text mt-1 truncate">
                   {article.summary}
                </p>
             </div>
 
             <div className="mt-3 space-y-2">
-               <div className="flex items-center justify-between text-xs text-secondary_text/80">
+               <div className="flex items-center justify-between text-xs text-secondary_text">
                   <span className="">{article.author_name}</span>
                   <span className="">{timeAgo(article.created_at)}</span>
                </div>
@@ -297,7 +297,7 @@ export function ArticleCard({
                         </button>
                      )}
 
-                     {role === "super_admin" && !article.is_approved && (
+                     {role === "super_admin" && (
                         <button
                            onClick={() => deleteArticleMutation.mutate()}
                            className="text-xs bg-error hover:bg-error/90 text-on_error px-3 py-1 rounded transition"
@@ -324,11 +324,11 @@ export function ArticleDialog({ article, open, onClose }: ArticleDialogProps) {
 
    return (
       <div
-         className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 sm:p-6"
+         className="fixed inset-0 z-50 flex items-center justify-center bg-background bg-opacity-50 p-4 sm:p-6"
          onClick={onClose} // click outside to close
       >
          <div
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto relative p-6"
+            className="bg-background rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto relative p-6"
             onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
          >
             {/* Close Button */}
@@ -361,14 +361,12 @@ export function ArticleDialog({ article, open, onClose }: ArticleDialogProps) {
                </div>
 
                {/* Category */}
-               <span className="inline-blockbg-gray-700 text-gray-200 px-2 py-1 rounded text-xs break-words">
+               <span className="inline-block bg-black border text-white px-2 py-1 rounded text-xs break-words">
                   {article.category}
                </span>
 
                {/* Summary */}
-               <p className="text-gray-700 dark:text-gray-200 break-words">
-                  {article.summary}
-               </p>
+               <p className="break-words">{article.summary}</p>
 
                {/* Content */}
                <div

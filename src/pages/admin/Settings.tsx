@@ -80,7 +80,9 @@ const Settings = () => {
                            defaultValue={user?.email}
                         />
                      </div>
-                     <Button>Save Changes</Button>
+                     <Button className="bg-surface text-primary_text">
+                        Save Changes
+                     </Button>
                   </CardContent>
                </Card>
             </TabsContent>
@@ -193,7 +195,9 @@ const Settings = () => {
                               </button>
                            </div>
                         </div>
-                        <Button>Update Password</Button>
+                        <Button className="bg-surface text-primary_text">
+                           Update Password
+                        </Button>
                      </form>
                   </CardContent>
                </Card>

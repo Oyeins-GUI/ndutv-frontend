@@ -117,7 +117,7 @@ const UserManagement = () => {
 
             <Dialog>
                <DialogTrigger asChild>
-                  <Button className="gap-2">
+                  <Button className="gap-2 bg-background border">
                      <UserPlus className="w-4 h-4" />
                      Add Admin
                   </Button>
