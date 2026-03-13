@@ -96,17 +96,17 @@ export default function SetPassword() {
                   <img src="/logo.png" className="w-14" />
 
                   <div className="flex flex-col text-left">
-                     <span className="text-title_large font-bold font-secondary text-white uppercase tracking-tight">
+                     <span className="text-title_large font-bold font-secondary text-primary_text uppercase tracking-tight">
                         NANS Zone B
                      </span>
-                     <span className="text-sm text-gray-400 -mt-1">
+                     <span className="text-sm text-secondary_text -mt-1">
                         Admin Portal
                      </span>
                   </div>
                </Link>
                <Link
                   to="/"
-                  className="inline-flex items-center text-sm text-gray-400 hover:text-red-400 transition-colors duration-300"
+                  className="inline-flex items-center text-sm text-secondary_text hover:text-red-400 transition-colors duration-300"
                >
                   <ArrowLeft className="w-4 h-4 mr-1" />
                   Back Home
@@ -115,7 +115,7 @@ export default function SetPassword() {
 
             <Card className="shadow-2xl border-0 bg-surface backdrop-blur-sm">
                <CardHeader className="text-center pb-4">
-                  <CardTitle className="text-2xl font-bold text-white">
+                  <CardTitle className="text-2xl font-bold text-primary_text">
                      Set Password
                   </CardTitle>
                   <CardDescription className="text-gray-400">
@@ -127,7 +127,7 @@ export default function SetPassword() {
                      <div className="space-y-2">
                         <Label
                            htmlFor="password"
-                           className="text-sm font-medium text-gray-300"
+                           className="text-sm font-medium text-primary_text"
                         >
                            Password
                         </Label>
@@ -163,7 +163,7 @@ export default function SetPassword() {
                      <div className="space-y-2">
                         <Label
                            htmlFor="confirm_password"
-                           className="text-sm font-medium text-gray-300"
+                           className="text-sm font-medium text-primary_text"
                         >
                            Confirm Password
                         </Label>
@@ -201,7 +201,7 @@ export default function SetPassword() {
                      <Button
                         type="submit"
                         disabled={mutation.isPending}
-                        className="w-full h-12 border bg-gray-300 text-gray-900 font-medium transition-all cursor-pointer"
+                        className="w-full h-12 bg-primary_text text-background font-medium transition-all cursor-pointer"
                      >
                         {mutation.isPending ? (
                            <div className="flex items-center space-x-2">

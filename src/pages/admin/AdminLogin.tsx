@@ -57,7 +57,7 @@ const AdminLogin = () => {
                   <img src="/logo.png" className="w-10" />
 
                   <div className="flex flex-col text-left">
-                     <span className="text-title_large uppercase font-secondary font-bold text-white tracking-tight">
+                     <span className="text-title_large uppercase font-secondary font-bold text-primary_text tracking-tight">
                         nans zone b
                      </span>
                      <span className="text-label_medium text-secondary_text -mt-1">
@@ -76,7 +76,7 @@ const AdminLogin = () => {
 
             <Card className="shadow-2xl border-0 bg-surface backdrop-blur-sm">
                <CardHeader className="text-center pb-4">
-                  <CardTitle className="text-2xl font-bold text-white">
+                  <CardTitle className="text-2xl font-bold text-primary_text">
                      Sign In
                   </CardTitle>
                   <CardDescription className="text-gray-400">
@@ -88,7 +88,7 @@ const AdminLogin = () => {
                      <div className="space-y-2">
                         <Label
                            htmlFor="email"
-                           className="text-sm font-medium text-gray-300"
+                           className="text-sm font-medium text-primary_text"
                         >
                            Email Address
                         </Label>
@@ -106,7 +106,7 @@ const AdminLogin = () => {
                      <div className="space-y-2">
                         <Label
                            htmlFor="password"
-                           className="text-sm font-medium text-gray-300"
+                           className="text-sm font-medium text-primary_text"
                         >
                            Password
                         </Label>

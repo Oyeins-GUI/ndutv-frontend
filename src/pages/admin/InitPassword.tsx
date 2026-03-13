@@ -98,11 +98,11 @@ export default function InitPassword() {
 
             <Card className="shadow-2xl border-0 bg-surface backdrop-blur-sm">
                <CardHeader className="text-center pb-4">
-                  <CardTitle className="text-2xl font-bold text-white">
+                  <CardTitle className="text-2xl font-bold text-primary_text">
                      Create Account
                   </CardTitle>
-                  <CardDescription className="text-gray-400">
-                     Set password to manage NDUtv news platform
+                  <CardDescription className="text-secondary_text">
+                     Set password to manage NANS Zone B news platform
                   </CardDescription>
                </CardHeader>
                <CardContent>
@@ -110,7 +110,7 @@ export default function InitPassword() {
                      <div className="space-y-2">
                         <Label
                            htmlFor="email"
-                           className="text-sm font-medium text-gray-300"
+                           className="text-sm font-medium text-primary_text"
                         >
                            Email
                         </Label>
@@ -130,7 +130,7 @@ export default function InitPassword() {
                      <div className="space-y-2">
                         <Label
                            htmlFor="role"
-                           className="text-sm font-medium text-gray-300"
+                           className="text-sm font-medium text-primary_text"
                         >
                            Role
                         </Label>
@@ -148,7 +148,7 @@ export default function InitPassword() {
                      <Button
                         type="submit"
                         disabled={mutation.isPending}
-                        className="w-full h-12 border bg-gray-300 text-gray-900 font-medium transition-all cursor-pointer"
+                        className="w-full h-12 bg-primary_text text-background font-medium transition-all cursor-pointer"
                      >
                         {mutation.isPending ? (
                            <div className="flex items-center space-x-2">

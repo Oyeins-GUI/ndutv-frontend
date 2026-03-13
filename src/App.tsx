@@ -7,24 +7,27 @@ import { ThemeProvider } from "./components/ThemeProvider";
 import { router } from "./router";
 import { AuthProvider } from "./components/AuthProvider";
 import { ArticleProvider } from "./components/ArticleProvider";
+import ErrorBoundary from "./components/error-boundary";
 
 const queryClient = new QueryClient();
 export const BASE_URL = "https://api.nanszoneb.org/v1";
 
 const App = () => (
-   <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="system" storageKey="nans-theme">
-         <AuthProvider>
-            <ArticleProvider>
-               <TooltipProvider>
-                  <Toaster />
-                  <Sonner />
-                  <RouterProvider router={router} />
-               </TooltipProvider>
-            </ArticleProvider>
-         </AuthProvider>
-      </ThemeProvider>
-   </QueryClientProvider>
+   <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+         <ThemeProvider defaultTheme="system" storageKey="nans-theme">
+            <AuthProvider>
+               <ArticleProvider>
+                  <TooltipProvider>
+                     <Toaster />
+                     <Sonner />
+                     <RouterProvider router={router} />
+                  </TooltipProvider>
+               </ArticleProvider>
+            </AuthProvider>
+         </ThemeProvider>
+      </QueryClientProvider>
+   </ErrorBoundary>
 );
 
 export default App;
