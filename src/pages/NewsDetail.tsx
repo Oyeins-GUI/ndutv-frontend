@@ -62,23 +62,35 @@ const NewsDetail = () => {
 
    return (
       <>
-         <Seo
-            title={article?.data.title as string}
-            description={article?.data.summary as string}
-            image={article?.data.image_url}
-            canonical={`https://www.nanszoneb.org/${article?.data.category}/${article?.data.id}`}
-            schemaMarkup={{
-               "@context": "https://schema.org",
-               "@type": "NewsArticle",
-               headline: article?.data.title,
-               image: article?.data.image_url,
-               datePublished: timeAgo(article?.data.created_at as string),
-               author: {
-                  "@type": "Person",
-                  name: article?.data.author_name,
-               },
-            }}
-         />
+         {article?.success && (
+            <Seo
+               title={article?.data.title}
+               description={article?.data.summary}
+               image={article?.data.image_url}
+               canonical={`https://www.nanszoneb.org/${article?.data.category}/${article?.data.id}`}
+               schemaMarkup={{
+                  "@context": "https://schema.org",
+                  "@type": "NewsArticle",
+                  headline: article?.data.title,
+                  image: article?.data.image_url,
+                  datePublished: new Date(
+                     article.data.created_at,
+                  ).toISOString(),
+                  author: {
+                     "@type": "Person",
+                     name: article?.data.author_name,
+                  },
+                  publisher: {
+                     "@type": "Organization",
+                     name: "NANS Zone B South-South",
+                     logo: {
+                        "@type": "ImageObject",
+                        url: "https://www.nanszoneb.org/logo.png",
+                     },
+                  },
+               }}
+            />
+         )}
          <div className="min-h-screen bg-white">
             <Header />
 
