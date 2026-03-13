@@ -6,12 +6,12 @@ const HeroSection = () => {
    const { articles } = useArticle();
    const featuredArticle =
       articles
-         .filter((article) => article.is_featured)
-         .sort(
-            (a, b) =>
-               new Date(b.created_at).getTime() -
-               new Date(a.created_at).getTime(),
-         ) ?? null;
+         ?.filter((article) => article.is_featured)
+         ?.sort((a, b) => {
+            const dateA = new Date(a.created_at || "").getTime();
+            const dateB = new Date(b.created_at || "").getTime();
+            return dateB - dateA;
+         })?.[0] ?? null;
 
    if (!articles || articles.length === 0) {
       return (
@@ -29,35 +29,35 @@ const HeroSection = () => {
                {/* Link to view news here */}
                <div className="lg:col-span-2">
                   <Link
-                     to={`/${featuredArticle[0]?.category.toLowerCase()}/${featuredArticle[0]?.admin_id}`}
+                     to={`/${featuredArticle?.category.toLowerCase()}/${featuredArticle?.id}`}
                      className="group cursor-pointer"
                   >
                      <div className="relative overflow-hidden mb-4">
                         <img
-                           src={featuredArticle[0]?.image_url}
-                           alt={featuredArticle[0]?.title}
+                           src={featuredArticle?.image_url}
+                           alt={featuredArticle?.title}
                            className="w-full h-64 md:h-80 object-cover group-hover:scale-105 transition-transform duration-700 rounded-lg"
                         />
                         <div className="absolute top-4 left-4">
                            <p className="bg-accent text-primary_text px-3 py-1 text-label_medium font-secondary font-medium">
-                              {featuredArticle[0]?.category}
+                              {featuredArticle?.category}
                            </p>
                         </div>
                      </div>
                      <h1 className="text-headline_medium md:text-headline_large font-primary font-bold text-primary_text mb-4 leading-tight group-hover:text-dark-gold transition-colors">
-                        {featuredArticle[0]?.title}
+                        {featuredArticle?.title}
                      </h1>
                      <p className="text-secondary_text font-primary text-body_large leading-relaxed mb-4">
-                        {featuredArticle[0]?.summary}
+                        {featuredArticle?.summary}
                      </p>
                      <div className="flex items-center justify-between text-label_large text-primary_text font-secondary">
                         <div className="flex flex-col">
                            <span className="font-medium">
-                              {featuredArticle[0]?.author_name}
+                              {featuredArticle?.author_name}
                            </span>
                            {/* <span className="mx-2">•</span> */}
                            <span className="uppercase text-label_small">
-                              {featuredArticle[0]?.created_at}
+                              {featuredArticle?.created_at}
                            </span>
                         </div>
 
