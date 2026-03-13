@@ -29,7 +29,7 @@ export async function getArticles({ is_featured }: { is_featured?: boolean }) {
    return data;
 }
 
-export async function createArticle(article: Omit<NewsData, "is_featured">) {
+export async function createArticle(article: Omit<NewsData, "author_name">) {
    const file = (article.image_url as File[])?.[0];
    const imageUrl = file ? await uploadImage(file) : "";
 
@@ -93,10 +93,25 @@ export async function getArticleById(id: string) {
    return data;
 }
 
-export async function updateArticle(id: string) {
+export async function approveArticle(id: string, article: Article) {
+   const { category, content, image_url, is_featured, summary, title } =
+      article;
+
    const res = await fetch(`${BASE_URL}/articles/${id}`, {
       method: "PATCH",
       credentials: "include",
+      headers: {
+         "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+         category,
+         content,
+         image_url,
+         is_featured,
+         is_approved: true,
+         summary,
+         title,
+      }),
    });
 
    if (!res.ok) {
@@ -108,4 +123,20 @@ export async function updateArticle(id: string) {
    const data: ApiResponse<Article> = await res.json();
 
    return data;
+}
+
+export async function deleteArticle(id: string) {
+   const res = await fetch(`${BASE_URL}/articles/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+   });
+
+   if (!res.ok) {
+      const error: ApiResponse<Error> = await res.json();
+      console.error(error);
+      throw new Error(error.message);
+   }
+
+   return;
 }

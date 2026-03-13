@@ -9,6 +9,7 @@ import {
    BuildingLibraryIcon,
    ChevronDownIcon,
 } from "@heroicons/react/24/solid";
+import ThemeToggle from "./ThemeToggle";
 
 const links = [
    { to: "/", label: "Home", icon: HomeIcon },
@@ -132,6 +133,7 @@ const Header = () => {
                         );
                      })}
                   </nav>
+                  <ThemeToggle />
                </div>
 
                <button
@@ -244,6 +246,7 @@ const Header = () => {
                         );
                      })}
                   </nav>
+                  <ThemeToggle />
                </div>
             </div>
          </div>

@@ -13,17 +13,17 @@ export const BASE_URL = "https://api.nanszoneb.org/v1";
 
 const App = () => (
    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-         <ArticleProvider>
-            <ThemeProvider defaultTheme="system" storageKey="nans-theme">
+      <ThemeProvider defaultTheme="system" storageKey="nans-theme">
+         <AuthProvider>
+            <ArticleProvider>
                <TooltipProvider>
                   <Toaster />
                   <Sonner />
                   <RouterProvider router={router} />
                </TooltipProvider>
-            </ThemeProvider>
-         </ArticleProvider>
-      </AuthProvider>
+            </ArticleProvider>
+         </AuthProvider>
+      </ThemeProvider>
    </QueryClientProvider>
 );
 
