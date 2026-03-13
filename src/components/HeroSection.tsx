@@ -1,4 +1,5 @@
 import { useArticle } from "@/hooks/use-article";
+import { timeAgo } from "@/utils/time";
 import { ArrowRightIcon, BellAlertIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router";
 
@@ -53,11 +54,11 @@ const HeroSection = () => {
                      <div className="flex items-center justify-between text-label_large text-primary_text font-secondary">
                         <div className="flex flex-col">
                            <span className="font-medium">
-                              {featuredArticle?.author_name}
+                              By {featuredArticle?.author_name}
                            </span>
                            {/* <span className="mx-2">•</span> */}
                            <span className="uppercase text-label_small">
-                              {featuredArticle?.created_at}
+                              {timeAgo(featuredArticle?.created_at)}
                            </span>
                         </div>
 
@@ -85,11 +86,11 @@ const HeroSection = () => {
                   <div>
                      {articles.slice(1, 5).map((article) => (
                         <Link
-                           to={`/${article.category.toLowerCase()}/${article.admin_id}`}
-                           key={article.admin_id}
+                           to={`/${article.category.toLowerCase()}/${article.id}`}
+                           key={article.id}
                         >
                            <article
-                              key={article.admin_id}
+                              key={article.id}
                               className="group cursor-pointer mb-2"
                            >
                               <div className="flex items-start space-x-3">
@@ -103,7 +104,7 @@ const HeroSection = () => {
                                        {article.title}
                                     </h3>
                                     <span className="text-body_small text-secondary_text">
-                                       {article.created_at}
+                                       {timeAgo(article.created_at)}
                                     </span>
                                  </div>
                               </div>

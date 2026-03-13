@@ -39,7 +39,7 @@ const Header = () => {
    };
 
    return (
-      <header className="bg-background shadow-sm z-50 transition-colors duration-300 font-secondary">
+      <header className="bg-surface shadow-sm z-50 transition-colors duration-300 font-secondary">
          <div className="container mx-auto px-4 max-w-7xl">
             {/* Top bar with logo and main nav */}
             <div className="flex items-center justify-between py-3 min-h-[60px]">

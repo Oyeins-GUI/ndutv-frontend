@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import { Article } from "./ArticleProvider";
+import { timeAgo } from "@/utils/time";
 
 const NewsCard = (article: Article) => {
    return (
@@ -32,7 +33,7 @@ const NewsCard = (article: Article) => {
 
                <div className="flex items-center justify-between">
                   <div className="flex items-center text-body_small text-secondary_text transform group-hover:-translate-x-1 transition-transform duration-300">
-                     {article.created_at}
+                     {timeAgo(article.created_at)}
                   </div>
                   <ArrowRightIcon className="size-4 text-secondary_text group-hover:opacity-100 transition-opacity duration-300" />
                </div>
