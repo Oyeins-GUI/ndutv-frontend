@@ -1,7 +1,7 @@
 import { useArticle } from "@/hooks/use-article";
-import { timeAgo } from "@/utils/time";
 import { ArrowRightIcon, BellAlertIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router";
+import { formatArticleDate } from "@/utils/date";
 
 const HeroSection = () => {
    const { articles } = useArticle();
@@ -54,11 +54,12 @@ const HeroSection = () => {
                      <div className="flex items-center justify-between text-label_large text-primary_text font-secondary">
                         <div className="flex flex-col">
                            <span className="font-medium">
-                              By {featuredArticle?.author_name}
+                              BY {featuredArticle?.author_name}
                            </span>
                            {/* <span className="mx-2">•</span> */}
                            <span className="uppercase text-label_small">
-                              {timeAgo(featuredArticle?.created_at)}
+                              Published{" "}
+                              {formatArticleDate(featuredArticle?.created_at)}
                            </span>
                         </div>
 
@@ -84,7 +85,7 @@ const HeroSection = () => {
                      <BellAlertIcon className="size-5 text-accent" />
                   </div>
                   <div>
-                     {articles.slice(1, 5).map((article) => (
+                     {articles.slice(0, 4).map((article) => (
                         <Link
                            to={`/${article.category.toLowerCase()}/${article.id}`}
                            key={article.id}
@@ -104,7 +105,8 @@ const HeroSection = () => {
                                        {article.title}
                                     </h3>
                                     <span className="text-body_small text-secondary_text">
-                                       {timeAgo(article.created_at)}
+                                       Published{" "}
+                                       {formatArticleDate(article.created_at)}
                                     </span>
                                  </div>
                               </div>

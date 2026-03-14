@@ -274,7 +274,7 @@ const UserManagement = () => {
                                  </Badge>
                               </TableCell>
                               <TableCell className="text-right">
-                                 <ActionsMenu id="{admin.id}" />
+                                 <ActionsMenu id={admin.id} />
                               </TableCell>
                            </TableRow>
                         ))}
@@ -326,7 +326,7 @@ const UserManagement = () => {
 
 export default UserManagement;
 
-export function ActionsMenu({ id }: { id: string }) {
+function ActionsMenu({ id }: { id: string }) {
    const queryClient = useQueryClient();
 
    const mutation = useMutation({

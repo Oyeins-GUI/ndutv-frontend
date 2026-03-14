@@ -134,7 +134,7 @@ export default function Executives() {
    );
 }
 
-export function ActionsMenu({ id }: { id: string }) {
+function ActionsMenu({ id }: { id: string }) {
    const queryClient = useQueryClient();
 
    const mutation = useMutation({

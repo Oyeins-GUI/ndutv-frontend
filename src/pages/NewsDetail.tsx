@@ -1,18 +1,14 @@
 import { useParams, Link } from "react-router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import {
-   // BookmarkIcon,
-   ChevronLeftIcon,
-   // EllipsisVerticalIcon,
-   ShareIcon,
-} from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ShareIcon } from "@heroicons/react/24/solid";
 import { getArticleById } from "@/services/articles";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { timeAgo } from "@/utils/time";
 import Seo from "@/components/Seo";
+import { formatArticleDate } from "@/utils/date";
+import { cleanArticleHtml } from "@/utils/text";
 
 const NewsDetail = () => {
    const { id } = useParams();
@@ -129,13 +125,13 @@ const NewsDetail = () => {
 
                            <div className="flex items-center justify-between border-b border-primary_text/10 pb-6">
                               <div className="flex items-center space-x-6 text-gray-600 text-sm">
-                                 <div className="flex flex-col">
+                                 <div className="flex flex-col font-secondary">
                                     <p className="font-medium text-primary_text text-body_medium">
-                                       {article?.data.author_name}
+                                       BY {article?.data.author_name}
                                     </p>
                                     <p className="text-body_small text-secondary_text">
-                                       Published •{" "}
-                                       {timeAgo(
+                                       Published{" "}
+                                       {formatArticleDate(
                                           article?.data.created_at as string,
                                        )}
                                     </p>
@@ -155,10 +151,12 @@ const NewsDetail = () => {
 
                         {/* Article Content */}
                         <div className="bg-white mb-12">
-                           <div
-                              className="prose prose-lg max-w-full break-words bg-background text-primary_text leading-relaxed"
+                           <article
+                              className="bg-background text-primary_text prose prose-lg break-words leading-relaxed prose-img:rounded-xl prose-img:mx-auto prose-headings:scroll-mt-24 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline"
                               dangerouslySetInnerHTML={{
-                                 __html: article?.data.content as string,
+                                 __html: cleanArticleHtml(
+                                    article?.data.content as string,
+                                 ),
                               }}
                            />
                         </div>

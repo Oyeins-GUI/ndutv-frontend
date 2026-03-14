@@ -3,6 +3,7 @@ import { ApiResponse, type Error } from "@/components/AuthProvider";
 import { toast } from "@/hooks/use-toast";
 
 export type AdminData = {
+   id: string;
    email: string;
    name: string;
    role: string;
