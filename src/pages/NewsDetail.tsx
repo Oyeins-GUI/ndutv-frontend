@@ -28,7 +28,7 @@ const NewsDetail = () => {
    useEffect(() => {
       if (error) {
          toast({
-            title: "Failed to fetch articles",
+            title: "Failed to fetch article",
             description: "Something went wrong",
             variant: "error",
          });
@@ -56,37 +56,54 @@ const NewsDetail = () => {
       }
    };
 
+   if (!article) {
+      return (
+         <>
+            <Header />
+            <div className="bg-background text-primary_text text-center pt-10">
+               <p className="font-secondary text-headline_large mb-3">
+                  Article not found
+               </p>
+               <Link
+                  to="/"
+                  className="bg-surface text-primary_text p-3 rounded-md"
+               >
+                  Back Home
+               </Link>
+            </div>
+            <Footer />
+         </>
+      );
+   }
+
    return (
       <>
-         {article?.success && (
-            <Seo
-               title={article?.data.title}
-               description={article?.data.summary}
-               image={article?.data.image_url}
-               canonical={`https://www.nanszoneb.org/${article?.data.category}/${article?.data.id}`}
-               schemaMarkup={{
-                  "@context": "https://schema.org",
-                  "@type": "NewsArticle",
-                  headline: article?.data.title,
-                  image: article?.data.image_url,
-                  datePublished: new Date(
-                     article.data.created_at,
-                  ).toISOString(),
-                  author: {
-                     "@type": "Person",
-                     name: article?.data.author_name,
+         <Seo
+            title={article.data.title}
+            description={article.data.summary}
+            image={article.data.image_url}
+            canonical={`https://www.nanszoneb.org/${article.data.category}/${article.data.id}`}
+            schemaMarkup={{
+               "@context": "https://schema.org",
+               "@type": "NewsArticle",
+               headline: article.data.title,
+               image: article.data.image_url,
+               datePublished: new Date(article.data.created_at).toISOString(),
+               author: {
+                  "@type": "Person",
+                  name: article.data.author_name,
+               },
+               publisher: {
+                  "@type": "Organization",
+                  name: "NANS Zone B South-South",
+                  logo: {
+                     "@type": "ImageObject",
+                     url: "https://www.nanszoneb.org/logo.png",
                   },
-                  publisher: {
-                     "@type": "Organization",
-                     name: "NANS Zone B South-South",
-                     logo: {
-                        "@type": "ImageObject",
-                        url: "https://www.nanszoneb.org/logo.png",
-                     },
-                  },
-               }}
-            />
-         )}
+               },
+            }}
+         />
+
          <div className="min-h-screen bg-white">
             <Header />
 
